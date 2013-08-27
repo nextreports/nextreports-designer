@@ -1,0 +1,170 @@
+<?xml version="1.0" standalone="yes"?>
+
+<mydoggy version="1.5.0" contentManagerEnabled="true">
+    <toolWindows>
+        <sharedWindows></sharedWindows>
+        <toolWindow id="Explorer" available="true" visible="true" active="false" autoHide="false" anchor="LEFT" anchorIndex="1" type="DOCKED" aggregateMode="false" maximized="false" index="1" flashing="false" lockedOnAnchor="false" hideOnZeroTabs="true">
+            <descriptors>
+                <docked animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="false" titleBarButtonsVisible="true" titleBarVisible="true" dockLength="259" minimumDockLength="100" popupMenuEnabled="true"/>
+                <sliding animating="true" autoHide="true" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5"/>
+                <floating animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" modal="false" transparentMode="true" transparentDelay="1500" transparentRatio="0.7" addToTaskBar="false" alwaysOnTop="true" osDecorated="false" resizable="true"/>
+                <floatingLive animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5" resizable="true"/>
+                <anchor visible="true" title="Explorer" previewEnabled="true" previewDelay="1000" previewTransparentRatio="0.65">
+                    <lockingAnchors></lockingAnchors>
+                </anchor>
+            </descriptors>
+        </toolWindow>
+        <toolWindow id="Parameters" available="true" visible="true" active="false" autoHide="false" anchor="LEFT" anchorIndex="0" type="DOCKED" aggregateMode="false" maximized="false" index="2" flashing="false" lockedOnAnchor="false" hideOnZeroTabs="true">
+            <descriptors>
+                <docked animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="false" titleBarButtonsVisible="true" titleBarVisible="true" dockLength="259" minimumDockLength="100" popupMenuEnabled="true"/>
+                <sliding animating="true" autoHide="true" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5"/>
+                <floating animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" modal="false" transparentMode="true" transparentDelay="1500" transparentRatio="0.7" addToTaskBar="false" alwaysOnTop="true" osDecorated="false" resizable="true"/>
+                <floatingLive animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5" resizable="true"/>
+                <anchor visible="true" title="Parameters" previewEnabled="true" previewDelay="1000" previewTransparentRatio="0.65">
+                    <lockingAnchors></lockingAnchors>
+                </anchor>
+            </descriptors>
+        </toolWindow>
+        <toolWindow id="Sql Log" available="true" visible="false" active="false" autoHide="false" anchor="BOTTOM" anchorIndex="0" type="DOCKED" aggregateMode="false" maximized="false" index="3" flashing="false" lockedOnAnchor="false" hideOnZeroTabs="true">
+            <descriptors>
+                <docked animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="false" titleBarButtonsVisible="true" titleBarVisible="true" dockLength="261" minimumDockLength="100" popupMenuEnabled="true"/>
+                <sliding animating="true" autoHide="true" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5"/>
+                <floating animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" modal="false" transparentMode="true" transparentDelay="1500" transparentRatio="0.7" addToTaskBar="false" alwaysOnTop="true" osDecorated="false" resizable="true"/>
+                <floatingLive animating="true" autoHide="false" enabled="true" hideRepresentativeButtonOnVisible="false" idVisibleOnTitleBar="true" titleBarButtonsVisible="true" titleBarVisible="true" transparentMode="true" transparentDelay="1000" transparentRatio="0.5" resizable="true"/>
+                <anchor visible="true" title="Sql Log" previewEnabled="true" previewDelay="1000" previewTransparentRatio="0.65">
+                    <lockingAnchors></lockingAnchors>
+                </anchor>
+            </descriptors>
+        </toolWindow>
+    </toolWindows>
+    <toolWindowManagerDescriptor numberingEnabled="true" previewEnabled="true" showUnavailableTools="false">
+        <pushAway pushAwayMode="VERTICAL">
+            <mode type="MOST_RECENT">
+                <anchor type="TOP"/>
+                <anchor type="RIGHT"/>
+                <anchor type="LEFT"/>
+                <anchor type="BOTTOM"/>
+            </mode>
+        </pushAway>
+    </toolWindowManagerDescriptor>
+    <contentManagerUI>
+        <TabbedContentManagerUI closeable="true" detachable="true" minimizable="true" maximizable="true" popupMenuEnabled="true" showAlwaysTab="false" tabLayout="SCROLL" tabPlacement="TOP"/>
+    </contentManagerUI>
+    <contentManager>
+        <sharedWindows></sharedWindows>
+        <contents>
+            <content id="qbMain" detached="false" enabled="true" selected="false" maximized="false" minimized="false" flashing="false" closeable="true" detachable="true" minimizable="true" maximizable="true" transparentMode="true" transparentDelay="0" transparentRatio="0.7" addToTaskBarWhenDetached="false" alwaysOnTop="true"></content>
+        </contents>
+    </contentManager>
+    <toolWindowBars>
+        <toolWindowBar anchor="LEFT" dividerSize="3" aggregateMode="false">
+            <layout>
+                <![CDATA[
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object id="MultiSplitLayout$Split0" class="org.noos.xing.mydoggy.plaf.ui.cmp.MultiSplitLayout$Split"> 
+  <void property="bounds"> 
+   <object class="java.awt.Rectangle"> 
+    <int>0</int> 
+    <int>0</int> 
+    <int>259</int> 
+    <int>621</int> 
+   </object> 
+  </void> 
+  <void id="ArrayList0" property="children"> 
+   <void method="add"> 
+    <object class="org.noos.xing.mydoggy.plaf.ui.cmp.MultiSplitDockableContainer$DockableLeaf"> 
+     <void property="bounds"> 
+      <object class="java.awt.Rectangle"> 
+       <int>0</int> 
+       <int>0</int> 
+       <int>259</int> 
+       <int>407</int> 
+      </object> 
+     </void> 
+     <void property="dockables"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <string>Explorer</string> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="name"> 
+      <string>1</string> 
+     </void> 
+     <void property="parent"> 
+      <object idref="MultiSplitLayout$Split0"/> 
+     </void> 
+     <void property="weight"> 
+      <double>0.5</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.noos.xing.mydoggy.plaf.ui.cmp.MultiSplitLayout$Divider"> 
+     <void property="bounds"> 
+      <object class="java.awt.Rectangle"> 
+       <int>0</int> 
+       <int>407</int> 
+       <int>259</int> 
+       <int>5</int> 
+      </object> 
+     </void> 
+     <void property="parent"> 
+      <object idref="MultiSplitLayout$Split0"/> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.noos.xing.mydoggy.plaf.ui.cmp.MultiSplitDockableContainer$DockableLeaf"> 
+     <void property="bounds"> 
+      <object class="java.awt.Rectangle"> 
+       <int>0</int> 
+       <int>412</int> 
+       <int>259</int> 
+       <int>209</int> 
+      </object> 
+     </void> 
+     <void property="dockables"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <string>Parameters</string> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="name"> 
+      <string>2</string> 
+     </void> 
+     <void property="parent"> 
+      <object idref="MultiSplitLayout$Split0"/> 
+     </void> 
+     <void property="weight"> 
+      <double>0.5</double> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="children"> 
+   <object idref="ArrayList0"/> 
+  </void> 
+  <void property="rowLayout"> 
+   <boolean>false</boolean> 
+  </void> 
+ </object> 
+</java> 
+]]>
+            </layout>
+        </toolWindowBar>
+        <toolWindowBar anchor="BOTTOM" dividerSize="3" aggregateMode="false">
+            <layout>
+                <![CDATA[
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <null/> 
+</java> 
+]]>
+            </layout>
+        </toolWindowBar>
+        <toolWindowBar anchor="RIGHT" dividerSize="3" aggregateMode="false"></toolWindowBar>
+        <toolWindowBar anchor="TOP" dividerSize="3" aggregateMode="false"></toolWindowBar>
+    </toolWindowBars>
+</mydoggy>
+
