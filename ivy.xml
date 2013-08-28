@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">                 
+    <info organisation="ro.nextreports" module="nextreports-designer" revision="${app.version}"/>
+        
+    <configurations defaultconfmapping="*->default">
+        <conf name="compile" description="Maven compile dependencies"/>
+        <conf name="runtime" extends="compile" description="Runtime dependencies"/>
+    </configurations>
+    
+    <dependencies>
+        <!-- Jdbc drivers -->
+        <dependency org="com.oracle" name="ojdbc5" rev="11.2.0.3.0"/>
+        <dependency org="org.apache.derby" name="derby" rev="10.10.1.1"/>
+        <dependency org="org.firebirdsql.jdbc" name="jaybird-jdk16" rev="2.2.3"/>
+        <dependency org="net.sourceforge.jtds" name="jtds" rev="1.2.8"/>
+        <dependency org="mysql" name="mysql-connector-java" rev="5.1.25"/>
+        <dependency org="postgresql" name="postgresql" rev="9.1-901.jdbc4"/>
+        <dependency org="org.xerial" name="sqlite-jdbc" rev="3.7.2"/>
+        <dependency org="net.sourceforge.csvjdbc" name="csvjdbc" rev="1.0.13"/>
+        <dependency org="com.vertica" name="vertica-jdk5" rev="6.1.2"/>
+                
+        <!-- NextReports Engine -->
+        <dependency org="ro.nextreports" name="nextreports-engine" rev="${app.version}" changing="true"/>
+        
+        <!-- NextServer Client -->
+        <dependency org="ro.nextreports" name="nextreports-server-client" rev="${app.version}" changing="true"/>
+       
+        <!-- Apache Commons -->
+        <dependency org="commons-codec" name="commons-codec" rev="1.4"/>
+        <!-- beanutils is needed to connect to a NextServer data source-->
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3"/>
+
+        <!-- Swing libraries -->
+        <dependency org="com.jgoodies" name="looks" rev="2.3.1"/>
+        <dependency org="com.toedter" name="jcalendar" rev="1.3.2"/>
+        <!--
+        <dependency org="org.swinglabs" name="swingx" rev="1.6.1-PATCHED"/>
+        -->
+        <dependency org="org.swinglabs.swingx" name="swingx-core" rev="1.6.5-1"/>
+        <dependency org="org.swinglabs" name="jxlayer" rev="4.0"/>
+        <dependency org="org.jxlayer" name="transform" rev="1.0"/>
+        <dependency org="tablelayout" name="TableLayout" rev="20050920"/>
+        <dependency org="org.noos.xing" name="mydoggy-api" rev="1.5.0"/>
+        <dependency org="org.noos.xing" name="mydoggy-res" rev="1.5.0"/>
+        <dependency org="org.noos.xing" name="mydoggy-plaf" rev="1.5.0"/>
+        <dependency org="craftsman" name="spy" rev="1.0.5"/>
+        <dependency org="com.l2fprod.common" name="l2fprod-common-fontchooser" rev="7.3"/>
+        <dependency org="com.l2fprod.common" name="l2fprod-common-sheet" rev="7.3"/>
+        <dependency org="install4j" name="i4jruntime" rev="4.1.4"/>
+        <dependency org="net.java.dev.jdic" name="jdic" rev="1.0-20060308"/>
+        <dependency org="net.java.dev.jdic" name="jdic-windows-x86" rev="1.0-20060308"/>
+        <dependency org="net.java.dev.jdic" name="jdic-linux-x86" rev="1.0-20060308"/>
+        
+        <!-- Jersey REST -->
+        <dependency org="com.sun.jersey" name="jersey-core" rev="1.7"/>
+        <dependency org="com.sun.jersey" name="jersey-client" rev="1.7"/>
+        
+        <!-- Winstone -->
+        <dependency org="net.sourceforge.winstone" name="winstone-lite" rev="0.9.10"/>
+    </dependencies>           
+            
+</ivy-module>
