@@ -285,40 +285,6 @@ Copyright:
 		<!-- Delete the temporary dir -->
 		<delete dir="${app.target}/${app.version}"/>		    
 	</target>
-
-    <!-- ================================================================== -->
-    <!-- S E T U P                                                          -->
-    <!-- ================================================================== -->
-	
-	<target name="setup" depends="user.data.zip,dist">
-        <!-- Add ant task -->
-        <taskdef
-            name="install4j"
-            classname="com.install4j.Install4JTask"
-            classpath="${install4j.ant.jar}"
-        />
-
-        <!-- Copy some files -->
-        <copy file="${app.home}/setup/nextreports.install4j" todir="${app.target}"/>
-	
-        <!-- Call Install4j -->
-	    <property name="absolute.app.home" location="${app.home}"/>
-		<install4j projectfile="${app.target}/nextreports.install4j">
-			<variable name="app.home" value="${absolute.app.home}"/>
-			<variable name="app.version" value="${app.version}"/>
-			<!-- Windows -->
-	        <variable name="app.setup" value="${app.setup}" mediafileid="95"/>
-			<!-- Linux -->
-	        <variable name="app.setup" value="${app.setup}" mediafileid="98"/>
-			<!-- Windows with JRE -->
-			<variable name="app.setup" value="${app.setup}-jre" mediafileid="39"/>
-	        <!-- Linux with JRE -->
-			<variable name="app.setup" value="${app.setup}-jre" mediafileid="81"/>
-		</install4j>
-		
-        <!-- Delete some files -->
-        <delete file="${app.target}/nextreports.install4j"/>
-	</target>
 	
     <!-- ================================================================== -->
     <!-- L E X E R . S Q L                                                  -->
@@ -339,31 +305,12 @@ Copyright:
     <!-- R E L E A S E                                                      -->
     <!-- ================================================================== -->
 
-    <target name="release" depends="setup,dist.zip">
+    <target name="release" depends="dist.zip">
     	<copy todir="${app.artifacts}">
     		<fileset dir="${app.target}">
-    			<include name="${app.setup}*"/>
     		    <include name="${app.name}-${app.version}.zip"/>
-    			<include name="updates.xml"/>
     		</fileset>
     	</copy>
-    </target>
-
-    <!-- ================================================================== -->
-    <!-- T E S T S                                                          -->
-    <!-- ================================================================== -->
-
-    <target name="testng" depends="compile">
-        <!-- Add ant task -->
-        <taskdef
-            name="testng"
-            classname="org.testng.TestNGAntTask"
-            classpath="ant-tasks/testng-5.1-jdk15.jar"
-        />
-
-        <testng classpathref="test-classpath" groups="datasource">
-            <classfileset dir="${app.classes}" includes="ro/nextreports/test/*.class"/>
-        </testng>
     </target>
 
     <!-- ================================================================== -->
@@ -381,13 +328,4 @@ Copyright:
 		<ivy:cleancache/>
 	</target>
 	
-	<!-- ================================================================== -->
-    <!-- R E P O R T    O F     D E P E N D E N C I E S                     -->
-    <!-- ================================================================== -->
-	<target name="dependencies-report" depends="ivy.init">
-    	<mkdir dir="dependencies-report" />
-    	<ivy:resolve type="${ivy.resolve.types}"/>
-    	<ivy:report todir="dependencies-report" />
-	</target>
-
 </project>
