@@ -189,11 +189,10 @@ Copyright:
     	<!--<mkdir dir="${app.dist.log}"/>-->
 
         <!-- Copy drivers -->    	
-        <!--<mkdir dir="${app.dist}/jdbc-drivers"/>
+        <mkdir dir="${app.dist}/jdbc-drivers"/>
         <copy todir="${app.dist}/jdbc-drivers">
             <fileset dir="${app.home}/jdbc-drivers"/>
-        </copy>-->
-        
+        </copy>        
     	
         <!-- Copy templates -->
     	<!--<mkdir dir="${app.dist}/templates"/>

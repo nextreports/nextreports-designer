@@ -80,6 +80,9 @@ public class Launcher {
         	
             // load all jars from lib directory
             ClassPathUtil.addJars("lib");
+            
+            // load all jdbc-drivers
+            ClassPathUtil.addJars("jdbc-drivers");
 
             // add to classpath the folder where the report images will be copied
             new File(ExportAction.REPORTS_DIR).mkdirs();
