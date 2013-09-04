@@ -2,5 +2,9 @@ target/
 .classpath
 .project
 
+/src/ro/nextreports/designer/ReleaseInfo.java
+ivy-lib/
+ivy-report/
+
 # CVS legacy #
 CVS/
