@@ -41,7 +41,6 @@ import ro.nextreports.designer.action.favorites.FavoritesUtil;
 import ro.nextreports.designer.action.favorites.ManageFavoritesAction;
 import ro.nextreports.designer.action.favorites.OpenFavoriteAction;
 import ro.nextreports.designer.action.help.AboutAction;
-import ro.nextreports.designer.action.help.CheckForUpdateAction;
 import ro.nextreports.designer.action.help.HelpManualAction;
 import ro.nextreports.designer.action.help.HelpMovieAction;
 import ro.nextreports.designer.action.help.HelpStartupAction;
@@ -101,8 +100,6 @@ public class MainMenuBar extends JMenuBar {
     private ViewReportSqlAction viewReportSqlAction = new ViewReportSqlAction();
     private ImportReportAction importReportAction = new ImportReportAction(false);
     private ImportQueryAction importQueryAction = new ImportQueryAction(false);
-//    private ImportLicenseAction importLicenseAction = new ImportLicenseAction();
-    private CheckForUpdateAction checkForUpdateAction = new CheckForUpdateAction();
     private ApplyTemplateAction applyTemplateAction = new ApplyTemplateAction(true);
     private ExtractTemplateAction extractTemplateAction = new ExtractTemplateAction();
     private OpenLayoutPerspectiveAction openLayoutPersAction = new OpenLayoutPerspectiveAction();
@@ -242,26 +239,12 @@ public class MainMenuBar extends JMenuBar {
         JMenu mnu = new JMenu(I18NSupport.getString("menu.help"));
         mnu.setMnemonic(ShortcutsUtil.getMnemonic("menu.help.mnemonic", new Integer('H')));
 
-//        JMenu mnuT = new JMenu(I18NSupport.getString("menu.tutorial"));
-//        mnuT.setIcon(ImageUtil.getImageIcon("help.png"));
-//        File tut = new File(TutorialAction.TUTORIAL_DIR);
-//        String[] files = tut.list();
-//        Arrays.sort(files);
-//        for (String file : files) {
-//            if (file.endsWith(TutorialAction.TUTORIAL_FILE_EXT)) {
-//                mnuT.add(new TutorialAction(file));
-//            }
-//        }
-
-//        mnu.add(importLicenseAction);
-        mnu.add(checkForUpdateAction);
-        mnu.addSeparator();
-        //mnu.add(mnuT);
         mnu.add(new HelpMovieAction());
         mnu.add(new HelpManualAction());
         mnu.add(new HelpStartupAction());
         mnu.addSeparator();
         mnu.add(new AboutAction());
+        
         return mnu;
     }
 

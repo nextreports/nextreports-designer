@@ -35,7 +35,6 @@
         <dependency org="craftsman" name="spy" rev="1.0.5"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-fontchooser" rev="7.3"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-sheet" rev="7.3"/>
-        <dependency org="install4j" name="i4jruntime" rev="4.1.4"/>
         <dependency org="net.java.dev.jdic" name="jdic" rev="1.0-20060308"/>
         <dependency org="net.java.dev.jdic" name="jdic-windows-x86" rev="1.0-20060308"/>
         <dependency org="net.java.dev.jdic" name="jdic-linux-x86" rev="1.0-20060308"/>
