@@ -29,9 +29,9 @@
         <dependency org="org.swinglabs" name="jxlayer" rev="4.0"/>
         <dependency org="org.jxlayer" name="transform" rev="1.0"/>
         <dependency org="tablelayout" name="TableLayout" rev="20050920"/>
-        <dependency org="org.noos.xing" name="mydoggy-api" rev="1.5.0"/>
-        <dependency org="org.noos.xing" name="mydoggy-res" rev="1.5.0"/>
-        <dependency org="org.noos.xing" name="mydoggy-plaf" rev="1.5.0"/>
+        <dependency org="net.sourceforge.mydoggy" name="mydoggy-api" rev="1.5.0-beta-r1389"/>
+        <dependency org="net.sourceforge.mydoggy" name="mydoggy-res" rev="1.5.0-beta-r1389"/>
+        <dependency org="net.sourceforge.mydoggy" name="mydoggy-plaf" rev="1.5.0-beta-r1389"/>
         <dependency org="craftsman" name="spy" rev="1.0.5"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-fontchooser" rev="7.3"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-sheet" rev="7.3"/>
