@@ -125,7 +125,6 @@ import ro.nextreports.designer.datasource.DataSource;
 import ro.nextreports.designer.datasource.DataSourceManager;
 import ro.nextreports.designer.datasource.DataSourceType;
 import ro.nextreports.designer.datasource.DefaultDataSourceManager;
-import ro.nextreports.designer.datasource.DriverPath;
 import ro.nextreports.designer.datasource.exception.NotFoundException;
 import ro.nextreports.designer.dbviewer.common.DBProcedure;
 import ro.nextreports.designer.persistence.FileReportPersistence;
@@ -140,7 +139,6 @@ import ro.nextreports.designer.util.FileUtil;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.Show;
-
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.chart.Chart;
 import ro.nextreports.engine.chart.ChartRunner;
@@ -153,15 +151,11 @@ import ro.nextreports.engine.util.ReportUtil;
  */
 public class DBBrowserTree extends JXTree {
 
-    //////////////////////////
-    // instance variables
-
+    private static final Log LOG = LogFactory.getLog(DBBrowserTree.class);
+    
     private DBBrowserTreeModel model;
     private DBBrowserTree instance;
-    private byte typeRoot;
-    
-
-    private static final Log LOG = LogFactory.getLog(DBBrowserTree.class);
+    private byte typeRoot;    
 
     public DBBrowserTree() {
         this(DBObject.DATASOURCE, true);
@@ -1189,14 +1183,6 @@ public class DBBrowserTree extends JXTree {
                 LOG.error(e.getMessage(), e);
                 e.printStackTrace();
             }
-        }
-
-        // load drivers from driverpath.txt
-        try {
-            DriverPath.loadDrivers();
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            e.printStackTrace();
         }
 
         // load connections from datasource.xml

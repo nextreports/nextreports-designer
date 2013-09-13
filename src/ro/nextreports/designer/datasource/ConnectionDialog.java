@@ -16,7 +16,12 @@
  */
 package ro.nextreports.designer.datasource;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -25,21 +30,30 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,14 +64,15 @@ import ro.nextreports.designer.dbviewer.DefaultDBViewer;
 import ro.nextreports.designer.dbviewer.common.DBInfo;
 import ro.nextreports.designer.dbviewer.common.DBViewer;
 import ro.nextreports.designer.ui.BaseDialog;
-import ro.nextreports.designer.util.ClassPathUtil;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ImageUtil;
-import ro.nextreports.designer.util.ReporterPreferencesManager;
 import ro.nextreports.designer.util.Show;
 import ro.nextreports.designer.util.SwingUtil;
 import ro.nextreports.designer.util.UIActivator;
-import ro.nextreports.designer.util.file.JarFilter;
+import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * Created by IntelliJ IDEA.
@@ -424,6 +439,7 @@ public class ConnectionDialog extends JDialog implements ActionListener, ItemLis
             }, "NEXT : " + getClass().getSimpleName());
             executorThread.start();
 
+            /*
         } else if (s.equals("AddDriver")) {
 
             final JFileChooser chooser = new JFileChooser();
@@ -445,17 +461,19 @@ public class ConnectionDialog extends JDialog implements ActionListener, ItemLis
                     ex.printStackTrace();
                 }
                                    
+                // TODO remove this option (put all drivers in jdbc-drivers folder)
 				try {
+					LauncherClassLoader launcherClassLoader = (LauncherClassLoader) ConnectionDialog.class.getClassLoader();
 					if (file.isDirectory()) {
-						ClassPathUtil.addJars(file);
+						launcherClassLoader.loadJars(file);
 					} else {
-						ClassPathUtil.addJar(file);
+						launcherClassLoader.loadJar(file);
 					}
 				} catch (Exception ex) {
 					Show.error(ex);
 				}                
             }
-
+*/
         } else if (s.equals("Disconnect")) {
             if (mConnection != null) {
                 try {

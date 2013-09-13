@@ -22,7 +22,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -39,7 +38,6 @@ import ro.nextreports.designer.action.report.layout.export.ExportAction;
 import ro.nextreports.designer.chart.ChartUtil;
 import ro.nextreports.designer.datasource.DataSource;
 import ro.nextreports.designer.datasource.DefaultDataSourceManager;
-import ro.nextreports.designer.datasource.DriverPath;
 import ro.nextreports.designer.persistence.FileReportPersistence;
 import ro.nextreports.designer.querybuilder.DBBrowserNode;
 import ro.nextreports.designer.querybuilder.DBBrowserTree;
@@ -109,12 +107,6 @@ public class MainFrame extends JXFrame {
         // docking
         UIManager.put(MyDoggyKeySpace.DRAG_ENABLED, false); 
         
-        try {
-            DriverPath.loadDrivers();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // inside connections dir are kept the queries/reports for every data source
         DefaultDataSourceManager.getInstance().load();
         File  connections = new File(FileReportPersistence.CONNECTIONS_DIR);
