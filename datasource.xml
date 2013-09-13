@@ -1,0 +1,10 @@
+<datasources version="6.2">
+  <datasource>
+    <name>Demo</name>
+    <type>Derby Embedded</type>
+    <driver>org.apache.derby.jdbc.EmbeddedDriver</driver>
+    <url>jdbc:derby:${user.home}/demo/data;create=false</url>
+    <user></user>
+    <password></password>
+  </datasource>  
+</datasources>

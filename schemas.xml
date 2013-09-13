@@ -1,0 +1,8 @@
+<schemas version="6.2">  
+  <schema>
+    <dbName>Demo</dbName>
+    <names>
+      <string>APP</string>
+    </names>
+  </schema>  
+</schemas>
