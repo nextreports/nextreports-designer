@@ -23,7 +23,7 @@ Copyright:
     <property file="local.properties"/>
     <property file="build.properties"/>
 
-    <property name="app.mainclass" value="ro.nextreports.designer.Launcher"/>
+    <property name="app.mainclass" value="ro.nextreports.designer.Main"/>
 	
 	<property name="ivy.lib.dir" value="${app.lib}"/>
 	        
@@ -121,7 +121,7 @@ Copyright:
     <!-- J A R                                                              -->
     <!-- ================================================================== -->
 
-    <target name="jar" depends="compile">
+    <target name="jar" depends="compile,user.data.zip">
         <delete file="${app.target}/${app.jar}"/>
 
     	<!-- Update version number in driver_template.xml -->

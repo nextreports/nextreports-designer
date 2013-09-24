@@ -24,20 +24,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipInputStream;
 
-import ro.nextreports.designer.action.report.layout.export.ExportAction;
-import ro.nextreports.designer.util.ClassPathUtil;
 import ro.nextreports.designer.util.FileUtil;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.Show;
 
-
 /**
  * @author Decebal Suiu
  */
-public class Launcher {		
+public class Main {
 
     public static void main(String[] args) {
-    	
     	try {
 			deployUserData();
 		} catch (IOException e) {			
@@ -78,21 +74,17 @@ public class Launcher {
         		}
         	}	
         	
-            // load all jars from lib directory
-            ClassPathUtil.addJars("lib");
-            
-            // load all jdbc-drivers
-            ClassPathUtil.addJars("jdbc-drivers");
-
             // add to classpath the folder where the report images will be copied
+        	// TODO
+        	/*
             new File(ExportAction.REPORTS_DIR).mkdirs();
-            ClassPathUtil.addClasses(ExportAction.REPORTS_DIR);
+            LauncherClassLoader classLoader = (LauncherClassLoader) Main.class.getClassLoader();
+            classLoader.loadClasses(ExportAction.REPORTS_DIR);
+            */
         } catch (Exception e) {
         	e.printStackTrace();
         	System.exit(1);
         }               
-        
-        
 
         // create the next reports
         final NextReports nextReports = NextReports.getInstance();
@@ -164,7 +156,7 @@ public class Launcher {
 		dataRoot.mkdirs();
 		
 		
-        InputStream input = Launcher.class.getResourceAsStream("/" + archiveName + ".zip");
+        InputStream input = Main.class.getResourceAsStream("/" + archiveName + ".zip");
         if (input == null) {
             // cannot restore the workspace
         	System.err.println("Resource '/" + archiveName + "' not found." );                 
