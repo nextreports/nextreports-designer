@@ -167,6 +167,7 @@ Copyright:
             	<include name="licence.txt"/>
             	<include name="driverpath.txt"/>
                 <include name="readme.txt"/>
+                <include name="run.bat"/>
             </fileset>
         </copy>
 
