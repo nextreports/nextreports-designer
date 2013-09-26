@@ -41,6 +41,7 @@ import ro.nextreports.designer.action.favorites.FavoritesUtil;
 import ro.nextreports.designer.action.favorites.ManageFavoritesAction;
 import ro.nextreports.designer.action.favorites.OpenFavoriteAction;
 import ro.nextreports.designer.action.help.AboutAction;
+import ro.nextreports.designer.action.help.CheckForUpdateAction;
 import ro.nextreports.designer.action.help.HelpManualAction;
 import ro.nextreports.designer.action.help.HelpMovieAction;
 import ro.nextreports.designer.action.help.HelpStartupAction;
@@ -238,7 +239,9 @@ public class MainMenuBar extends JMenuBar {
     private JMenu createHelpMenu() {
         JMenu mnu = new JMenu(I18NSupport.getString("menu.help"));
         mnu.setMnemonic(ShortcutsUtil.getMnemonic("menu.help.mnemonic", new Integer('H')));
-
+        
+        mnu.add(new CheckForUpdateAction());
+        mnu.addSeparator();
         mnu.add(new HelpMovieAction());
         mnu.add(new HelpManualAction());
         mnu.add(new HelpStartupAction());
