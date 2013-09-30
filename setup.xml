@@ -9,7 +9,7 @@
     <!-- S E T U P                                                          -->
     <!-- ================================================================== -->
 	
-	<target name="setup" depends="user.data.zip,dist">
+    <target name="setup" depends="user.data.zip,dist">
         <!-- Add ant task -->
         <taskdef
             name="install4j"
@@ -18,7 +18,7 @@
         />
 
         <!-- Copy some files -->
-        <copy file="${app.home}/setup/nextreports.install4j" todir="${app.target}"/>
+        <copy file="${app.home}/stuff/setup/nextreports.install4j" todir="${app.target}"/>
 	
         <!-- Call Install4j -->
 	    <property name="absolute.app.home" location="${app.home}"/>
