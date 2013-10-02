@@ -24,6 +24,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipInputStream;
 
+import ro.nextreports.designer.action.report.layout.export.ExportAction;
+import ro.nextreports.designer.util.ClassPathUtil;
 import ro.nextreports.designer.util.FileUtil;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.Show;
@@ -74,13 +76,10 @@ public class Main {
         		}
         	}	
         	
-            // add to classpath the folder where the report images will be copied
-        	// TODO
-        	/*
+            // add to classpath the folder where the report images will be copied        	
             new File(ExportAction.REPORTS_DIR).mkdirs();
-            LauncherClassLoader classLoader = (LauncherClassLoader) Main.class.getClassLoader();
-            classLoader.loadClasses(ExportAction.REPORTS_DIR);
-            */
+            ClassPathUtil.addClasses(ExportAction.REPORTS_DIR);
+            
         } catch (Exception e) {
         	e.printStackTrace();
         	System.exit(1);
