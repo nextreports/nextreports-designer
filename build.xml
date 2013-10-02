@@ -168,8 +168,12 @@ Copyright:
             	<include name="driverpath.txt"/>
                 <include name="readme.txt"/>
                 <include name="run.bat"/>
+        		<include name="run.sh"/>
             </fileset>
         </copy>
+
+        <!-- Make run.sh executable -->
+        <chmod file="${app.dist}/run.sh" perm="ugo+rx"/>
 
         <!-- Create the ${app.dist.lib} directory -->
         <mkdir dir="${app.dist.lib}"/>
