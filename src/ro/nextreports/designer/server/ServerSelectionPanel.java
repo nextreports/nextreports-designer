@@ -182,7 +182,7 @@ public class ServerSelectionPanel extends JPanel {
                 return;
             }
         } else {
-            urlTextField.setText("http://<server>:<port>/nextserver");
+            urlTextField.setText("http://<server>:<port>/nextreports-server");
         }
 
         JPanel serverPanel = new JPanel();
