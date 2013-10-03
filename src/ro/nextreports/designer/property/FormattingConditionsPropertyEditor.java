@@ -28,6 +28,7 @@ import ro.nextreports.designer.util.I18NSupport;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
  * User: mihai.panaitescu
@@ -42,9 +43,11 @@ public class FormattingConditionsPropertyEditor extends AbstractPropertyEditor {
 
     private FormattingConditions conditions;
     private String type;
+    private String bandName;
 
-    public FormattingConditionsPropertyEditor(String type) {
+    public FormattingConditionsPropertyEditor(String type, String bandName) {
         this.type = type;
+        this.bandName = bandName;
         JPanel conditionEditor = new JPanel(new PercentLayout(PercentLayout.HORIZONTAL, 0));
         editor = conditionEditor;
         conditionEditor.add("*", label = new DefaultCellRenderer());
@@ -79,7 +82,7 @@ public class FormattingConditionsPropertyEditor extends AbstractPropertyEditor {
     }
 
     protected void selectConditions() {
-        FormattingConditions selected = FormattingConditionsChooser.showDialog(editor, I18NSupport.getString("condition.dialog.title"), conditions, type);
+        FormattingConditions selected = FormattingConditionsChooser.showDialog(editor, I18NSupport.getString("condition.dialog.title"), conditions, type, bandName);
         if (selected != null) {
             FormattingConditions oldC = conditions;
             FormattingConditions newC = selected;

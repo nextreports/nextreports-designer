@@ -124,6 +124,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
 
     private List<ReportGridCell> reportGridCells;
     private List<Integer> rows;
+    private String formattingCellBand;
     
     private PropertyEditorRegistry editorRegistry;
     private boolean isInit;
@@ -351,7 +352,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         setProperties(new Property[0]);
     }
 
-    public void selectionChanged(SelectionModelEvent event) {
+    public void selectionChanged(SelectionModelEvent event) {    	
 		if (ignoreEvent) {
 			return;
 		}
@@ -366,7 +367,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             isInit = true;
             SelectionModel selectionModel = (SelectionModel) event.getSource();
             List<Cell> selectedCells = selectionModel.getSelectedCells();
-            List<Integer> selectedRows = selectionModel.getSelectedRows();
+            List<Integer> selectedRows = selectionModel.getSelectedRows();                       
             if (selectedCells.size() == 0) {             	     
             	if (selectedRows.size() > 0) {
                 	rows.clear();
@@ -385,6 +386,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
                 if (element != null) {
                     reportGridCells.add(new ReportGridCell(element, cell.getRow(), cell.getColumn()));
                 }
+                formattingCellBand = BandUtil.getBand(LayoutHelper.getReportLayout(),cell.getRow()).getName();
             }
             
             List<Property> props = getFilteredProperties();
@@ -967,8 +969,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         conditionProp.setValue(reportGridCells.get(0).getValue().getFormattingConditions());
         if (Globals.getAccessibilityHtml()) {
             conditionProp.setCategory(I18NSupport.getString("property.category.main"));
-        }
-        FormattingConditionsPropertyEditor conditionEditor = new FormattingConditionsPropertyEditor(type);
+        }        
+        FormattingConditionsPropertyEditor conditionEditor = new FormattingConditionsPropertyEditor(type, formattingCellBand);
         editorRegistry.registerEditor(conditionProp, conditionEditor);
 
         return conditionProp;

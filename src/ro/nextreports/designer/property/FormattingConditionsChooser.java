@@ -19,8 +19,8 @@ package ro.nextreports.designer.property;
 import ro.nextreports.engine.condition.FormattingConditions;
 
 import java.awt.*;
-
 import ro.nextreports.designer.ui.BaseDialog;
+
 
 /**
  * User: mihai.panaitescu
@@ -30,16 +30,16 @@ import ro.nextreports.designer.ui.BaseDialog;
 public class FormattingConditionsChooser {
 
     public static FormattingConditions showDialog(Component parent, String title,
-                                                  FormattingConditions initial, String type) {
-
-        FormattingConditionsPanel condPanel = new FormattingConditionsPanel(type);
+                                                  FormattingConditions initial, String type,  String bandName) {
+    	
+        CellFormattingConditionsPanel condPanel = new CellFormattingConditionsPanel(type, bandName);
 		condPanel.setRenderConditions(initial);
         BaseDialog dialog = new BaseDialog(condPanel, title, true);
 		dialog.pack();
 		dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
         if (dialog.okPressed()) {
-            return condPanel.getFinalRenderConditions();
+            return condPanel.getConditions();
 		} else {
 			return null;
 		}
