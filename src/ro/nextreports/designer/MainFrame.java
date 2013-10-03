@@ -20,11 +20,14 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
 
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXLabel;
@@ -131,9 +134,10 @@ public class MainFrame extends JXFrame {
         setToolBar(new MainToolBar());
 
         statusBar = new JXStatusBar();
-        statusBar.add(new JXLabel(""), JXStatusBar.Constraint.ResizeBehavior.FILL);        
+        //statusBar.add(new JXLabel(""), JXStatusBar.Constraint.ResizeBehavior.FILL);
+        statusBar.add(new JXLabel(""), new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL, new Insets(0,5,2,2)));        
         statusBar.add(new MemoryStatus());
-//        add(statusBar, BorderLayout.SOUTH);
+        statusBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));                
         setStatusBar(statusBar);
 
         WorkspaceManager workspaceManager = WorkspaceManager.getInstance();
