@@ -6,5 +6,6 @@
     <url>jdbc:derby:${user.home}/demo/data;create=false</url>
     <user></user>
     <password></password>
+    <properties/>
   </datasource>  
 </datasources>
