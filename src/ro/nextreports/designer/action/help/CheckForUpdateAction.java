@@ -65,9 +65,13 @@ import ro.nextreports.engine.util.ReportUtil;
  */
 public class CheckForUpdateAction extends AbstractAction {
 
+	// a request to this url will be saved in database by nemo application
+	private String nextSiteUpdatesUrl = "http://www.asf.ro/next_reports_releases/updates.xml";
+	
 	private String url = "https://github.com/nextreports/nextreports-designer/releases";
 	private String releaseRegex = "release-([\\d\\.]+)\\.zip";	
 	private String versionNotFound = "NA";
+	private String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 	private String indent = "&nbsp;&nbsp;&nbsp;&nbsp;";
 	private JDialog dlg;
 
@@ -92,6 +96,14 @@ public class CheckForUpdateAction extends AbstractAction {
 				try {
 					System.setProperty("java.net.useSystemProxies", "true");
 					String currentVersion = ReleaseInfo.getVersion();
+					int snapshotIndex = currentVersion.indexOf(SNAPSHOT_SUFFIX);
+					if (snapshotIndex > 0) {
+						currentVersion = currentVersion.substring(0, snapshotIndex);
+					}
+					
+					// to save the update info in database
+					String updatesXml = getContent(nextSiteUpdatesUrl);
+					
 					String lastVersion = getLastVersion(url);
 
 					sb.append("<HTML><b><br>").append(indent)
@@ -99,7 +111,7 @@ public class CheckForUpdateAction extends AbstractAction {
 
 					if (versionNotFound.equals(lastVersion)) {
 						sb.append(indent).append(I18NSupport.getString("update.check.uptodate"));
-					} else {
+					} else {						
 						int status = ReportUtil.compareVersions(currentVersion, lastVersion);
 						if (status < 0) {
 							sb.append(indent)
@@ -108,6 +120,8 @@ public class CheckForUpdateAction extends AbstractAction {
 									.append(indent)
 									.append("<font color=\"#0000A0\"><a href=\"http://www.next-reports.com/index.php/download.html\">")
 									.append(I18NSupport.getString("download.name")).append("</a></font>");
+						} else {
+							sb.append(indent).append(I18NSupport.getString("update.check.uptodate"));
 						}
 					}
 				} finally {
@@ -133,8 +147,8 @@ public class CheckForUpdateAction extends AbstractAction {
 		}, "NEXT : " + getClass().getSimpleName());
 		executorThread.start();
 	}
-
-	private String getLastVersion(String url) {
+	
+	private String getContent(String url) {
 		try {
 			URL u = new URL(url);
 			URLConnection uc = u.openConnection();
@@ -152,18 +166,22 @@ public class CheckForUpdateAction extends AbstractAction {
 				in.close();
 			}
 
-			String html = sbuf.toString();
-			Pattern p = Pattern.compile(releaseRegex);
-			Matcher m = p.matcher(html);
-			// first found is last release
-			if (m.find()) {
-				String release = m.group(1);
-				return release;
-			}
-			return versionNotFound;
+			return sbuf.toString();			
 		} catch (IOException ex) {
-			return versionNotFound;
+			return "";
 		}
+	}
+
+	private String getLastVersion(String url) {
+		String html = getContent(url);
+		Pattern p = Pattern.compile(releaseRegex);
+		Matcher m = p.matcher(html);
+		// first found is last release
+		if (m.find()) {
+			String release = m.group(1);
+			return release;
+		}
+		return versionNotFound;
 	}
 	
 	protected MouseListener mouseListener = new MouseAdapter() {
