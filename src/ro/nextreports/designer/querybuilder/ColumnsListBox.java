@@ -84,7 +84,7 @@ public class ColumnsListBox extends FixedHeightCheckListBox {
                 				Cursor hourglassCursor = new Cursor(Cursor.WAIT_CURSOR);
                 				Globals.getMainFrame().setCursor(hourglassCursor);
 
-                				DBColumn c = new DBColumn(col.getTable().getSchemaName(), col.getTable().getName(), col.getName(), null, false, false, null, 0, 0, 0);
+                				DBColumn c = new DBColumn(col.getTable().getSchemaName(), col.getTable().getName(), col.getName(), null, false, false, false, null, 0, 0, 0);
                 				//System.out.println("----- start ");
                 				//long start = System.currentTimeMillis();
                 				DBColumn dbCol = Globals.getDBViewer().getPrimaryKeyColumn(c);

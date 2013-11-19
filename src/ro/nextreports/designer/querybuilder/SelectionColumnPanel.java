@@ -306,6 +306,7 @@ public class SelectionColumnPanel extends JPanel {
 
         private final Icon primaryKeyIcon = ImageUtil.getImageIcon("keycolumn");
         private final Icon foreignKeyIcon = ImageUtil.getImageIcon("fkeycolumn");
+        private final Icon indexKeyIcon = ImageUtil.getImageIcon("icolumn");
         private final Icon columnIcon = ImageUtil.getImageIcon("column");
 
         public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -322,6 +323,9 @@ public class SelectionColumnPanel extends JPanel {
                 } else if (column.isForeignKey()) {
                     comp.setIcon(foreignKeyIcon);
                     comp.setText(column.getName());
+                } else if (column.isIndex()) {
+                    comp.setIcon(indexKeyIcon);
+                    comp.setText(column.getName());    
                 } else {
                     comp.setIcon(columnIcon);
                     comp.setText(column.getName());

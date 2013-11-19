@@ -159,6 +159,8 @@ public class DBColumnViewerPanel extends JPanel {
                     icon = ImageUtil.getImageIcon("keycolumn");
                 } else if (value.isForeignKey()) {
                     icon = ImageUtil.getImageIcon("fkeycolumn");
+                } else if (value.isIndex()) {
+                    icon = ImageUtil.getImageIcon("icolumn");    
                 } else {
                     icon = ImageUtil.getImageIcon("column");
                 }
