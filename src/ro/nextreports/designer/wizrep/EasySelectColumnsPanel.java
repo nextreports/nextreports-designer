@@ -325,6 +325,7 @@ public class EasySelectColumnsPanel extends JPanel {
 
         private final Icon primaryKeyIcon = ImageUtil.getImageIcon("keycolumn");
         private final Icon foreignKeyIcon = ImageUtil.getImageIcon("fkeycolumn");
+        private final Icon indexKeyIcon = ImageUtil.getImageIcon("icolumn");
         private final Icon columnIcon = ImageUtil.getImageIcon("column");
 
         public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -339,6 +340,8 @@ public class EasySelectColumnsPanel extends JPanel {
                     comp.setIcon(primaryKeyIcon);
                 } else if (column.isForeignKey()) {
                     comp.setIcon(foreignKeyIcon);
+                } else if (column.isIndex()) {
+                    comp.setIcon(indexKeyIcon);    
                 } else {
                     comp.setIcon(columnIcon);
                 }
