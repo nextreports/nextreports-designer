@@ -53,7 +53,7 @@ public class FKJoinPanel extends JPanel {
 
         Runnable r = new Runnable() {
             public void run() {
-                DBColumn c = new DBColumn(schemaName, pkTableName, pkColumnName, null, false, false, null, 0, 0, 0);
+                DBColumn c = new DBColumn(schemaName, pkTableName, pkColumnName, null, false, false, false, null, 0, 0, 0);
                 try {
                     Cursor hourGlassCursor = new Cursor(Cursor.WAIT_CURSOR);
                     dialog.setCursor(hourGlassCursor);

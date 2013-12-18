@@ -104,7 +104,7 @@ public class TableUtil {
 
         // generic all columns
         String allColumns = "* (All columns)";
-        DBColumn allColumn = new DBColumn(table.getSchemaName(), table.getName(), allColumns, null, false, false, null, 0, 0, 0);
+        DBColumn allColumn = new DBColumn(table.getSchemaName(), table.getName(), allColumns, null, false, false, false, null, 0, 0, 0);
         set.add(allColumn);
         for (DBColumn column : columns) {            
             set.add(column);
@@ -126,6 +126,9 @@ public class TableUtil {
             } else if (dbColumn.isForeignKey()) {
                 item.setIcon(ImageUtil.getImageIcon("fkeycolumn"));
                 column.setfKey(true);
+            } else if (dbColumn.isIndex()) {
+                item.setIcon(ImageUtil.getImageIcon("icolumn"));
+                column.setiKey(true);    
             } else {
                 item.setIcon(ImageUtil.getImageIcon("column"));
             }

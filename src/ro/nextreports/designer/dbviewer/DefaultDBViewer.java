@@ -297,6 +297,17 @@ public class DefaultDBViewer implements DBViewer {
                 fkMap.put(fkColumn, fkInfo);
             }
             closeResultSet(rs);
+            
+            // column names with index
+            rs = dbmd.getIndexInfo(null, schemaName, table, false, true); 
+            List<String> indexes = new ArrayList<String>();
+            while (rs.next()) {
+            	String indexName = rs.getString(9);
+            	if (indexName != null) {
+            		indexes.add(indexName);
+            	}
+            }
+            closeResultSet(rs);
 
             DataSource ds = DefaultDataSourceManager.getInstance().getConnectedDataSource(); 
             String header = "";
@@ -344,6 +355,7 @@ public class DefaultDBViewer implements DBViewer {
 					int scale = rsmd.getScale(col);
 					boolean isPrimaryKey = false;
 					boolean isForeignKey = false;
+					boolean isIndex= false;
 					if (keyColumns.contains(name)) {
 						isPrimaryKey = true;
 					}
@@ -352,8 +364,11 @@ public class DefaultDBViewer implements DBViewer {
 						isForeignKey = true;
 						fkInfo = fkMap.get(name);
 					}
+					if (indexes.contains(name)) {
+						isIndex = true;
+					}
 					DBColumn column = new DBColumn(schemaName, table, name, rsmd.getColumnTypeName(col), isPrimaryKey,
-							isForeignKey, fkInfo, length, precision, scale);
+							isForeignKey, isIndex, fkInfo, length, precision, scale);
 					columns.add(column);
 				}
 			} else {
@@ -367,7 +382,7 @@ public class DefaultDBViewer implements DBViewer {
 					types = columnTypes.split(",");
 				}
 				for (int i=0; i<names.length; i++) {
-					DBColumn column = new DBColumn(schemaName, table, names[i], types[i], false, false, null, 20, 0, 0);
+					DBColumn column = new DBColumn(schemaName, table, names[i], types[i], false, false, false, null, 20, 0, 0);
 					columns.add(column);
 				}
 				
@@ -640,7 +655,7 @@ public class DefaultDBViewer implements DBViewer {
                     if (fkInfo.getFkTable().equals(foreignKeyColumn.getTable()) &&
                             fkInfo.getFkColumn().equals(foreignKeyColumn.getName())) {
                         column = new DBColumn(foreignKeyColumn.getSchema(), fkInfo.getPkTable(), fkInfo.getPkColumn(), foreignKeyColumn.getType(),
-                                true, false, fkInfo, foreignKeyColumn.getLength(), foreignKeyColumn.getPrecision(), foreignKeyColumn.getScale());
+                                true, false, false, fkInfo, foreignKeyColumn.getLength(), foreignKeyColumn.getPrecision(), foreignKeyColumn.getScale());
                         return column;
                     }
                 }
@@ -671,7 +686,7 @@ public class DefaultDBViewer implements DBViewer {
                     if (fkInfo.getPkTable().equals(primaryKeyColumn.getTable()) &&
                             fkInfo.getPkColumn().equals(primaryKeyColumn.getName())) {
                         DBColumn column = new DBColumn(primaryKeyColumn.getSchema(), fkInfo.getFkTable(), fkInfo.getFkColumn(), primaryKeyColumn.getType(),
-                                true, false, fkInfo, primaryKeyColumn.getLength(), primaryKeyColumn.getPrecision(), primaryKeyColumn.getScale());
+                                true, false, false, fkInfo, primaryKeyColumn.getLength(), primaryKeyColumn.getPrecision(), primaryKeyColumn.getScale());
                         list.add(column);
                     }
                 }

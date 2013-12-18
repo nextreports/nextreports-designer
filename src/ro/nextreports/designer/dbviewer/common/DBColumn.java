@@ -34,12 +34,13 @@ public class DBColumn implements Serializable, Comparable {
     private String type;
     private boolean isPrimaryKey;
     private boolean isForeignKey;
+    private boolean isIndex;
     private DBForeignColumnInfo fkInfo;
     private int length;
     private int precision;
     private int scale;
 
-    public DBColumn(String schema, String table, String name, String type, boolean isPrimaryKey, boolean isForeignKey,
+    public DBColumn(String schema, String table, String name, String type, boolean isPrimaryKey, boolean isForeignKey, boolean isIndex,
                     DBForeignColumnInfo fkInfo, int length, int precision, int scale) {
         this.schema = schema;
         this.table = table;
@@ -47,6 +48,7 @@ public class DBColumn implements Serializable, Comparable {
         this.type = type;
         this.isPrimaryKey = isPrimaryKey;
         this.isForeignKey = isForeignKey;
+        this.isIndex = isIndex;
         this.fkInfo = fkInfo;
         this.length = length;
         this.precision = precision;
@@ -76,8 +78,12 @@ public class DBColumn implements Serializable, Comparable {
     public boolean isForeignKey() {
         return isForeignKey;
     }
+        
+    public boolean isIndex() {
+		return isIndex;
+	}
 
-    public int getPrecision() {
+	public int getPrecision() {
         return precision;
     }
 
