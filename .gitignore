@@ -9,3 +9,6 @@ ivy-report/
 # CVS legacy #
 CVS/
 stuff/
+/bin
+/dist
+/lib
