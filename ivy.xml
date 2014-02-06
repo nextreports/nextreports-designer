@@ -40,8 +40,8 @@
         <dependency org="net.java.dev.jdic" name="jdic-linux-x86" rev="1.0-20060308"/>
         
         <!-- Jersey REST -->
-        <dependency org="com.sun.jersey" name="jersey-core" rev="1.7"/>
-        <dependency org="com.sun.jersey" name="jersey-client" rev="1.7"/>
+        <dependency org="com.sun.jersey" name="jersey-core" rev="1.18"/>
+        <dependency org="com.sun.jersey" name="jersey-client" rev="1.18"/>
         
         <!-- Winstone -->
         <dependency org="net.sourceforge.winstone" name="winstone-lite" rev="0.9.10"/>
