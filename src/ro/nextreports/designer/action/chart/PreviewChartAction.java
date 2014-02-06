@@ -52,6 +52,7 @@ import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.chart.Chart;
 import ro.nextreports.engine.chart.ChartRunner;
+import ro.nextreports.engine.chart.ChartType;
 import ro.nextreports.engine.exporter.exception.NoDataFoundException;
 import ro.nextreports.engine.exporter.util.ParametersBean;
 
@@ -78,40 +79,54 @@ public class PreviewChartAction extends AbstractAction {
     private List<QueryParameter> oldParameters;
     private boolean stop = false; 
     private String chartRunnerType;
+    private byte chartGraphicType;
+    private boolean supported = true;
 
-    public PreviewChartAction(String chartRunnerType) {
-    	String image = "chart_preview";
+    public PreviewChartAction(String chartRunnerType, byte chartGraphicType) {
+    	String image = "chart_preview_flash";
     	if (ChartRunner.IMAGE_FORMAT.equals(chartRunnerType)) {
     		image = "chart_preview_image";
+    	} else if (ChartRunner.HTML5_TYPE == chartGraphicType) {
+    		image = "chart_preview_html5";
     	}
         Icon icon = ImageUtil.getImageIcon(image);
         putValue(Action.SMALL_ICON, icon);
         String descKey = "preview.chart.flash";
         if (ChartRunner.IMAGE_FORMAT.equals(chartRunnerType)) {
         	descKey = "preview.chart.image";
-        }
+        } else if (ChartRunner.HTML5_TYPE == chartGraphicType) {
+        	descKey = "preview.chart.html5";
+    	}
         putValue(Action.SHORT_DESCRIPTION, I18NSupport.getString(descKey));
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString(descKey));
         this.chartRunnerType = chartRunnerType;
+        this.chartGraphicType = chartGraphicType;
         loaded = true;
     }
 
     // called from Tree (chart not loaded in designer)
-    public PreviewChartAction(String chartRunnerType, String name) {
-        this(chartRunnerType);
+    public PreviewChartAction(String chartRunnerType,  byte chartGraphicType, String name) {
+        this(chartRunnerType, chartGraphicType);
         putValue(Action.NAME, name);
         loaded = false;
     }
 
     public void setChart(Chart chart) {
+    	if (ChartType.hasNoFlashSupport(chart.getType().getType())) {
+    		supported = false;
+    	}
         this.chart = chart;
         if (!loaded) {
             oldParameters = ParameterManager.getInstance().getParameters();
             ParameterManager.getInstance().setParameters(chart.getReport().getParameters());
         }
-    }
+    }        
 
-    public void actionPerformed(ActionEvent event) {
+    public boolean isSupported() {
+		return supported;
+	}
+
+	public void actionPerformed(ActionEvent event) {
 
         executorThread = new Thread(new Runnable() {
 
@@ -134,6 +149,7 @@ public class PreviewChartAction extends AbstractAction {
 
                 ChartRunner runner = new ChartRunner();
                 runner.setFormat(chartRunnerType);
+                runner.setGraphicType(chartGraphicType);
                 runner.setChart(chart);                
                 runner.setQueryTimeout(Globals.getQueryTimeout());
                 runner.setParameterValues(pBean.getParamValues());
@@ -156,14 +172,22 @@ public class PreviewChartAction extends AbstractAction {
                         Show.centrateComponent(Globals.getMainFrame(), dialog);
                         dialog.setVisible(true);                    	
 					} else {
-						OutputStream outputStream = new FileOutputStream(webRoot + File.separatorChar + "data.json");
+						String jsonFile = "data.json";
+						if (ChartRunner.HTML5_TYPE == runner.getGraphicType()) {
+							jsonFile = "data-html5.json";
+						}
+						OutputStream outputStream = new FileOutputStream(webRoot + File.separatorChar + jsonFile);
 	                    boolean result = runner.run(outputStream);
 	                    outputStream.close();
 						if (result) {
 							if (!webServer.isStarted()) {
 								webServer.start();
 							}
-							FileUtil.openUrl("http://localhost:" + Globals.getChartWebServerPort() + "/chart.html?ofc=data.json", PreviewChartAction.class);
+							if (ChartRunner.HTML5_TYPE == runner.getGraphicType()) {
+								FileUtil.openUrl("http://localhost:" + Globals.getChartWebServerPort() + "/chart-html5.html", PreviewChartAction.class);
+							} else {
+								FileUtil.openUrl("http://localhost:" + Globals.getChartWebServerPort() + "/chart.html?ofc=data.json", PreviewChartAction.class);
+							}
 						}
                     }
 

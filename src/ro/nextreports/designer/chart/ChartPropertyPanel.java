@@ -148,8 +148,11 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String RIGHT = I18NSupport.getString("property.allignment.right");
 
     private String BAR = I18NSupport.getString("new.chart.bar");
+    private String BAR_COMBO = I18NSupport.getString("new.chart.bar.combo");
     private String HORIZONTAL_BAR = I18NSupport.getString("new.chart.horizontalbar");
     private String STACKED_BAR = I18NSupport.getString("new.chart.stackedbar");
+    private String STACKED_BAR_COMBO = I18NSupport.getString("new.chart.stackedbar.combo");
+    private String HORIZONTAL_STACKED_BAR = I18NSupport.getString("new.chart.horizontalstackedbar");
     private String PIE = I18NSupport.getString("new.chart.pie");
     private String LINE = I18NSupport.getString("new.chart.line");
     private String AREA = I18NSupport.getString("new.chart.area");
@@ -580,14 +583,19 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         typeProp.setDisplayName(TYPE_PARAM_NAME);
         typeProp.setType(String.class);
         ComboBoxPropertyEditor typeEditor = new ComboBoxPropertyEditor();
-        typeEditor.setAvailableValues(new String[]{BAR, HORIZONTAL_BAR, STACKED_BAR, PIE, LINE, AREA});
+        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA});
         typeEditor.setAvailableIcons(new Icon[]{
                 ImageUtil.getImageIcon("chart_bar"),
+                ImageUtil.getImageIcon("chart_bar_combo"),
                 ImageUtil.getImageIcon("chart_horizontal_bar"),
                 ImageUtil.getImageIcon("chart_stacked_bar"),
+                ImageUtil.getImageIcon("chart_stacked_bar_combo"),
+                ImageUtil.getImageIcon("chart_horizontal_stacked_bar"),
                 ImageUtil.getImageIcon("chart_pie"),
                 ImageUtil.getImageIcon("chart_line"),
-                ImageUtil.getImageIcon("chart_area")});
+                ImageUtil.getImageIcon("chart_area")}); 
+        JComboBox cb = (JComboBox)typeEditor.getCustomEditor();
+        cb.setMaximumRowCount(10);
         ChartType chartType = chart.getType();
         byte type = ChartType.NONE;
         if (chartType != null) {
@@ -1100,10 +1108,16 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private ChartType getChartType(String type) {
         if (BAR.equals(type)) {
             return new ChartType(ChartType.BAR);
+        } else if (BAR_COMBO.equals(type)) {
+            return new ChartType(ChartType.BAR_COMBO);    
         } else if (HORIZONTAL_BAR.equals(type)) {
             return new ChartType(ChartType.HORIZONTAL_BAR);
         } else if (STACKED_BAR.equals(type)) {
             return new ChartType(ChartType.STACKED_BAR);
+        } else if (STACKED_BAR_COMBO.equals(type)) {
+            return new ChartType(ChartType.STACKED_BAR_COMBO);    
+        } else if (HORIZONTAL_STACKED_BAR.equals(type)) {
+            return new ChartType(ChartType.HORIZONTAL_STACKED_BAR);
         } else if (PIE.equals(type)) {
             return new ChartType(ChartType.PIE);
         } else if (LINE.equals(type)) {
@@ -1121,12 +1135,21 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             case ChartType.BAR:
                 typeS = BAR;
                 break;
+            case ChartType.BAR_COMBO:
+                typeS = BAR_COMBO;
+                break;    
             case ChartType.HORIZONTAL_BAR:
                 typeS = HORIZONTAL_BAR;
                 break;
             case ChartType.STACKED_BAR:
                 typeS = STACKED_BAR;
                 break;
+            case ChartType.STACKED_BAR_COMBO:
+                typeS = STACKED_BAR_COMBO;
+                break;    
+            case ChartType.HORIZONTAL_STACKED_BAR:
+                typeS = HORIZONTAL_STACKED_BAR;
+                break;    
             case ChartType.PIE:
                 typeS = PIE;
                 break;

@@ -77,8 +77,9 @@ public class ChartLayoutPanel extends JPanel {
     private Dimension mainDim = new Dimension(310, 260);
     private Dimension comboDim = new Dimension(100, 20);
 
-    private PreviewChartAction previewFlashAction = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT);
-    private PreviewChartAction previewImageAction = new PreviewChartAction(ChartRunner.IMAGE_FORMAT);
+    private PreviewChartAction previewFlashAction = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT, ChartRunner.FLASH_TYPE);
+    private PreviewChartAction previewHTML5Action = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT, ChartRunner.HTML5_TYPE);
+    private PreviewChartAction previewImageAction = new PreviewChartAction(ChartRunner.IMAGE_FORMAT, ChartRunner.NO_TYPE);
     private ApplyTemplateAction applyTemplateAction = new ApplyTemplateAction();
     private ExtractTemplateAction extractTemplateAction = new ExtractTemplateAction();
 
@@ -230,6 +231,7 @@ public class ChartLayoutPanel extends JPanel {
 
     public void setChart(Chart chart) {
         previewFlashAction.setChart(chart);
+        previewHTML5Action.setChart(chart);
         previewImageAction.setChart(chart);
         setTitle(chart.getTitle().getTitle());
         setTitleFont(chart.getTitle().getFont());
@@ -305,15 +307,25 @@ public class ChartLayoutPanel extends JPanel {
             image = ImageUtil.getImageIcon("chart_pie_main");
         } else if (ChartType.BAR == type) {
             image = ImageUtil.getImageIcon("chart_bar_main");
+        } else if (ChartType.BAR_COMBO == type) {
+            image = ImageUtil.getImageIcon("chart_bar_combo_main");    
         } else if (ChartType.STACKED_BAR == type) {
             image = ImageUtil.getImageIcon("chart_stacked_bar_main");
+        } else if (ChartType.STACKED_BAR_COMBO == type) {
+            image = ImageUtil.getImageIcon("chart_stacked_bar_combo_main");    
         } else if (ChartType.HORIZONTAL_BAR == type) {
             image = ImageUtil.getImageIcon("chart_horizontal_bar_main");
+        } else if (ChartType.HORIZONTAL_STACKED_BAR == type) {
+            image = ImageUtil.getImageIcon("chart_horizontal_stacked_bar_main");
         } else if (ChartType.LINE == type) {
             image = ImageUtil.getImageIcon("chart_line_main");
         } else if (ChartType.AREA == type) {
             image = ImageUtil.getImageIcon("chart_area_main");
         }
+        
+        
+        previewFlashAction.setEnabled(!ChartType.hasNoFlashSupport(type));
+        
         if (image != null) {
             mainButton.setIcon(image);
         }        
@@ -377,7 +389,11 @@ public class ChartLayoutPanel extends JPanel {
         toolBar.add(dataSourcesComboBox);
         toolBar.add(Box.createHorizontalStrut(5));
         
+        toolBar.add(previewHTML5Action);
         toolBar.add(previewFlashAction);
+        if (previewFlashAction.isSupported()) {
+        	previewFlashAction.setEnabled(false);
+        }        
         toolBar.add(previewImageAction);
         SwingUtil.addCustomSeparator(toolBar);
         toolBar.add(applyTemplateAction);
