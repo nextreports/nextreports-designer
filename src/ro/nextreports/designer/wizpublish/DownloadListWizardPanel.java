@@ -291,7 +291,7 @@ public class DownloadListWizardPanel extends WizardPanel {
 							try {
 								ReportMetaData reportMetaData = client.getReport(serverPath);
 								XStream xstream = XStreamFactory.createXStream();
-								Report report = (Report) xstream.fromXML(new String(reportMetaData.getMainFile().getFileContent()));
+								Report report = (Report) xstream.fromXML(new String(reportMetaData.getMainFile().getFileContent(), "UTF-8"));
 								boolean ok = FormSaver.getInstance().save(new File(destinationPath, name), report);
 								sbInfo.append(name).append(" : ").append(I18NSupport.getString("downloaded")).append("\n");
 								if (ok) {
