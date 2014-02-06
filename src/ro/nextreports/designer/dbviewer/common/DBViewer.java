@@ -47,7 +47,7 @@ public interface DBViewer {
 
     public boolean isValidProcedure(List<DBProcedureColumn> columns);
     
-    public boolean isValidSql(Report report);       
+    public String isValidSql(Report report);               
 
     public DBColumn getPrimaryKeyColumn(DBColumn foreignKeyColumn) throws NextSqlException;
 

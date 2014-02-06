@@ -142,6 +142,7 @@ import ro.nextreports.designer.util.Show;
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.chart.Chart;
 import ro.nextreports.engine.chart.ChartRunner;
+import ro.nextreports.engine.chart.ChartType;
 import ro.nextreports.engine.querybuilder.sql.Table;
 import ro.nextreports.engine.util.DialectUtil;
 import ro.nextreports.engine.util.ReportUtil;
@@ -486,10 +487,14 @@ public class DBBrowserTree extends JXTree {
             popupMenu.add(menuItem4);
 
             Chart chart = ChartUtil.loadChart(selectedNode.getDBObject().getAbsolutePath());
-            PreviewChartAction previewFlashAction = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT, I18NSupport.getString("preview.flash"));
+            PreviewChartAction previewHTML5Action = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT, ChartRunner.HTML5_TYPE, I18NSupport.getString("preview.html5"));
+            previewHTML5Action.setChart(chart);
+            popupMenu.add(previewHTML5Action);
+            PreviewChartAction previewFlashAction = new PreviewChartAction(ChartRunner.GRAPHIC_FORMAT, ChartRunner.FLASH_TYPE, I18NSupport.getString("preview.flash"));
             previewFlashAction.setChart(chart);
             popupMenu.add(previewFlashAction);
-            PreviewChartAction previewImageAction = new PreviewChartAction(ChartRunner.IMAGE_FORMAT, I18NSupport.getString("preview.image"));
+            previewFlashAction.setEnabled(!ChartType.hasNoFlashSupport(chart.getType().getType()));            
+            PreviewChartAction previewImageAction = new PreviewChartAction(ChartRunner.IMAGE_FORMAT, ChartRunner.NO_TYPE, I18NSupport.getString("preview.image"));
             previewImageAction.setChart(chart);
             popupMenu.add(previewImageAction);
 

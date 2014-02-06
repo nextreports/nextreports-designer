@@ -21,6 +21,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -90,6 +93,57 @@ public class Show {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JOptionPane.showMessageDialog(parent, message, "", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+    }
+    
+    public static void warningScroll(String title, String message, int rows, int cols) {
+        Show.warningScroll(Globals.getMainFrame(), title, message, rows, cols);
+    }
+    
+    public static void warningScroll(String title, String message, int rows, int cols, List<Action> actions) {
+        Show.warningScroll(Globals.getMainFrame(), title, message, rows, cols, actions);
+    }
+    
+    public static void warningScroll(final Component parent, final String title, final String message, final int rows, final int cols) {
+    	warningScroll(parent, title, message, rows, cols, null);
+    }
+
+    public static void warningScroll(final Component parent, final String title, final String message, final int rows, final int cols, final List<Action> actions) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {                
+                JTextArea mytext = new JTextArea();
+                mytext.setText(message);
+                mytext.setRows(rows);
+                mytext.setColumns(cols);
+                mytext.setEditable(false);
+                mytext.setLineWrap(true);
+                JScrollPane mypane = new JScrollPane(mytext);
+
+                Object[] objarr = { mypane };
+                JOptionPane optpane;
+                JButton[] buttons = null;
+                if (actions.size() == 0) {
+                	optpane = new JOptionPane(objarr, JOptionPane.WARNING_MESSAGE);
+                } else {
+                	buttons = new JButton[actions.size()+1];                	
+                	for (int i=0, size=actions.size(); i<size; i++) {
+                		buttons[i] = new JButton(actions.get(i));
+                	}
+                	buttons[actions.size()] = new JButton(I18NSupport.getString("base.dialog.close"));
+                	optpane = new JOptionPane(objarr, JOptionPane.WARNING_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, buttons, buttons[actions.size()] );
+                }
+                final JDialog dialog = optpane.createDialog(parent, title);
+                if (buttons != null) {
+                	buttons[actions.size()].addActionListener(new ActionListener() {						
+						@Override
+						public void actionPerformed(ActionEvent e) {						
+							dialog.setVisible(false);
+						}
+					});
+                }
+                dialog.setResizable(true);
+                dialog.setVisible(true);
             }
         });
     }

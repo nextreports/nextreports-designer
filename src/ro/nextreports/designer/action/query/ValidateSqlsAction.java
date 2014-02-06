@@ -17,9 +17,16 @@
 package ro.nextreports.designer.action.query;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import ro.nextreports.designer.FormLoader;
 import ro.nextreports.designer.Globals;
@@ -29,12 +36,15 @@ import ro.nextreports.designer.persistence.ReportPersistenceFactory;
 import ro.nextreports.designer.querybuilder.DBBrowserNode;
 import ro.nextreports.designer.querybuilder.DBBrowserTree;
 import ro.nextreports.designer.querybuilder.DBObject;
+import ro.nextreports.designer.ui.BaseDialog;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.Show;
 import ro.nextreports.designer.util.UIActivator;
 
 import ro.nextreports.engine.Report;
+import ro.nextreports.engine.util.ReportUtil;
+import ro.nextreports.engine.util.StringUtil;
 
 public class ValidateSqlsAction extends AbstractAction {
 
@@ -42,6 +52,8 @@ public class ValidateSqlsAction extends AbstractAction {
     private DBObject sqlObject;
     private ReportPersistence repPersist = ReportPersistenceFactory.createReportPersistence(Globals.getReportPersistenceType());
     private boolean multiple;
+    
+    private static final Log LOG = LogFactory.getLog(ValidateSqlsAction.class);
 
     public ValidateSqlsAction(DBObject sqlObject) {
         String text;
@@ -86,16 +98,23 @@ public class ValidateSqlsAction extends AbstractAction {
                 // validate all sqls
                 } else {
                     try {
-                        DBBrowserTree tree = Globals.getMainFrame().getQueryBuilderPanel().getTree();                                                
-                        DBBrowserNode node;
+                        final DBBrowserTree tree = Globals.getMainFrame().getQueryBuilderPanel().getTree();                                                
+                        final DBBrowserNode node;
                         if ((sqlObject.getType() == DBObject.REPORTS_GROUP) || 
                         		(sqlObject.getType() == DBObject.QUERIES_GROUP) ||
                         		(sqlObject.getType() == DBObject.CHARTS_GROUP) ) {
                         	node = tree.searchNode(sqlObject.getName());
                         } else {
                         	node = tree.searchNode(sqlObject.getName(), sqlObject.getAbsolutePath(), sqlObject.getType());
-                        }                                                                                           
-                        testMultipleValidation(node, tree);
+                        }                                 
+                        StringBuilder result = new StringBuilder();
+                        testMultipleValidation(node, tree, result);
+                        String message = result.toString();
+                        if (!message.isEmpty()) {            	    			    			                        	
+                        	Show.warningScroll(I18NSupport.getString("sql.invalid"), message, 10, 30, createActions(node, tree));            	    		
+            	    	} else {            	    		
+            	    		Show.info(I18NSupport.getString("sql.valid"));            	    		
+            	    	}
                     } finally {
                         if (activator != null) {
                             activator.stop();
@@ -107,7 +126,7 @@ public class ValidateSqlsAction extends AbstractAction {
         executorThread.start();
     }
     
-    private void testMultipleValidation(DBBrowserNode node, DBBrowserTree tree) {
+    private void testMultipleValidation(DBBrowserNode node, DBBrowserTree tree, StringBuilder result) {
     	if (node.getChildCount() == 0) {
             tree.startExpandingTree(node, false, null);
         }  
@@ -117,14 +136,15 @@ public class ValidateSqlsAction extends AbstractAction {
             if ((object.getType() == DBObject.FOLDER_QUERY) ||
 				(object.getType() == DBObject.FOLDER_REPORT) ||
 				(object.getType() == DBObject.FOLDER_CHART)) {
-            	testMultipleValidation(child, tree);
+            	testMultipleValidation(child, tree, result);
             } else {
-            	testSingleValidation(object, false);
+            	String res = testSingleValidation(object, false);
+            	result.append(res);
             }
         }
     }
     
-    private void testSingleValidation(DBObject obj, boolean showMessage) {
+    private String testSingleValidation(DBObject obj, boolean showMessage) {
     	Report report = null;    	
 		if (obj.getType() == DBObject.QUERIES) {
 			report = repPersist.loadReport(obj.getAbsolutePath());
@@ -133,18 +153,139 @@ public class ValidateSqlsAction extends AbstractAction {
 		} else if (obj.getType() == DBObject.CHARTS) {
 			report = ChartUtil.loadChart(obj.getAbsolutePath()).getReport();
 		} 
+		boolean error = false;
 	    if (report != null) {
-	    	if (Globals.getDBViewer().isValidSql(report)) {
+	    	String message = Globals.getDBViewer().isValidSql(report);	    		    	
+	    	StringBuilder sb = new StringBuilder();
+	    	if (message == null) {	    		
+	    		// valid
+	    		List<Report> subreports = ReportUtil.getSubreports(report);	    		
+	    		for (Report subreport : subreports) {
+	    			message = Globals.getDBViewer().isValidSql(subreport);	    			
+	    			if (message != null) {
+	    				error = true;
+	    				sb.append("Subreport '").append(report.getName()).append("/").append(subreport.getName()).append("':\n").append(message).append("\n\n");
+	    				break;
+	    			}
+	    		}	    		
+	    	} else {
+	    		sb.append("Report '").append(report.getName()).append("':\n").append(message).append("\n\n");
+	    		error = true;	    		
+	    	}
+	    	if (error) {
+	    		obj.putProperty(VALID_SQL_PROPERTY, false);
+	    		if (showMessage) {	    			
+	    			Show.warningScroll(I18NSupport.getString("sql.invalid"), sb.toString(), 10, 30, createActions(obj));
+	    		}
+	    	} else {
 	    		obj.putProperty(VALID_SQL_PROPERTY, true);
 	    		if (showMessage) {
 	    			Show.info(I18NSupport.getString("sql.valid"));
 	    		}
-	    	} else {
-	    		obj.putProperty(VALID_SQL_PROPERTY, false);
-	    		if (showMessage) {
-	    			Show.warning(I18NSupport.getString("sql.invalid"));
-	    		}
 	    	}
+	    	return sb.toString();
 	    }
+	    return "";
+    }
+    
+    private List<Action> createActions (final DBBrowserNode node, final DBBrowserTree tree) {
+    	Action replace = new AbstractAction(I18NSupport.getString("validate.replace")) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				final FindPanel findPanel = new FindPanel();
+				BaseDialog dialog = new FindDialog(findPanel);
+		        dialog.pack();
+		        Show.centrateComponent(Globals.getMainFrame(), dialog);
+		        dialog.setVisible(true);
+				if (dialog.okPressed()) {
+					 Thread executorThread = new Thread(new Runnable() {
+
+				            public void run() {            	            	
+
+				                UIActivator activator = new UIActivator(Globals.getMainFrame(), I18NSupport.getString("validate.replace"));
+				                activator.start();                                                                               
+				                try {
+				                	setEnabled(false);
+									String oldText = findPanel.getOldText();
+									String newText = findPanel.getNewText();
+									boolean isCaseSensitive = findPanel.isCaseSensitive();
+									LOG.info("Validate replace action '" + node.getDBObject().getName() + "' " + oldText + " -> " + newText);									
+									replaceDir(node, tree, oldText, newText, isCaseSensitive);
+				                } finally {
+				                	setEnabled(true);
+			                        if (activator != null) {
+			                            activator.stop();
+			                        }
+			                        Show.info(I18NSupport.getString("validate.replace.finish"));
+			                    }
+				            }
+				        }, "NEXT : " + getClass().getSimpleName());
+				        executorThread.start();	
+				}
+				
+			}								
+    		
+    	};
+    	List<Action> actions = new ArrayList<Action>();
+    	actions.add(replace);
+    	return actions;
+    }
+    
+    private List<Action> createActions (final DBObject object) {
+    	Action replace = new AbstractAction(I18NSupport.getString("validate.replace")) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				FindPanel findPanel = new FindPanel();
+				BaseDialog dialog = new FindDialog(findPanel);
+		        dialog.pack();
+		        Show.centrateComponent(Globals.getMainFrame(), dialog);
+		        dialog.setVisible(true);
+				if (dialog.okPressed()) {
+					String oldText = findPanel.getOldText();
+					String newText = findPanel.getNewText();
+					boolean isCaseSensitive = findPanel.isCaseSensitive();
+					LOG.info("Validate replace action '" + object.getName() + "' " + oldText + " -> " + newText);					
+					replaceFile(object, oldText, newText, isCaseSensitive);
+				}
+				
+			}								
+    		
+    	};
+    	List<Action> actions = new ArrayList<Action>();
+    	actions.add(replace);
+    	return actions;
+    }
+    
+    private void replaceFile(DBObject obj, String oldText, String newText, boolean isCaseSensitive) {
+    	if ((obj.getType() == DBObject.QUERIES) ||
+    		(obj.getType() == DBObject.REPORTS)	||
+    		(obj.getType() == DBObject.CHARTS)) {
+			String filePath = obj.getAbsolutePath();	
+			Boolean validQ = (Boolean) obj.getProperty(ValidateSqlsAction.VALID_SQL_PROPERTY);
+        	if ((validQ != null) && !validQ.booleanValue()) {			
+        		LOG.info("  --> replace file '" + filePath + "' " + oldText + " -> " + newText);
+				StringUtil.replaceInFile(new File(filePath), oldText, newText, isCaseSensitive);
+			}
+		} 
+    }
+    
+    private void replaceDir(DBBrowserNode node,  DBBrowserTree tree, String oldText, String newText, boolean isCaseSensitive) {
+    	if (node.getChildCount() == 0) {
+            tree.startExpandingTree(node, false, null);
+        }  
+    	for (int i = 0, size = node.getChildCount(); i < size; i++) {
+            DBBrowserNode child = (DBBrowserNode) node.getChildAt(i);
+            DBObject object = child.getDBObject();
+            if ((object.getType() == DBObject.FOLDER_QUERY) ||
+				(object.getType() == DBObject.FOLDER_REPORT) ||
+				(object.getType() == DBObject.FOLDER_CHART)) {                	
+            	LOG.info("--> replace dir '" + object.getAbsolutePath() + "' " + oldText + " -> " + newText);
+            	replaceDir(child, tree, oldText, newText, isCaseSensitive);            	
+            } else {
+            	replaceFile(object, oldText, newText, isCaseSensitive);            	
+            }
+        }
     }
 }

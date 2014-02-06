@@ -695,8 +695,8 @@ public class DefaultDBViewer implements DBViewer {
         return list;
     }
     
-    public boolean isValidSql(Report report) {
-    	return ReportUtil.isValidSql(Globals.getConnection(), report);    	    	
-    }        
+    public String isValidSql(Report report) {
+    	return ReportUtil.isValidSqlWithMessage(Globals.getConnection(), report);    	    	
+    }               
 
 }
