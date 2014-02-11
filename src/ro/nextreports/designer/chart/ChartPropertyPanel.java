@@ -617,7 +617,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         ComboBoxPropertyEditor styleEditor = new ComboBoxPropertyEditor();
         String[] availableValues = new String[]{STYLE_NORMAL};
         Object type = getTypeProperty().getValue();
-        if (BAR.equals(type)) {
+        if (BAR.equals(type) || STACKED_BAR.equals(type) || HORIZONTAL_STACKED_BAR.equals(type)) {
             availableValues = new String[]{STYLE_NORMAL, STYLE_BAR_GLASS, STYLE_BAR_CYLINDER,
                     STYLE_BAR_PARALLELIPIPED, STYLE_BAR_DOME};
         } else if (LINE.equals(type)) {
