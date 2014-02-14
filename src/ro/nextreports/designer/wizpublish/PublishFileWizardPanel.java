@@ -472,7 +472,7 @@ public class PublishFileWizardPanel extends WizardPanel {
                             // get report from server
                             ReportMetaData reportMetaData = client.getReport(pathTextField.getText());
                             XStream xstream = XStreamFactory.createXStream();
-                            Report report = (Report) xstream.fromXML(new String(reportMetaData.getMainFile().getFileContent()));
+                            Report report = (Report) xstream.fromXML(new String(reportMetaData.getMainFile().getFileContent(),"UTF-8"));
 
                             if (activator != null) {
                                 activator.stop();
@@ -511,7 +511,7 @@ public class PublishFileWizardPanel extends WizardPanel {
                             // get chart from server
                             ChartMetaData chartMetaData = client.getChart(pathTextField.getText());
                             XStream xstream = XStreamFactory.createXStream();
-                            Chart chart = (Chart) xstream.fromXML(new String(chartMetaData.getMainFile().getFileContent()));
+                            Chart chart = (Chart) xstream.fromXML(new String(chartMetaData.getMainFile().getFileContent(),"UTF-8"));
 
                             if (activator != null) {
                                 activator.stop();

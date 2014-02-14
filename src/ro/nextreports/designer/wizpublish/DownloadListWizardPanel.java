@@ -316,7 +316,7 @@ public class DownloadListWizardPanel extends WizardPanel {
 							try {
 								 ChartMetaData chartMetaData = client.getChart(serverPath);
 		                         XStream xstream = XStreamFactory.createXStream();
-		                         Chart chart = (Chart) xstream.fromXML(new String(chartMetaData.getMainFile().getFileContent()));
+		                         Chart chart = (Chart) xstream.fromXML(new String(chartMetaData.getMainFile().getFileContent(),"UTF-8"));
 		                         ChartUtil.save(new File(destinationPath, name), chart);
 		                         sbInfo.append(name).append(" : ").append(I18NSupport.getString("downloaded")).append("\n");
 							} catch (Exception e) {

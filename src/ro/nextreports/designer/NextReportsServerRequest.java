@@ -20,6 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -190,15 +191,20 @@ public class NextReportsServerRequest implements WizardListener {
                 	Chart chart = null;
                 	String destinationPath = null;
                 	String type = null;
-                	if (isReport) {
-                		report = (Report) xstream.fromXML(new String(rmd.getMainFile().getFileContent()));
-                		destinationPath = FileReportPersistence.getReportsAbsolutePath();
-                		type = I18NSupport.getString("report");
-                	} else {
-                		chart = (Chart) xstream.fromXML(new String(cmd.getMainFile().getFileContent()));
-                		destinationPath = FileReportPersistence.getChartsAbsolutePath();
-                		type = I18NSupport.getString("chart");
-                	}        			
+                	try {
+	                	if (isReport) {
+	                		report = (Report) xstream.fromXML(new String(rmd.getMainFile().getFileContent(),"UTF-8"));
+	                		destinationPath = FileReportPersistence.getReportsAbsolutePath();
+	                		type = I18NSupport.getString("report");
+	                	} else {
+	                		chart = (Chart) xstream.fromXML(new String(cmd.getMainFile().getFileContent(),"UTF-8"));
+	                		destinationPath = FileReportPersistence.getChartsAbsolutePath();
+	                		type = I18NSupport.getString("chart");
+	                	}    
+                	} catch (UnsupportedEncodingException ex) {
+                		ex.printStackTrace();
+						LOG.error(ex.getMessage(), ex);
+                	}
         			new File(destinationPath).mkdirs();		
         			File entityFile = new File(destinationPath, name);
         			boolean overwrite = false;
