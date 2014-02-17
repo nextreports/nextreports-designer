@@ -36,8 +36,13 @@ import java.awt.event.ActionEvent;
 public class SaveQueryAction extends SaveAsQueryAction {
 
     private boolean cancel = false;
-
+    private boolean forced = false;
+    
     public SaveQueryAction() {
+    	this(false);
+    }
+
+    public SaveQueryAction(boolean forced) {
         putValue(NAME, I18NSupport.getString("save.query"));
         Icon icon = ImageUtil.getImageIcon("query_save");
         putValue(SMALL_ICON, icon);
@@ -45,6 +50,7 @@ public class SaveQueryAction extends SaveAsQueryAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ShortcutsUtil.getShortcut("query.save.accelerator", "control B")));
         putValue(SHORT_DESCRIPTION, I18NSupport.getString("save.query"));
         putValue(LONG_DESCRIPTION, I18NSupport.getString("save.query"));
+        this.forced = forced;
     }
 
     public void actionPerformed(ActionEvent e) {

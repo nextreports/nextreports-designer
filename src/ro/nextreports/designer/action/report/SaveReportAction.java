@@ -43,8 +43,13 @@ import java.awt.event.ActionEvent;
 public class SaveReportAction extends SaveAsQueryAction {
 
     private boolean cancel = false;
-
+    private boolean forced = false;
+    
     public SaveReportAction() {
+    	this(false);
+    }
+
+    public SaveReportAction(boolean forced) {
         putValue(Action.NAME, I18NSupport.getString("save.report"));
         Icon icon = ImageUtil.getImageIcon("report_save");
         putValue(Action.SMALL_ICON, icon);
@@ -52,6 +57,7 @@ public class SaveReportAction extends SaveAsQueryAction {
         putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(ShortcutsUtil.getShortcut("report.save.accelerator", "control T")));        
         putValue(Action.SHORT_DESCRIPTION, I18NSupport.getString("save.report"));
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("save.report"));
+        this.forced = forced;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -65,8 +71,8 @@ public class SaveReportAction extends SaveAsQueryAction {
             Show.info(I18NSupport.getString("report.isEmpty"));
             return;
         }
-
-        if (MessageUtil.showReconnect()) {
+        
+        if (!forced && MessageUtil.showReconnect()) {
             return;
         }
         
@@ -83,7 +89,10 @@ public class SaveReportAction extends SaveAsQueryAction {
         String name = FormSaver.getInstance().save((String) this.getValue(Action.NAME), false);        
         if (name != null) {        	        	
             String path = Globals.getCurrentReportAbsolutePath();
-            builderPanel.addReport(name, path);
+            // forced is used when connection is really down, so we cannot update UI
+            if (!forced) {
+            	builderPanel.addReport(name, path);
+            }
             Globals.setCurrentReportName(name);
             Globals.setCurrentQueryName(name);
             Globals.getReportUndoManager().discardAllEdits();

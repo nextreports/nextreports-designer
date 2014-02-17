@@ -37,8 +37,14 @@ import java.awt.event.ActionEvent;
 public class SaveAction extends AbstractAction {
 
     private boolean cancel = false;
-
+    // save the entity anyway (no connection testing is made)
+    private boolean forced = false;
+    
     public SaveAction () {
+    	this(false);
+    }
+
+    public SaveAction (boolean forced) {
         putValue(Action.NAME, I18NSupport.getString("save"));
         Icon icon = ImageUtil.getImageIcon("save");
         putValue(Action.SMALL_ICON, icon);
@@ -46,15 +52,16 @@ public class SaveAction extends AbstractAction {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ShortcutsUtil.getShortcut("save.accelerator", "control S")));
         putValue(Action.SHORT_DESCRIPTION, I18NSupport.getString("save"));
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("save"));
+        this.forced = forced;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (Globals.isChartLoaded()){
-            new SaveChartAction().actionPerformed(e);
+            new SaveChartAction(forced).actionPerformed(e);
         } else if (Globals.isReportLoaded()) {
-            new SaveReportAction().actionPerformed(e);
+            new SaveReportAction(forced).actionPerformed(e);
         } else {
-            new SaveQueryAction().actionPerformed(e);
+            new SaveQueryAction(forced).actionPerformed(e);
         }
 
     }

@@ -40,8 +40,13 @@ public class SaveAsQueryAction extends AbstractAction {
 
     private String name;
     private String path;
-
+    private boolean forced = false;
+    
     public SaveAsQueryAction() {
+    	this(false);
+    }
+
+    public SaveAsQueryAction(boolean forced) {
         putValue(Action.NAME, I18NSupport.getString("save.as.query"));
         Icon icon = ImageUtil.getImageIcon("query_save_as");
         putValue(Action.SMALL_ICON, icon);
@@ -49,6 +54,7 @@ public class SaveAsQueryAction extends AbstractAction {
 //        putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
         putValue(Action.SHORT_DESCRIPTION, I18NSupport.getString("save.as.query.desc"));
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("save.as.query.desc"));
+        this.forced = forced;
     }
 
     public void setName(String name) {
@@ -66,7 +72,7 @@ public class SaveAsQueryAction extends AbstractAction {
             return;
         }
 
-        if (MessageUtil.showReconnect()) {
+        if (!forced && MessageUtil.showReconnect()) {
             return;
         }
 

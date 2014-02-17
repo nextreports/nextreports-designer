@@ -39,14 +39,20 @@ import java.awt.event.ActionEvent;
 public class SaveChartAction extends AbstractAction {
 
     private boolean cancel = false;
-
+    private boolean forced = false;
+    
     public SaveChartAction() {
+    	this(false);
+    }
+
+    public SaveChartAction(boolean forced) {
         putValue(Action.NAME, I18NSupport.getString("save.chart"));
         Icon icon = ImageUtil.getImageIcon("chart_save");
         putValue(Action.SMALL_ICON, icon);
         putValue(Action.MNEMONIC_KEY, new Integer('S'));
         putValue(Action.SHORT_DESCRIPTION, I18NSupport.getString("save.chart"));
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("save.chart"));
+        this.forced = forced;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -60,7 +66,7 @@ public class SaveChartAction extends AbstractAction {
             return;
         }
 
-        if (MessageUtil.showReconnect()) {
+        if (!forced && MessageUtil.showReconnect()) {
             return;
         }
         

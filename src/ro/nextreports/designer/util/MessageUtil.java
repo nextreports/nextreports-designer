@@ -16,13 +16,23 @@
  */
 package ro.nextreports.designer.util;
 
+import javax.swing.JOptionPane;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import ro.nextreports.designer.Globals;
+import ro.nextreports.designer.action.SaveAction;
+import ro.nextreports.designer.datasource.DefaultDataSourceManager;
+import ro.nextreports.designer.datasource.exception.ConnectionException;
 
 import ro.nextreports.engine.querybuilder.sql.dialect.Dialect;
 import ro.nextreports.engine.querybuilder.sql.dialect.ConnectionUtil;
 
 //
 public class MessageUtil {
+	
+	private static final Log LOG = LogFactory.getLog(MessageUtil.class);
 
     public static boolean showReconnect() {
         Dialect dialect = null;
@@ -31,9 +41,34 @@ public class MessageUtil {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        if ((dialect  == null) || !ConnectionUtil.isValidConnection(Globals.getConnection(), dialect)) {
-            Show.error(I18NSupport.getString("connection.broken"));
-            return true;
+        // current connection is broken
+        if ((dialect  == null) || !ConnectionUtil.isValidConnection(Globals.getConnection(), dialect)) {                                   
+            // try to create a new connection (if a connection pool is used, current connection can expire after some time)
+            try {
+            	LOG.warn(".... Connection was lost. Try to recreate the database connection.");
+				Globals.createConnection(DefaultDataSourceManager.getInstance().getConnectedDataSource());
+			} catch (ConnectionException e) {
+				LOG.warn(".... Connection recreation was not possible.");
+				LOG.error(e.getMessage(), e);				
+				// connection is really down																
+	            int option = JOptionPane.showOptionDialog(Globals.getMainFrame(),
+	            		I18NSupport.getString("connection.broken"), 
+	            		I18NSupport.getString("error"), 
+	            		JOptionPane.OK_CANCEL_OPTION, 
+	            		JOptionPane.ERROR_MESSAGE,
+	            		null, 
+	            		new String[]{ I18NSupport.getString("save"), I18NSupport.getString("base.dialog.close")},
+	            		I18NSupport.getString("base.dialog.close"));
+	            if (option != JOptionPane.OK_OPTION) {
+	            	return true;
+	            } else {
+	            	// forced save (we should be able to save the report anyway to not lost the work)
+	            	LOG.warn(".... Forced save was called.");
+	                new SaveAction(true).actionPerformed(null);
+	            }
+				
+				return true;
+			}                                                                       
         }
         return false;
     }
