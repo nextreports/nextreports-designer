@@ -278,25 +278,25 @@ public class BorderPanel extends JPanel {
 		add(new JLabel(I18NSupport.getString("border.choose.thick")), 
 				new GridBagConstraints(0, 2, 3, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(0,0,5,0), 0, 0));		
-		add(new JLabel("Top"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+		add(new JLabel(I18NSupport.getString("border.choose.top")), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(cmbTop, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(btnTopColor, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,0), 0, 0));
-		add(new JLabel("Left"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+		add(new JLabel(I18NSupport.getString("border.choose.left")), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(cmbLeft, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(btnLeftColor, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,0), 0, 0));
-		add(new JLabel("Bottom"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+		add(new JLabel(I18NSupport.getString("border.choose.bottom")), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(cmbBottom, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(btnBottomColor, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,0), 0, 0));
-		add(new JLabel("Right"), new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+		add(new JLabel(I18NSupport.getString("border.choose.right")), new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
 		add(cmbRight, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 				GridBagConstraints.NONE, new Insets(5,0,0,5), 0, 0));
