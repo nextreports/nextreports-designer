@@ -375,11 +375,13 @@ public class PublishFileWizardPanel extends WizardPanel {
             		@SuppressWarnings("unchecked")
 					List<String> list = (List<String>)context.getAttribute(PublishBulkWizard.LIST);
             		StringBuilder sb = new StringBuilder();
-					for (String path : list) {
-						boolean ok = defaultValuesOk(path, messages);
-						if (!ok) {
-							return false;
-						}            			
+					for (String path : list) {						
+						if (!path.endsWith(".chart")) {
+							boolean ok = defaultValuesOk(path, messages);
+							if (!ok) {
+								return false;
+							}
+						}
             			String name = path.substring(path.lastIndexOf(File.separator)+1);
             			int found = exists(client, pathTextField.getText(), name);
             			if (found != EntityConstants.ENTITY_NOT_FOUND) {
