@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
@@ -412,7 +413,9 @@ public class DesignerTablePanel extends JPanel {
                             }
                             model.fireTableCellUpdated(rowIndex, 6);
                         }
-                        groupByCombo.removeItem("");
+                        if (hasAggregateFunction()) {
+                        	groupByCombo.removeItem("");
+                        }
                     }
                     row.column.setOutput(row.output);
                     break;
@@ -543,7 +546,9 @@ public class DesignerTablePanel extends JPanel {
 
         private void updateGroupByColumn(JComboBox groupByCombo, boolean output) {
             if (output) {
-                groupByCombo.removeItem("");
+            	if (hasAggregateFunction()) {
+            		groupByCombo.removeItem("");
+            	}
             }
             int rowCount = model.getRowCount();
             for (int i = 0; i < rowCount; i++) {
@@ -555,7 +560,13 @@ public class DesignerTablePanel extends JPanel {
                 }
                 if (output && row.output) {                    
                     JComboBox groupByCombo2 = (JComboBox) ((DefaultCellEditor) table.getCellEditor(i, 6)).getComponent();
-                    groupByCombo2.removeItem("");
+                    if (hasAggregateFunction()) {
+                    	groupByCombo2.removeItem("");
+                    } else {
+                    	if (!hasEmpty(groupByCombo2.getModel())) {
+                    		groupByCombo2.insertItemAt("", 0);
+                    	}
+                    }
                 }
             }
         }
@@ -653,7 +664,9 @@ public class DesignerTablePanel extends JPanel {
                     JComboBox groupByCombo = (JComboBox) ((DefaultCellEditor) table.getCellEditor(i, 6)).getComponent();
                     MyRow row = (MyRow) model.getObjectForRow(i);
                     if (row.output) {
-                        groupByCombo.removeItem("");
+                    	if (hasAggregateFunction()) {
+                    		groupByCombo.removeItem("");
+                    	}
                     }
                     row.groupBy = GROUP_BY;
                     model.fireTableCellUpdated(i, 6);
@@ -1155,6 +1168,28 @@ public class DesignerTablePanel extends JPanel {
             groupByComboDrag.insertItemAt("", 0);
             groupByComboDrop.removeItem("");
         }
+    }
+    
+    private boolean hasAggregateFunction() {
+    	int col = 6; // groupby
+    	int rows = model.getRowCount();
+    	for (int row=0; row<rows; row++) {
+    		String groupby = (String)model.getValueAt(row, col);
+    		if (SUM.equals(groupby) || AVG.equals(groupby) || MIN.equals(groupby) || MAX.equals(groupby) || COUNT.equals(groupby)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private boolean hasEmpty(ComboBoxModel model) {
+    	int size = model.getSize();
+    	for (int i=0; i<size; i++) {
+    		if ("".equals(model.getElementAt(i))) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
 }
