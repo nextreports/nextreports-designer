@@ -158,6 +158,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String PIE = I18NSupport.getString("new.chart.pie");
     private String LINE = I18NSupport.getString("new.chart.line");
     private String AREA = I18NSupport.getString("new.chart.area");
+    private String BUBBLE = I18NSupport.getString("new.chart.bubble");
 
     private String STYLE_NORMAL = I18NSupport.getString("new.chart.style");
     private String STYLE_BAR_GLASS = I18NSupport.getString("new.chart.style.bar.glass");
@@ -598,7 +599,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         typeProp.setDisplayName(TYPE_PARAM_NAME);
         typeProp.setType(String.class);
         ComboBoxPropertyEditor typeEditor = new ComboBoxPropertyEditor();
-        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA});
+        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA, BUBBLE});
         typeEditor.setAvailableIcons(new Icon[]{
                 ImageUtil.getImageIcon("chart_bar"),
                 ImageUtil.getImageIcon("chart_bar_combo"),
@@ -608,7 +609,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
                 ImageUtil.getImageIcon("chart_horizontal_stacked_bar"),
                 ImageUtil.getImageIcon("chart_pie"),
                 ImageUtil.getImageIcon("chart_line"),
-                ImageUtil.getImageIcon("chart_area")}); 
+                ImageUtil.getImageIcon("chart_area"),
+                ImageUtil.getImageIcon("chart_bubble")}); 
         JComboBox cb = (JComboBox)typeEditor.getCustomEditor();
         cb.setMaximumRowCount(10);
         ChartType chartType = chart.getType();
@@ -1141,6 +1143,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             return new ChartType(ChartType.LINE);
         }  else if (AREA.equals(type)) {
             return new ChartType(ChartType.AREA);
+        }  else if (BUBBLE.equals(type)) {
+            return new ChartType(ChartType.BUBBLE);    
         } else {
             return new ChartType(ChartType.NONE);
         }
@@ -1176,6 +1180,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             case ChartType.AREA:
                 typeS = AREA;
                 break;
+            case ChartType.BUBBLE:
+                typeS = BUBBLE;
+                break;    
             default:
                 typeS = null;
                 break;
