@@ -84,6 +84,7 @@ import ro.nextreports.designer.util.UIActivator;
 import ro.nextreports.engine.EngineProperties;
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.exporter.util.ParametersBean;
+import ro.nextreports.engine.querybuilder.sql.Column;
 import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
 import ro.nextreports.engine.queryexec.QueryExecutor;
 import ro.nextreports.engine.queryexec.QueryResult;
@@ -293,6 +294,14 @@ public class SQLViewPanel extends JPanel {
             if (report.getSql() != null) {
                 sql = report.getSql();
             } else {
+            	try {
+            		for (Column col : report.getQuery().getColumns()) {            		
+						col.getTable().setDialect(DialectUtil.getDialect(Globals.getConnection()));					
+            		}
+            	} catch (Exception e) {					
+					e.printStackTrace();
+					LOG.error(e.getMessage(), e);
+				}
                 sql = report.getQuery().toString();
             }
         }
