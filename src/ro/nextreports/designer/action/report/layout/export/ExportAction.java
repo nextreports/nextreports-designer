@@ -216,8 +216,9 @@ public abstract class ExportAction extends AbstractAction {
                         return;
                     }
 
-                    con = Globals.createTempConnection(runDS);
-                    if (QueryUtil.isProcedureCall(pBean.getQuery().getText())) {
+                    con = Globals.createTempConnection(runDS);   
+                    boolean isProcedure = QueryUtil.isProcedureCall(pBean.getQuery().getText());
+                    if (isProcedure) {
                         if (!QueryUtil.isValidProcedureCall(pBean.getQuery().getText(), DialectUtil.getDialect(con))) {
                             Show.info(I18NSupport.getString("export.action.execute.procedure"));
                             return;
@@ -246,7 +247,7 @@ public abstract class ExportAction extends AbstractAction {
                     exporterActivator.start(new ExportStopAction());
 
                     //
-                    boolean ok = startExporter(name, qr, pBean, exporterActivator);
+                    boolean ok = startExporter(name, qr, pBean, exporterActivator, isProcedure);
                     if (!ok) {
                         Show.dispose();  // close a possible previous dialog message
                         Show.info(I18NSupport.getString("report.cancelled"));
@@ -295,7 +296,7 @@ public abstract class ExportAction extends AbstractAction {
     }
 
     private boolean startExporter(String reportName, QueryResult qr, ParametersBean pBean, 
-    		final UIActivator activator) throws Exception {
+    		final UIActivator activator, boolean isProcedure) throws Exception {
     	
     	System.gc();
 		String fileName = REPORTS_DIR + File.separator + reportName + "." + getFileExtension();
@@ -308,7 +309,7 @@ public abstract class ExportAction extends AbstractAction {
         Connection con =  Globals.createTempConnection(Globals.getReportLayoutPanel().getRunDataSource());        
         ReportLayout convertedLayout = ReportUtil.getDynamicReportLayout(con, layout, pBean);
         
-        ResultExporter exporter = getResultExporter(new ExporterBean(con, Globals.getQueryTimeout(), qr, fos, convertedLayout, pBean, getReportName(), false));
+        ResultExporter exporter = getResultExporter(new ExporterBean(con, Globals.getQueryTimeout(), qr, fos, convertedLayout, pBean, getReportName(), false, isProcedure));
         exporter.setDocumentTitle(getReportName());
         exporter.addExporterEventListener(new ExporterEventListener() {
             public void notify(final ExporterEvent event) {
