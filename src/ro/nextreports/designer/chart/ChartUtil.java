@@ -108,6 +108,10 @@ public class ChartUtil {
         		return true;
         	}
         }
+        if ((chart.getType().getType() == ChartType.BUBBLE) && (chart.getYColumns().size() != 4)) {
+        	Show.info(I18NSupport.getString("chart.undefined.ycolumn.bubble"));
+        	return true;
+        }
 
 		if (chart.getYColumns() != null) {
 			if ((chart.getType().getType() == ChartType.PIE) && (getNotNullCount(chart.getYColumns()) > 1)) {
