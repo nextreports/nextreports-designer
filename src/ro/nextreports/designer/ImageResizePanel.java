@@ -16,7 +16,9 @@
  */
 package ro.nextreports.designer;
 
+import ro.nextreports.engine.band.BandElement;
 import ro.nextreports.engine.band.ImageBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,11 +59,18 @@ public class ImageResizePanel  extends JXPanel {
     private Dimension percentDim = new Dimension(30, 20);
     private Dimension buttonDim = new Dimension(20, 20);
 
-    public ImageResizePanel(int[] realSize, ImageBandElement ibe) {
+    public ImageResizePanel(int[] realSize, BandElement be) {
         setLayout(new GridBagLayout());
 
-        this.actualWidth = ibe.getWidth();
-        this.actualHeight = ibe.getHeight();
+        if (be instanceof ImageBandElement) {
+        	ImageBandElement ibe = (ImageBandElement)be;
+        	this.actualWidth = ibe.getWidth();
+        	this.actualHeight = ibe.getHeight();
+        } else {
+        	ImageColumnBandElement icbe = (ImageColumnBandElement)be;
+        	this.actualWidth = icbe.getWidth();
+        	this.actualHeight = icbe.getHeight();
+        }
         this.realWidth = realSize[0];
         this.realHeight = realSize[1];
 

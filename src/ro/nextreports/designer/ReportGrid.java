@@ -35,6 +35,7 @@ import ro.nextreports.engine.band.BarcodeBandElement;
 import ro.nextreports.engine.band.ChartBandElement;
 import ro.nextreports.engine.band.ColumnBandElement;
 import ro.nextreports.engine.band.FunctionBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 import ro.nextreports.engine.band.ParameterBandElement;
 import ro.nextreports.engine.band.ReportBandElement;
 import ro.nextreports.engine.band.VariableBandElement;
@@ -62,6 +63,7 @@ import ro.nextreports.designer.action.report.layout.cell.InsertForReportAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertFunctionAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertHyperlinkAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertImageAction;
+import ro.nextreports.designer.action.report.layout.cell.InsertImageColumnAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertParameterAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertReportAction;
 import ro.nextreports.designer.action.report.layout.cell.InsertTextAction;
@@ -101,6 +103,7 @@ public class ReportGrid extends JGrid implements GridModelListener {
 
         setCellEditor(BandElement.class, new TextCellEditor(new JTextField()));
         setCellEditor(ColumnBandElement.class, new ColumnCellEditor(new SteppedComboBox()));
+        setCellEditor(ImageColumnBandElement.class, new ColumnCellEditor(new SteppedComboBox()));
         setCellEditor(VariableBandElement.class, new VariableCellEditor(new SteppedComboBox()));
         setCellEditor(ParameterBandElement.class, new ParameterCellEditor(new SteppedComboBox()));
         setCellEditor(FunctionBandElement.class, new FunctionCellEditor());
@@ -209,6 +212,7 @@ public class ReportGrid extends JGrid implements GridModelListener {
                 bandName.startsWith(ReportLayout.GROUP_HEADER_BAND_NAME_PREFIX) ||
                 bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX) ) {
                insertMenu.add(new InsertColumnAction());
+               insertMenu.add(new InsertImageColumnAction());
                isStatic = false;
             }
             boolean isFooter = false;
@@ -236,7 +240,7 @@ public class ReportGrid extends JGrid implements GridModelListener {
 
             int column = getSelectionModel().getSelectedCell().getColumn();
             BandElement be = getBandElement(row, column);
-            if (be instanceof ImageBandElement) {
+            if ((be instanceof ImageBandElement) || (be instanceof ImageColumnBandElement)) {
                 popup.add(new ImageSizeAction());
             }
             if (be instanceof ChartBandElement) {

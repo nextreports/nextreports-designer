@@ -48,6 +48,7 @@ import ro.nextreports.engine.util.ObjectCloner;
 import ro.nextreports.engine.band.BandElement;
 import ro.nextreports.engine.band.FieldBandElement;
 import ro.nextreports.engine.band.ForReportBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 import ro.nextreports.engine.band.Padding;
 import ro.nextreports.engine.band.ColumnBandElement;
 import ro.nextreports.engine.band.HyperlinkBandElement;
@@ -270,10 +271,18 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
                     ((FieldBandElement) element).setPattern(propValue);
                 } else if (WIDTH_PARAM_NAME.equals(propName)) {
                     Integer propValue = (Integer) prop.getValue();
-                    ((ImageBandElement) element).setWidth(propValue);
+                    if (element instanceof ImageBandElement) {
+                    	((ImageBandElement) element).setWidth(propValue);
+                    } else {
+                    	((ImageColumnBandElement) element).setWidth(propValue);
+                    }
                 } else if (HEIGHT_PARAM_NAME.equals(propName)) {
                     Integer propValue = (Integer) prop.getValue();
-                    ((ImageBandElement) element).setHeight(propValue);
+                    if (element instanceof ImageBandElement) {
+                    	((ImageBandElement) element).setHeight(propValue);
+                    } else {
+                    	((ImageColumnBandElement) element).setHeight(propValue);
+                    }
                 } else if (URL_PARAM_NAME.equals(propName)) {
                     Hyperlink propValue = (Hyperlink) prop.getValue();
                     ((HyperlinkBandElement) element).setHyperlink(propValue);
@@ -436,7 +445,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             }
         //}
 
-        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        if ((reportGridCells.get(0).getValue() instanceof ImageBandElement) ||
+        	(reportGridCells.get(0).getValue() instanceof ImageColumnBandElement) )	{
             props.add(getWidthProperty());
             props.add(getHeightProperty());
         }
@@ -890,7 +900,11 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         widthProp.setName(WIDTH_PARAM_NAME);
         widthProp.setDisplayName(WIDTH_PARAM_NAME);
         widthProp.setType(Integer.class);
-        widthProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getWidth());
+        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        	widthProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getWidth());
+        } else {
+        	widthProp.setValue(((ImageColumnBandElement) reportGridCells.get(0).getValue()).getWidth());
+        }
         if (Globals.getAccessibilityHtml()) {
             widthProp.setCategory(I18NSupport.getString("property.category.main"));
         }
@@ -905,7 +919,11 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         heightProp.setName(HEIGHT_PARAM_NAME);
         heightProp.setDisplayName(HEIGHT_PARAM_NAME);
         heightProp.setType(Integer.class);
-        heightProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getHeight());
+        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        	heightProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getHeight());
+        } else {
+        	heightProp.setValue(((ImageColumnBandElement) reportGridCells.get(0).getValue()).getHeight());
+        }
         if (Globals.getAccessibilityHtml()) {
             heightProp.setCategory(I18NSupport.getString("property.category.main"));
         }
