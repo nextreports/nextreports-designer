@@ -64,6 +64,12 @@ public class WebServiceUtil {
             }
             reportMetaData.setImages(list);
             
+            String template = report.getLayout().getTemplateName();
+            if ((template != null) && !"".equals(template.trim())) {
+            	FileMetaData fmd = new FileMetaData();
+            	fmd.setFile(new File(prefix + File.separator + template));
+            	reportMetaData.setTemplate(fmd);
+            }            
             
             // report meta data contains the xml which may be not deserializable on the server if local version is greater than server one
             // so we must have a separate method to test version before doing publishReport(reportMetaData)!

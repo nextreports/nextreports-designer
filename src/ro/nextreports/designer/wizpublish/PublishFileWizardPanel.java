@@ -506,6 +506,11 @@ public class PublishFileWizardPanel extends WizardPanel {
                                         FileUtil.createFile(prefix + File.separator + image.getFileName(), image.getFileContent());
                                     }
                                 }
+                                
+                                // save template
+                                FileMetaData fmd = reportMetaData.getTemplate();
+                                String prefix = path.substring(0, path.lastIndexOf(File.separator));                                
+                                FileUtil.createFile(prefix + File.separator + fmd.getFileName(), fmd.getFileContent());                                
                             }
 
                             Globals.setCurrentReportAbsolutePath(existingPath);

@@ -136,6 +136,12 @@ public abstract class ExportAction extends AbstractAction {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                
+                try {
+                    FileUtil.copyTemplateToClasspath(report);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 Connection con = null;
                 try {

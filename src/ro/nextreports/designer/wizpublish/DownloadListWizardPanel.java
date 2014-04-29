@@ -302,6 +302,12 @@ public class DownloadListWizardPanel extends WizardPanel {
 	                                        FileUtil.createFile(destinationPath + File.separator + image.getFileName(), image.getFileContent());
 	                                    }
 	                                }
+	                                
+									// save template
+									FileMetaData fmd = reportMetaData.getTemplate();
+									if (fmd != null) {
+										FileUtil.createFile(destinationPath + File.separator + fmd.getFileName(), fmd.getFileContent());
+									}
 								}
 							} catch (Exception e) {
 								sbError.append(name).append(" : ").append(e.getMessage()).append("\n");
