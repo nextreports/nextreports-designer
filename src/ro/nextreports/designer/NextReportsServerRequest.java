@@ -235,6 +235,18 @@ public class NextReportsServerRequest implements WizardListener {
 										}
 									}
 								}
+								
+								// save template
+								FileMetaData fmd = rmd.getTemplate();
+								if (fmd != null) {
+									try {
+										FileUtil.createFile(destinationPath	+ File.separator + fmd.getFileName(),	fmd.getFileContent());
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+										LOG.error(e.getMessage(), e);
+									}
+								}
 							}
 						} else {
 							boolean ok = ChartUtil.save(entityFile, chart);

@@ -321,6 +321,8 @@ public class ChartLayoutPanel extends JPanel {
             image = ImageUtil.getImageIcon("chart_line_main");
         } else if (ChartType.AREA == type) {
             image = ImageUtil.getImageIcon("chart_area_main");
+        } else if (ChartType.BUBBLE == type) {
+            image = ImageUtil.getImageIcon("chart_bubble_main");
         }
         
         

@@ -17,7 +17,9 @@
 package ro.nextreports.designer.action.report.layout.cell;
 
 import ro.nextreports.engine.util.ObjectCloner;
+import ro.nextreports.engine.band.BandElement;
 import ro.nextreports.engine.band.ImageBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 import ro.nextreports.engine.ReportLayout;
 
 import javax.swing.*;
@@ -36,6 +38,7 @@ import ro.nextreports.designer.util.I18NSupport;
 
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,11 +62,11 @@ public class ImageSizeAction extends AbstractAction {
 		SelectionModel selectionModel = grid.getSelectionModel();
 		
 		List<Cell> cells = selectionModel.getSelectedCells();
-		final List<ImageBandElement> olds = new ArrayList<ImageBandElement>();		
+		final List<BandElement> olds = new ArrayList<BandElement>();		
 		for (Cell cell : cells) {		
-			ImageBandElement ibe = (ImageBandElement)grid.getBandElement(cell.getRow(), cell.getColumn());
-			if (ibe != null) {
-				olds.add(ibe);
+			BandElement be = grid.getBandElement(cell.getRow(), cell.getColumn());
+			if ((be instanceof ImageBandElement) || (be instanceof ImageColumnBandElement)) {			
+				olds.add(be);
 			}
 		}
         final ReportLayout oldLayout = ObjectCloner.silenceDeepCopy(LayoutHelper.getReportLayout());
@@ -73,8 +76,14 @@ public class ImageSizeAction extends AbstractAction {
             public void run() {
             	int[] size =  new int[] {0,0};
             	for (int i=0, len = olds.size(); i<len; i++) {
-            		ImageBandElement oldElement = olds.get(i);
-            		int[] size2 = getRealImageSize(oldElement.getImage());
+            		BandElement oldElement = olds.get(i);
+            		int[] size2;
+            		if (oldElement instanceof ImageBandElement) {
+            			size2 = getRealImageSize(((ImageBandElement)oldElement).getImage());
+            		} else {
+            			// for ImageColumnBandElement we put a static actual size (we do not go to database to compute it)
+            			size2 = new int[] {50,50};
+            		}
             		if (i == 0) {
             			size = size2;
             		} else {
@@ -98,8 +107,16 @@ public class ImageSizeAction extends AbstractAction {
                         }
 
 						for (int i = 0, len = olds.size(); i < len; i++) {
-							olds.get(i).setWidth(panel.getImageWidth());
-							olds.get(i).setHeight(panel.getImageHeight());
+							BandElement be = olds.get(i);
+							if (be instanceof ImageBandElement) {
+								ImageBandElement ibe = (ImageBandElement)be;
+								ibe.setWidth(panel.getImageWidth());
+								ibe.setHeight(panel.getImageHeight());
+							} else {
+								ImageColumnBandElement icbe = (ImageColumnBandElement)be;
+								icbe.setWidth(panel.getImageWidth());
+								icbe.setHeight(panel.getImageHeight());
+							}
 						}
 
                         SelectionModelEvent selectionEvent = new SelectionModelEvent(Globals.getReportGrid().getSelectionModel(), false);
@@ -137,4 +154,5 @@ public class ImageSizeAction extends AbstractAction {
         }
         return size;
     }
+       
 }

@@ -405,6 +405,27 @@ public class FileUtil {
         
         return sb.toString();
     }
+    
+    public static void copyTemplateToClasspath(Report report) throws IOException {
+        copyTemplate(report, new File(ExportAction.REPORTS_DIR));
+    }
+    
+    public static void copyTemplate(Report report, File directory) throws IOException {
+        ReportLayout layout = LayoutHelper.getReportLayout();
+        if (report != null) {
+            // run report from tree (without open)
+            layout = report.getLayout();
+        }
+        String templateName = layout.getTemplateName();
+		if ((templateName != null) && !"".equals(templateName.trim())) {
+			String fromPath = Globals.getCurrentReportAbsolutePath();
+			if (fromPath == null) {
+				fromPath = Globals.getTreeReportAbsolutePath();
+			}						
+			FileUtil.copyToDir(new File(new File(fromPath).getParentFile().getAbsolutePath() + File.separator + templateName),
+						directory, true);			
+		}       
+    }
 
     public static void copyImagesToClasspath(Report report) throws IOException {
         copyImages(report, new File(ExportAction.REPORTS_DIR));

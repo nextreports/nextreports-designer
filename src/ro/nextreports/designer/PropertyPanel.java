@@ -42,12 +42,14 @@ import ro.nextreports.designer.property.ImagePropertyEditor;
 import ro.nextreports.designer.property.PaddingPropertyEditor;
 import ro.nextreports.designer.property.RowFormattingConditionsPropertyEditor;
 import ro.nextreports.designer.property.SqlPropertyEditor;
+import ro.nextreports.designer.property.TemplatePropertyEditor;
 import ro.nextreports.designer.util.I18NSupport;
 
 import ro.nextreports.engine.util.ObjectCloner;
 import ro.nextreports.engine.band.BandElement;
 import ro.nextreports.engine.band.FieldBandElement;
 import ro.nextreports.engine.band.ForReportBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 import ro.nextreports.engine.band.Padding;
 import ro.nextreports.engine.band.ColumnBandElement;
 import ro.nextreports.engine.band.HyperlinkBandElement;
@@ -75,6 +77,10 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
 
     private String PAGE_FORMAT_NAME = "PageFormat";
     private String PAGE_FORMAT_PARAM_NAME = I18NSupport.getString("property.page.format");
+    private String TEMPLATE_NAME = "TemplateName";
+    private String TEMPLATE_PARAM_NAME = I18NSupport.getString("property.template.name");
+    private String TEMPLATE_SHEET_NAME = "Sheet";
+    private String TEMPLATE_SHEET_PARAM_NAME = I18NSupport.getString("property.template.sheet");
     private String CUSTOM_PAGE_FORMAT_DEF_NAME = "CustomPageFormat";
     private String CUSTOM_PAGE_FORMAT_DEF_PARAM_NAME = I18NSupport.getString("property.page.custom");
     private String PAGE_PADDING_NAME = "PagePadding";
@@ -193,6 +199,14 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             List<Property> props = getReportProperties(LayoutHelper.getReportLayout());
             setProperties(props.toArray(new Property[props.size()]));
             return;
+        } else if (TEMPLATE_NAME.equals(propName)) {
+            String propValue = (String) prop.getValue();            
+            LayoutHelper.getReportLayout().setTemplateName(propValue);           
+            return;        
+        } else if (TEMPLATE_SHEET_NAME.equals(propName)) {
+            Integer propValue = (Integer) prop.getValue();            
+            LayoutHelper.getReportLayout().setTemplateSheet(propValue);           
+            return;    
         }  else if (CUSTOM_PAGE_FORMAT_DEF_NAME.equals(propName)) {
         	PaperSize propValue = (PaperSize) prop.getValue();            
             LayoutHelper.getReportLayout().setPaperSize(propValue);
@@ -270,10 +284,18 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
                     ((FieldBandElement) element).setPattern(propValue);
                 } else if (WIDTH_PARAM_NAME.equals(propName)) {
                     Integer propValue = (Integer) prop.getValue();
-                    ((ImageBandElement) element).setWidth(propValue);
+                    if (element instanceof ImageBandElement) {
+                    	((ImageBandElement) element).setWidth(propValue);
+                    } else {
+                    	((ImageColumnBandElement) element).setWidth(propValue);
+                    }
                 } else if (HEIGHT_PARAM_NAME.equals(propName)) {
                     Integer propValue = (Integer) prop.getValue();
-                    ((ImageBandElement) element).setHeight(propValue);
+                    if (element instanceof ImageBandElement) {
+                    	((ImageBandElement) element).setHeight(propValue);
+                    } else {
+                    	((ImageColumnBandElement) element).setHeight(propValue);
+                    }
                 } else if (URL_PARAM_NAME.equals(propName)) {
                     Hyperlink propValue = (Hyperlink) prop.getValue();
                     ((HyperlinkBandElement) element).setHyperlink(propValue);
@@ -436,7 +458,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             }
         //}
 
-        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        if ((reportGridCells.get(0).getValue() instanceof ImageBandElement) ||
+        	(reportGridCells.get(0).getValue() instanceof ImageColumnBandElement) )	{
             props.add(getWidthProperty());
             props.add(getHeightProperty());
         }
@@ -539,6 +562,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         props.add(getPagePaddingProperty(reportLayout));
         props.add(getHeaderProperty(reportLayout));
         props.add(getBackgroundImageProperty(reportLayout));
+        props.add(getTemplateProperty(reportLayout));
+        props.add(getTemplateSheetProperty(reportLayout));
         return props;
     }
     
@@ -593,7 +618,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         setOrientation(reportLayout.getOrientation(), orientationProp);
         editorRegistry.registerEditor(orientationProp, editor);
         return orientationProp;
-    }
+    }        
 
     private int getOrientation(String orientation) {
         if (LANDSCAPE.equals(orientation)) {
@@ -677,6 +702,26 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
          ImagePropertyEditor imageEditor = new ImagePropertyEditor();
          editorRegistry.registerEditor(imageProp, imageEditor);
          return imageProp;
+     }
+     
+     private Property getTemplateProperty(ReportLayout reportLayout) {
+         DefaultProperty templateProp = new DefaultProperty();
+         templateProp.setName(TEMPLATE_NAME);
+         templateProp.setDisplayName(TEMPLATE_PARAM_NAME);
+         templateProp.setType(String.class);
+         templateProp.setValue(reportLayout.getTemplateName());
+         TemplatePropertyEditor imageEditor = new TemplatePropertyEditor();
+         editorRegistry.registerEditor(templateProp, imageEditor);
+         return templateProp;
+     }
+     
+     private Property getTemplateSheetProperty(ReportLayout reportLayout) {
+         DefaultProperty sheetProp = new DefaultProperty();
+         sheetProp.setName(TEMPLATE_SHEET_NAME);
+         sheetProp.setDisplayName(TEMPLATE_SHEET_PARAM_NAME);
+         sheetProp.setType(Integer.class);
+         sheetProp.setValue(reportLayout.getTemplateSheet());
+         return sheetProp;
      }
 
     //// end report properties
@@ -890,7 +935,11 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         widthProp.setName(WIDTH_PARAM_NAME);
         widthProp.setDisplayName(WIDTH_PARAM_NAME);
         widthProp.setType(Integer.class);
-        widthProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getWidth());
+        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        	widthProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getWidth());
+        } else {
+        	widthProp.setValue(((ImageColumnBandElement) reportGridCells.get(0).getValue()).getWidth());
+        }
         if (Globals.getAccessibilityHtml()) {
             widthProp.setCategory(I18NSupport.getString("property.category.main"));
         }
@@ -905,7 +954,11 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         heightProp.setName(HEIGHT_PARAM_NAME);
         heightProp.setDisplayName(HEIGHT_PARAM_NAME);
         heightProp.setType(Integer.class);
-        heightProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getHeight());
+        if (reportGridCells.get(0).getValue() instanceof ImageBandElement) {
+        	heightProp.setValue(((ImageBandElement) reportGridCells.get(0).getValue()).getHeight());
+        } else {
+        	heightProp.setValue(((ImageColumnBandElement) reportGridCells.get(0).getValue()).getHeight());
+        }
         if (Globals.getAccessibilityHtml()) {
             heightProp.setCategory(I18NSupport.getString("property.category.main"));
         }

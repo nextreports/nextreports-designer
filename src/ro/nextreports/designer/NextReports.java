@@ -28,8 +28,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +55,7 @@ import org.apache.commons.logging.LogFactory;
 import ro.nextreports.designer.action.ExitAction;
 import ro.nextreports.designer.action.datasource.AddDataSourceAction;
 import ro.nextreports.designer.action.help.HelpMovieAction;
+import ro.nextreports.designer.action.help.SurveyAction;
 import ro.nextreports.designer.action.query.OpenQueryPerspectiveAction;
 import ro.nextreports.designer.action.report.OpenReportPerspectiveAction;
 import ro.nextreports.designer.action.report.WizardAction;
@@ -69,6 +74,7 @@ import ro.nextreports.designer.util.SplashScreen;
 import ro.nextreports.engine.EngineProperties;
 import ro.nextreports.engine.exporter.PdfExporter;
 import ro.nextreports.engine.querybuilder.sql.dialect.OracleDialect;
+import ro.nextreports.engine.util.DateUtil;
 import ro.nextreports.engine.util.FontUtil;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -246,6 +252,7 @@ public class NextReports  {
         // do not show start dialog if we start from server
         if (Globals.getServerUrl() == null) {        	
         	showStartDialog(true);
+        	showSurveyDialog();
         } else {        	
         	new NextReportsServerRequest();
         }
@@ -371,6 +378,63 @@ public class NextReports  {
         dialog.setResizable(false);
         Show.centrateComponent(Globals.getMainFrame(), dialog);
         dialog.setVisible(true);
+    }
+    
+    public static void showSurveyDialog() {
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    	
+        String initDate = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.INIT_DATE + "_" + ReleaseInfo.getVersion());
+        if (initDate == null) {
+        	ReporterPreferencesManager.getInstance().storeParameter(ReporterPreferencesManager.INIT_DATE + "_" + ReleaseInfo.getVersion(), df.format(new Date()));
+        } else {        	 
+        	
+        	String surveyTaken = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.SURVEY_TAKEN + "_" + ReleaseInfo.getVersion());
+        	if ("true".equals(surveyTaken)) {
+        		return;
+        	}
+        	
+        	Date currentDate = new Date();
+        	Date startDate = currentDate;
+        	try {
+				startDate = df.parse(initDate);
+			} catch (ParseException e) {
+				// should never happen
+				LOG.error("Survey: Parse INIT_DATE failed: " + initDate);				
+			}
+        	
+        	int[] array = DateUtil.getElapsedTime(startDate, currentDate);
+        	// ten days passed
+        	if ((array != null) && (array[0] >= 10)) {
+        		SurveyAction surveyAction = new SurveyAction();
+    	        VistaButton buttonSurvey = new VistaButton(surveyAction, I18NSupport.getString("start.panel.survey"));	        
+    	
+    	        List<VistaButton> list = new ArrayList<VistaButton>();
+    	        list.add(buttonSurvey);
+    	      
+    	        VistaDialogContent content = new VistaDialogContent(list, I18NSupport.getString("start.panel.survey.title"),
+    	                I18NSupport.getString("start.panel.survey.subtitle"));
+    	        VistaDialog dialog = new VistaDialog(content, Globals.getMainFrame(), true) {
+    	        	
+    				private static final long serialVersionUID = 1L;
+    	
+    				@Override
+    	            protected void beforeDispose() {	                
+    	                ReporterPreferencesManager.getInstance().storeParameter(ReporterPreferencesManager.SURVEY_TAKEN + "_" + ReleaseInfo.getVersion(), "true");
+    	            }
+    	            
+    	        };	        
+    	        dialog.selectButton(buttonSurvey);
+    	
+    	        dialog.setDispose(true);
+    	        dialog.setEscapeOption(true);
+    	
+    	        dialog.pack();
+    	        dialog.setResizable(false);
+    	        Show.centrateComponent(Globals.getMainFrame(), dialog);
+    	        dialog.setVisible(true);
+        	}
+        		        
+        }
     }
 
     void shutdown() {

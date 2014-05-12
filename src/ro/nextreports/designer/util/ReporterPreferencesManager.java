@@ -47,6 +47,8 @@ public class ReporterPreferencesManager {
     public static final String NEXT_REPORT_SPATH = "NEXT_REPORT_SPATH";
     public static final String NEXT_REPORT_EXPORT_PATH = "NEXT_REPORT_EXPORT_PATH";
     public static final String NEXT_REPORT_IMPORT_PATH = "NEXT_REPORT_IMPORT_PATH";
+    public static final String INIT_DATE = "INIT_DATE";
+    public static final String SURVEY_TAKEN = "SURVEY_TAKEN";
     private Class mainClass;
     private String userName;
     private String defaultLaf;

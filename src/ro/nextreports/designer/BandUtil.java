@@ -37,6 +37,7 @@ import ro.nextreports.engine.band.ColumnBandElement;
 import ro.nextreports.engine.band.FieldBandElement;
 import ro.nextreports.engine.band.FunctionBandElement;
 import ro.nextreports.engine.band.HyperlinkBandElement;
+import ro.nextreports.engine.band.ImageColumnBandElement;
 import ro.nextreports.engine.band.ParameterBandElement;
 import ro.nextreports.engine.band.ReportBandElement;
 import ro.nextreports.engine.band.RowElement;
@@ -193,6 +194,9 @@ public class BandUtil {
         } else  if (from instanceof ImageBandElement) {
             ImageBandElement ibe = (ImageBandElement) from;
             current = new ImageBandElement(ibe.getImage());
+        } else  if (from instanceof ImageColumnBandElement) {
+        	ImageColumnBandElement icbe = (ImageColumnBandElement) from;
+            current = new ImageColumnBandElement(icbe.getColumn());    
         }  else  if (from instanceof ReportBandElement) {
         	ReportBandElement ibe = (ReportBandElement) from;
             current = new ReportBandElement(ibe.getReport());

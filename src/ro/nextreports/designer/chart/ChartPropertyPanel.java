@@ -73,6 +73,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String STYLE_PARAM_NAME = I18NSupport.getString("property.chart.style");
     private String CHART_TRANSPARENCY = "CHART_TRANSPARENCY";
     private String TRANSPARENCY_PARAM_NAME = I18NSupport.getString("property.chart.transparency");
+    private String TOOLTIP_MESSAGE = "TOOLTIP_MESSAGE";
+    private String TOOLTIP_MESSAGE_PARAM_NAME = I18NSupport.getString("property.chart.message");
     private String CHART_FOREGROUND = "CHART_FOREGROUND";
     private String CHART_FOREGROUND_2 = "CHART_FOREGROUND_2";
     private String CHART_FOREGROUND_3 = "CHART_FOREGROUND_3";
@@ -156,6 +158,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String PIE = I18NSupport.getString("new.chart.pie");
     private String LINE = I18NSupport.getString("new.chart.line");
     private String AREA = I18NSupport.getString("new.chart.area");
+    private String BUBBLE = I18NSupport.getString("new.chart.bubble");
 
     private String STYLE_NORMAL = I18NSupport.getString("new.chart.style");
     private String STYLE_BAR_GLASS = I18NSupport.getString("new.chart.style.bar.glass");
@@ -265,6 +268,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             } else if (CHART_TRANSPARENCY.equals(propName)) {
                 String transparency = (String) prop.getValue();
                 chart.setTransparency(getTransparency(transparency));
+            } else if (TOOLTIP_MESSAGE.equals(propName)) {
+                String message = (String) prop.getValue();
+                chart.setTooltipMessage(message);    
             } else if (X_AXIS_COLOR.equals(propName)) {
                 Color color = (Color) prop.getValue();
                 chart.setxAxisColor(color);                                        
@@ -478,7 +484,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         textProp.setValue(chart.getTitle().getTitle());
         textProp.setCategory(I18NSupport.getString("property.category.chart.title"));
         return textProp;
-    }
+    }       
     
     private Property getYDynamicColumnQueryProperty() {
         DefaultProperty queryProp = new DefaultProperty();
@@ -576,6 +582,16 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         
         return foregroundProp;
     }
+    
+    private Property getTooltipMessageProperty() {
+        DefaultProperty textProp = new DefaultProperty();
+        textProp.setName(TOOLTIP_MESSAGE);
+        textProp.setDisplayName(TOOLTIP_MESSAGE_PARAM_NAME);
+        textProp.setType(String.class);
+        textProp.setValue(chart.getTooltipMessage());
+        textProp.setCategory(I18NSupport.getString("property.category.chart.main"));
+        return textProp;
+    }
 
     private Property getTypeProperty() {
         DefaultProperty typeProp = new DefaultProperty();
@@ -583,7 +599,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         typeProp.setDisplayName(TYPE_PARAM_NAME);
         typeProp.setType(String.class);
         ComboBoxPropertyEditor typeEditor = new ComboBoxPropertyEditor();
-        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA});
+        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA, BUBBLE});
         typeEditor.setAvailableIcons(new Icon[]{
                 ImageUtil.getImageIcon("chart_bar"),
                 ImageUtil.getImageIcon("chart_bar_combo"),
@@ -593,7 +609,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
                 ImageUtil.getImageIcon("chart_horizontal_stacked_bar"),
                 ImageUtil.getImageIcon("chart_pie"),
                 ImageUtil.getImageIcon("chart_line"),
-                ImageUtil.getImageIcon("chart_area")}); 
+                ImageUtil.getImageIcon("chart_area"),
+                ImageUtil.getImageIcon("chart_bubble")}); 
         JComboBox cb = (JComboBox)typeEditor.getCustomEditor();
         cb.setMaximumRowCount(10);
         ChartType chartType = chart.getType();
@@ -1075,8 +1092,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             props.add(getBackgroundProperty());
             props.add(getForegroundProperty());
             props.add(styleProperty = getStyleProperty());
+            props.add(getTooltipMessageProperty());
             props.add(getTransparencyProperty());
-            props.add(getMainFontProperty());
+            props.add(getMainFontProperty());            
         }
 
         if ((category & XCOLUMN_CATEGORY) == XCOLUMN_CATEGORY) {
@@ -1125,6 +1143,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             return new ChartType(ChartType.LINE);
         }  else if (AREA.equals(type)) {
             return new ChartType(ChartType.AREA);
+        }  else if (BUBBLE.equals(type)) {
+            return new ChartType(ChartType.BUBBLE);    
         } else {
             return new ChartType(ChartType.NONE);
         }
@@ -1160,6 +1180,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             case ChartType.AREA:
                 typeS = AREA;
                 break;
+            case ChartType.BUBBLE:
+                typeS = BUBBLE;
+                break;    
             default:
                 typeS = null;
                 break;

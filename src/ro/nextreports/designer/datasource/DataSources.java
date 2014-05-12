@@ -40,6 +40,9 @@ public class DataSources implements XStreamable, Serializable {
     }
 
     public ArrayList<DataSource> getList() {
+    	if (list == null) {
+    		return new ArrayList<DataSource>();
+    	}
         return list;
     }
 
