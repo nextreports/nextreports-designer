@@ -48,6 +48,9 @@ import ro.nextreports.engine.EngineProperties;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -289,22 +292,43 @@ public class RuntimeParametersPanel extends JPanel {
                         });
                     } else {
                         component = new JTextField(25);
-                        ((JTextField)component).addPropertyChangeListener(new PropertyChangeListener() {
-							@Override
-							public void propertyChange(PropertyChangeEvent evt) {	
-								Object value = null;								
-								try {
-									if ("".equals(((JTextField)component).getText().trim())) {
-										value = null;
-									} else {	
-										value = ParameterUtil.getParameterValueFromString(param.getValueClassName(),((JTextField)component).getText());			                    											
-									}
-									parameterSelection(pos, value);
-								} catch (Exception e) {
-									e.printStackTrace();
-									LOG.error(e.getMessage(), e);
-								}																	
-							}                        	
+                        ((JTextField)component).getDocument().addDocumentListener(new DocumentListener() {
+                        	
+                        	@Override
+                            public void changedUpdate(DocumentEvent e) {
+                                updateFromTextField(e);
+                            }
+
+                            @Override
+                            public void insertUpdate(DocumentEvent e) {
+                                updateFromTextField(e);
+                            }
+
+                            @Override
+                            public void removeUpdate(DocumentEvent e) {
+                                updateFromTextField(e);
+                            }
+
+                            private void updateFromTextField(DocumentEvent e) {
+                                java.awt.EventQueue.invokeLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                    	Object value = null;								
+        								try {
+        									if ("".equals(((JTextField)component).getText().trim())) {
+        										value = null;
+        									} else {	
+        										value = ParameterUtil.getParameterValueFromString(param.getValueClassName(),((JTextField)component).getText());			                    											
+        									}
+        									parameterSelection(pos, value);
+        								} catch (Exception e) {
+        									e.printStackTrace();
+        									LOG.error(e.getMessage(), e);
+        								}			
+                                    }
+                                });
+                            }
                         });
                     }
                 }
