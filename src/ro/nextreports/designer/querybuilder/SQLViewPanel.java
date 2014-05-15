@@ -21,9 +21,12 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -34,6 +37,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -50,6 +55,9 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 
 import org.apache.commons.logging.Log;
@@ -111,6 +119,8 @@ public class SQLViewPanel extends JPanel {
     private SQLStatusPanel statusPanel;
     private Thread executorThread;
     private Editor sqlEditor;
+    private javax.swing.text.Highlighter.HighlightPainter errorPainter;
+    private Object errorTag = null;
 
     private Action runAction;
 
@@ -123,9 +133,26 @@ public class SQLViewPanel extends JPanel {
     }
 
     private void initUI() {
-        sqlEditor = new Editor();
+        sqlEditor = new Editor() {
+        	 public void afterCaretMove() {
+        		 removeHighlightErrorLine();
+        	 }
+        };
         this.queryArea = sqlEditor.getEditorPanel().getEditorPane();
         queryArea.setText(DEFAULT_QUERY);
+        
+        errorPainter = new javax.swing.text.Highlighter.HighlightPainter() {										
+			@Override
+			public void paint(Graphics g, int p0, int p1, Shape bounds, JTextComponent c) {
+				try { 
+				    Rectangle r = c.modelToView(c.getCaretPosition()); 	
+					g.setColor(Color.RED.brighter().brighter()); 
+					g.fillRect(0, r.y, c.getWidth(), r.height);
+				} catch (BadLocationException e) {
+					// ignore
+				} 
+			} 
+        };
 
         ActionMap actionMap = sqlEditor.getEditorPanel().getEditorPane().getActionMap();
 
@@ -346,6 +373,8 @@ public class SQLViewPanel extends JPanel {
             executorThread = new Thread(new Runnable() {
 
                 public void run() {
+                	
+                	removeHighlightErrorLine();
 
                     if (MessageUtil.showReconnect()) {
                         return;
@@ -428,6 +457,7 @@ public class SQLViewPanel extends JPanel {
                         Show.dispose();  // close a possible previous dialog message
                         Show.info(Globals.getMainFrame(), I18NSupport.getString("query.cancelled"));
                     } catch (Exception e) {
+                    	highlightErrorLine(e);                    	
                         e.printStackTrace();
                         Show.error(Globals.getMainFrame(), I18NSupport.getString("error"), e);
                     } catch (Throwable t) {
@@ -450,6 +480,35 @@ public class SQLViewPanel extends JPanel {
             executorThread.setPriority(EngineProperties.getRunPriority());
             executorThread.start();
         }
+    }
+    
+    private void highlightErrorLine(Exception e) {
+    	removeHighlightErrorLine();
+    	// determine error line number, if any
+    	String er = e.getMessage();    	
+    	// error may contain line number info like " line 12" or " line 12, column 3 " ...
+    	String regex = ".*\\sline\\s(\\d+)([^\\d].*)*";
+    	Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(er);
+		// first found is line number
+		if (m.find()) {
+			String lineNo = m.group(1);
+			LOG.info("Error on line number : " + lineNo);			
+			Document ed = sqlEditor.getEditorPanel().getEditorPane().getDocument();  						
+			Element elem = ed.getDefaultRootElement().getElement(Integer.parseInt(lineNo)-1);
+			sqlEditor.getEditorPanel().getEditorPane().setCaretPosition(elem.getStartOffset());			
+			try {					
+				errorTag = sqlEditor.getEditorPanel().getEditorPane().getHighlighter().addHighlight(elem.getStartOffset(), elem.getEndOffset(), errorPainter);
+			} catch (BadLocationException e1) {
+				LOG.error("Could not highlight sql error line number", e1);
+			}		
+		}
+    }
+    
+    private void removeHighlightErrorLine() {
+    	if (errorTag != null) {
+			sqlEditor.getEditorPanel().getEditorPane().getHighlighter().removeHighlight(errorTag);			
+		}	
     }
 
     class SQLStopAction extends AbstractAction {

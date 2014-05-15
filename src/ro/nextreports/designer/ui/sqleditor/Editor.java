@@ -80,6 +80,7 @@ public class Editor extends JPanel implements CaretListener, KeyListener {
         int lineNumber = map.getElementIndex(caretPosition);
         int lineStartOffset = map.getElement(lineNumber).getStartOffset();
         statusBar.setRowAndColumn(lineNumber + 1, caretPosition - lineStartOffset + 1);
+        afterCaretMove();
     }
 
     /**
@@ -118,6 +119,9 @@ public class Editor extends JPanel implements CaretListener, KeyListener {
     }
 
     public void keyTyped(KeyEvent event) {
+    }
+    
+    public void afterCaretMove() {    	
     }
 
 }
