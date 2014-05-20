@@ -43,12 +43,12 @@ public class InsertExpressionAction extends AbstractAction {
     // isStatic = true  : means expression is in a static band
     //          = false : means expresion is in detail or group bands
     private boolean isStatic = false;
-    private boolean isFooter = false;
+    private boolean isHeaderOrFooter = false;
 
-    public InsertExpressionAction(boolean isStatic, boolean isFooter) {
+    public InsertExpressionAction(boolean isStatic, boolean isHeaderOrFooter) {
         super();
         this.isStatic = isStatic;
-        this.isFooter = isFooter;
+        this.isHeaderOrFooter = isHeaderOrFooter;
         putValue(Action.NAME, I18NSupport.getString("expression.insert"));
     }
 
@@ -67,7 +67,7 @@ public class InsertExpressionAction extends AbstractAction {
 
         ExpressionCellEditor editor = (ExpressionCellEditor)grid.getCellEditor(row, column);
         editor.setStatic(isStatic);
-        editor.setFooter(isFooter);
+        editor.setIsHeaderOrFooter(isHeaderOrFooter);
         editor.setBandName(BandUtil.getBand(LayoutHelper.getReportLayout(), selectionModel.getSelectedCell().getRow()).getName());
         grid.editCellAt(row, column, event);
     }

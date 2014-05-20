@@ -44,7 +44,7 @@ public class ExpressionCellEditor extends DefaultGridCellEditor {
     private ExpressionBandElement bandElement;
     private boolean isEdit = false;
     private boolean isStatic = false;
-    private boolean isFooter = false;
+    private boolean isHeaderOrFooter = false;    
     private String bandName = "";
 
     public ExpressionCellEditor() {
@@ -62,8 +62,10 @@ public class ExpressionCellEditor extends DefaultGridCellEditor {
                 isStatic = !(bandName.equals(ReportLayout.DETAIL_BAND_NAME) ||
                         bandName.startsWith(ReportLayout.GROUP_HEADER_BAND_NAME_PREFIX) ||
                         bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX));
-                isFooter = bandName.equals(ReportLayout.FOOTER_BAND_NAME) ||                
-                        bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX);
+                isHeaderOrFooter = bandName.equals(ReportLayout.FOOTER_BAND_NAME) ||                
+                        bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX) ||
+                        bandName.equals(ReportLayout.HEADER_BAND_NAME) ||                
+                        bandName.startsWith(ReportLayout.GROUP_HEADER_BAND_NAME_PREFIX);
             }
             editorComponent = new JLabel("...", JLabel.HORIZONTAL);
             delegate = new ExpressionDelegate();
@@ -76,8 +78,8 @@ public class ExpressionCellEditor extends DefaultGridCellEditor {
         isStatic = aStatic;
     }
     
-    public void setFooter(boolean _isFooter) {
-    	isFooter = _isFooter;
+    public void setIsHeaderOrFooter(boolean _isHeaderOrFooter) {
+    	isHeaderOrFooter = _isHeaderOrFooter;
     }
     
     public void setBandName(String bandName) {
@@ -87,7 +89,7 @@ public class ExpressionCellEditor extends DefaultGridCellEditor {
     class ExpressionDelegate extends EditorDelegate {
 
         ExpressionDelegate() {
-            panel = new ExpressionPanel(isStatic, isFooter, bandName, true);
+            panel = new ExpressionPanel(isStatic, isHeaderOrFooter, bandName, true);
             dialog = new BaseDialog(panel, I18NSupport.getString("expression.insert"), true) {
                 protected boolean ok() {
                     String expName = panel.getExpressionName();

@@ -215,12 +215,14 @@ public class ReportGrid extends JGrid implements GridModelListener {
                insertMenu.add(new InsertImageColumnAction());
                isStatic = false;
             }
-            boolean isFooter = false;
+            boolean isHeaderOrFooter = false;
             if (bandName.equals(ReportLayout.FOOTER_BAND_NAME) ||                
-                bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX) ) {               
-               isFooter = true;
+                bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX) ||                
+                bandName.startsWith(ReportLayout.HEADER_BAND_NAME) ||                
+                bandName.startsWith(ReportLayout.GROUP_HEADER_BAND_NAME_PREFIX) ) {               
+               isHeaderOrFooter = true;
             }
-            insertMenu.add(new InsertExpressionAction(isStatic, isFooter));
+            insertMenu.add(new InsertExpressionAction(isStatic, isHeaderOrFooter));
             if (bandName.startsWith(ReportLayout.GROUP_FOOTER_BAND_NAME_PREFIX) ||
                 bandName.equals(ReportLayout.FOOTER_BAND_NAME) ||
                 bandName.startsWith(ReportLayout.GROUP_HEADER_BAND_NAME_PREFIX) ||

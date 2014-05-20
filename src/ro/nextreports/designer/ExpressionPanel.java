@@ -80,22 +80,22 @@ public class ExpressionPanel extends JXPanel {
         this(isStatic, isFooter, bandName, true);
     }  
     
-    public ExpressionPanel(boolean isStatic, boolean isFooter, String bandName, boolean showName) {
+    public ExpressionPanel(boolean isStatic, boolean isHeaderOrFooter, String bandName, boolean showName) {
 
         if (!isStatic) {
             addColumns();
         }
-        if (isFooter) {
+        if (isHeaderOrFooter) {
         	addFunctions(bandName);
         }
         addVariables();
         addParameters();
         addOperators();
 
-        initUI(isStatic, isFooter, showName);
+        initUI(isStatic, isHeaderOrFooter, showName);
     }
 
-    private void initUI(boolean isStatic, boolean isFooter, boolean showName) {
+    private void initUI(boolean isStatic, boolean isHeaderOrFooter, boolean showName) {
         setLayout(new GridBagLayout());
         if (!isStatic) {
             columnList = new JXList(columnModel);
@@ -119,7 +119,7 @@ public class ExpressionPanel extends JXPanel {
             scrColumn.setBorder(new TitledBorder(I18NSupport.getString("expression.columns")));
         }
         
-        if (isFooter && (functionModel.size() > 0)) {
+        if (isHeaderOrFooter && (functionModel.size() > 0)) {
             functionList = new JXList(functionModel);
             functionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);       
             functionList.setCellRenderer(new FunctionCellRenderer());
@@ -220,7 +220,7 @@ public class ExpressionPanel extends JXPanel {
                     GridBagConstraints.BOTH, new Insets(0, 5, 5, 5), 0, 0));
             index++;
         } 
-        if (isFooter && (functionModel.size() > 0)) {
+        if (isHeaderOrFooter && (functionModel.size() > 0)) {
         	add(scrFunction, new GridBagConstraints(0, index, 1, 1, 0.1, 1.0, GridBagConstraints.WEST,
                     GridBagConstraints.BOTH, new Insets(0, 5, 5, 5), 0, 0));
             index++;
