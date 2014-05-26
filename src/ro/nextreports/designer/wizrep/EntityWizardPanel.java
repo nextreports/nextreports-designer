@@ -131,6 +131,7 @@ public class EntityWizardPanel extends WizardPanel {
         reportTypeCombo.addItem(WizardConstants.REPORT_TYPE_TABLE);
         reportTypeCombo.addItem(WizardConstants.REPORT_TYPE_ALARM);
         reportTypeCombo.addItem(WizardConstants.REPORT_TYPE_INDICATOR);
+        reportTypeCombo.addItem(WizardConstants.REPORT_TYPE_DISPLAY);
         reportTypeCombo.setRenderer(new ReportTypeRenderer());
         
         reportButton.addChangeListener(new ChangeListener() {
@@ -180,8 +181,10 @@ public class EntityWizardPanel extends WizardPanel {
             	return ResultExporter.TABLE_TYPE;
             } else if (WizardConstants.REPORT_TYPE_ALARM.equals(s)) {
             	return ResultExporter.ALARM_TYPE;
-            } if (WizardConstants.REPORT_TYPE_INDICATOR.equals(s)) {
+            } else if (WizardConstants.REPORT_TYPE_INDICATOR.equals(s)) {
             	return ResultExporter.INDICATOR_TYPE;
+            } else if (WizardConstants.REPORT_TYPE_DISPLAY.equals(s)) {
+            	return ResultExporter.DISPLAY_TYPE;	
             } else {
             	return ResultExporter.DEFAULT_TYPE;
             }

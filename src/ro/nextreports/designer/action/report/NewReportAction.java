@@ -46,6 +46,7 @@ import ro.nextreports.designer.util.Show;
 import ro.nextreports.engine.ReportLayout;
 import ro.nextreports.engine.condition.FormattingConditions;
 import ro.nextreports.engine.exporter.ResultExporter;
+import ro.nextreports.engine.exporter.util.DisplayData;
 import ro.nextreports.engine.exporter.util.IndicatorData;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.template.ReportTemplate;
@@ -68,6 +69,7 @@ public class NewReportAction extends AbstractAction {
     private FormattingConditions alarmConditions;
     private List<String> alarmMessages;
     private IndicatorData indicatorData;
+    private DisplayData displayData;
 
     public NewReportAction() {
 		this(false, true);
@@ -107,6 +109,10 @@ public class NewReportAction extends AbstractAction {
 
 	public void setIndicatorData(IndicatorData indicatorData) {
 		this.indicatorData = indicatorData;
+	}
+	
+	public void setDisplayData(DisplayData displayData) {
+		this.displayData = displayData;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -207,7 +213,13 @@ public class NewReportAction extends AbstractAction {
         } else if (reportType == ResultExporter.ALARM_TYPE) {
             reportLayout = ReportLayoutFactory.createAlarm(columnNames.get(0), alarmConditions, alarmMessages);
         } else if (reportType == ResultExporter.INDICATOR_TYPE) {
-            reportLayout = ReportLayoutFactory.createIndicator(columnNames.get(0), indicatorData);                
+            reportLayout = ReportLayoutFactory.createIndicator(columnNames.get(0), indicatorData);
+        } else if (reportType == ResultExporter.DISPLAY_TYPE) {
+        	String secondColumn = null;
+        	if (columnNames.size() > 1) {
+        		secondColumn = columnNames.get(1);
+        	}
+            reportLayout = ReportLayoutFactory.createDisplay(columnNames.get(0), secondColumn, displayData);                  
         } else {
         	reportLayout = ReportLayoutFactory.create(columnNames, title);
         }

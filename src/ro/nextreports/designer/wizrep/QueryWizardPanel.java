@@ -194,6 +194,8 @@ public class QueryWizardPanel extends WizardPanel {
         if (WizardConstants.ENTITY_REPORT.equals(entity)) {
         	if (reportType.equals(ResultExporter.ALARM_TYPE) || reportType.equals(ResultExporter.INDICATOR_TYPE)) {
         		return new SelectOneColumnWizardPanel();
+        	} else	if (reportType.equals(ResultExporter.DISPLAY_TYPE)) {
+        		return new SelectTwoColumnsWizardPanel();
         	} else {
         		return new SelectColumnsWizardPanel();
         	}

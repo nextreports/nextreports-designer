@@ -18,6 +18,7 @@ package ro.nextreports.designer.action.report;
 
 import ro.nextreports.engine.condition.FormattingConditions;
 import ro.nextreports.engine.exporter.ResultExporter;
+import ro.nextreports.engine.exporter.util.DisplayData;
 import ro.nextreports.engine.exporter.util.IndicatorData;
 import ro.nextreports.engine.template.ReportTemplate;
 import ro.nextreports.engine.Report;
@@ -109,6 +110,10 @@ public class NewReportFromQueryAction extends AbstractAction {
     
     public void setIndicator(IndicatorData indicatorData) {
     	reportAction.setIndicatorData(indicatorData);
+    }
+    
+    public void setDisplay(DisplayData displayData) {
+    	reportAction.setDisplayData(displayData);
     }
 
     public void setSave(boolean save) {

@@ -16,6 +16,7 @@
  */
 package ro.nextreports.designer;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import ro.nextreports.engine.condition.BandElementCondition;
 import ro.nextreports.engine.condition.ConditionalExpression;
 import ro.nextreports.engine.condition.FormattingConditions;
 import ro.nextreports.engine.exporter.ResultExporter;
+import ro.nextreports.engine.exporter.util.DisplayData;
 import ro.nextreports.engine.exporter.util.IndicatorData;
 
 /**
@@ -172,6 +174,65 @@ public class ReportLayoutFactory {
         ce.setPadding(new Padding(1,1,1,1));     
         ce.setForeground(data.getColor());
         row.add(ce);
+        
+        List<List<BandElement>> detailElements = new ArrayList<List<BandElement>>();        
+        detailElements.add(row);               
+        detailBand.setElements(detailElements);   
+
+		return reportLayout;
+	}
+	
+	private static Color parseStringToColor(String hexstring) { 
+		Integer i = Integer.parseInt(hexstring.substring(1),16); 
+		Color color = new Color(i); 
+		return color; 
+	}
+	
+	public static ReportLayout createDisplay(String column, String prevColumn, DisplayData data) {
+		ReportLayout reportLayout = new ReportLayout();
+		reportLayout.setReportType(ResultExporter.DISPLAY_TYPE);
+
+		Band headerBand = reportLayout.getHeaderBand();
+		List<List<BandElement>> headerElements = new ArrayList<List<BandElement>>();
+		List<BandElement> headerRow = new ArrayList<BandElement>(4);		
+
+		BandElement titleElem = new BandElement(data.getTitle());
+		titleElem.setForeground(parseStringToColor(data.getTitleColor()));
+		titleElem.setBackground(parseStringToColor(data.getBackground()));
+		headerRow.add(titleElem);
+		headerRow.add(new BandElement(String.valueOf(data.isShouldRise())));
+		headerRow.add(new BandElement(String.valueOf(data.isShadow())));	
+		headerRow.add(new BandElement(""));
+		
+		headerElements.add(headerRow);				
+		headerBand.setElements(headerElements);
+		
+		Band detailBand = reportLayout.getDetailBand();
+        List<BandElement> row = new ArrayList<BandElement>(4);
+        
+        BandElement valueElem = new ColumnBandElement(column);
+        valueElem.setPadding(new Padding(1,1,1,1));     
+        valueElem.setForeground(parseStringToColor(data.getValueColor()));
+        row.add(valueElem);
+        
+        if (prevColumn != null) {        
+	        BandElement previousElem = new ColumnBandElement(prevColumn);
+	        previousElem.setPadding(new Padding(1,1,1,1));     
+	        previousElem.setForeground(parseStringToColor(data.getPreviousColor()));
+	        row.add(previousElem);
+	        
+	        ExpressionBandElement upElem = new ExpressionBandElement("Up", "$C_" + column  +  " >= $C_" + prevColumn); 
+	        upElem.setPadding(new Padding(1,1,1,1)); 
+	        row.add(upElem);
+	        
+	        String percentExp = "if ( ($C_" + column + " == 0) ||  ($C_" + prevColumn + " == 0) ) { 0; }" + 
+	                            " else if ( $C_" + column + " >= $C_" + prevColumn + " ) { " + 
+	        		            "( $C_" + column + " - $C_" + prevColumn + " ) *100 / $C_" + column + ".doubleValue(); } " + 
+	                            "else { ( $C_" + prevColumn + " - $C_" + column + " ) *100 / $C_" + prevColumn + ".doubleValue(); }";
+	        ExpressionBandElement percentElem = new ExpressionBandElement("Up", percentExp); 
+	        percentElem.setPadding(new Padding(1,1,1,1)); 
+	        row.add(percentElem);
+        }
         
         List<List<BandElement>> detailElements = new ArrayList<List<BandElement>>();        
         detailElements.add(row);               

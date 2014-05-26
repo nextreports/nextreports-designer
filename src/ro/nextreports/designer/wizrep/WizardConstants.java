@@ -38,11 +38,13 @@ public class WizardConstants {
     public static final String ALARM_CONDITIONS = "ALARM_CONDITIONS";
     public static final String ALARM_MESSAGES = "ALARM_MESSAGES";
     public static final String INDICATOR_DATA = "INDICATOR_DATA";
+    public static final String DISPLAY_DATA = "DISPLAY_DATA";
     
     public static final String REPORT_TYPE = "REPORT_TYPE";
     public static final String REPORT_TYPE_DEFAULT = "default";
     public static final String REPORT_TYPE_TABLE = "table";
     public static final String REPORT_TYPE_ALARM = "alarm";
     public static final String REPORT_TYPE_INDICATOR = "indicator";
+    public static final String REPORT_TYPE_DISPLAY = "display";
 
 }

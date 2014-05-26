@@ -142,7 +142,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
     private String ALARM_TYPE = I18NSupport.getString("property.report.alarm");
     private String TABLE_TYPE = I18NSupport.getString("property.report.table");
     private String INDICATOR_TYPE = I18NSupport.getString("property.report.indicator");
-
+    private String DISPLAY_TYPE = I18NSupport.getString("property.report.display");
+    
     private String CENTER = I18NSupport.getString("property.allignment.center");
     private String LEFT = I18NSupport.getString("property.allignment.left");
     private String RIGHT = I18NSupport.getString("property.allignment.right");
@@ -647,7 +648,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         reportTypeProp.setDisplayName(REPORT_TYPE_PARAM_NAME);
         reportTypeProp.setType(String.class);
         ComboBoxPropertyEditor editor = new ComboBoxPropertyEditor();
-        editor.setAvailableValues(new String[] { DEFAULT_TYPE, ALARM_TYPE, TABLE_TYPE, INDICATOR_TYPE });
+        editor.setAvailableValues(new String[] { DEFAULT_TYPE, ALARM_TYPE, TABLE_TYPE, INDICATOR_TYPE, DISPLAY_TYPE });
         setReportType(reportLayout.getReportType(), reportTypeProp);
         editorRegistry.registerEditor(reportTypeProp, editor);
         return reportTypeProp;
@@ -660,6 +661,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             return ResultExporter.TABLE_TYPE;
         } else if (INDICATOR_TYPE.equals(type)){
             return ResultExporter.INDICATOR_TYPE;
+        } else if (DISPLAY_TYPE.equals(type)){
+            return ResultExporter.DISPLAY_TYPE;    
         } else {
         	return ResultExporter.DEFAULT_TYPE;
         }
@@ -677,6 +680,9 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             case ResultExporter.INDICATOR_TYPE:
             	typeS = INDICATOR_TYPE;
                 break;    
+            case ResultExporter.DISPLAY_TYPE:
+            	typeS = DISPLAY_TYPE;
+                break;        
             default:
             	typeS = DEFAULT_TYPE;
                 break;

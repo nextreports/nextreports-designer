@@ -22,6 +22,7 @@ import ro.nextreports.engine.util.NameType;
 import ro.nextreports.engine.chart.Chart;
 import ro.nextreports.engine.condition.FormattingConditions;
 import ro.nextreports.engine.exporter.ResultExporter;
+import ro.nextreports.engine.exporter.util.DisplayData;
 import ro.nextreports.engine.exporter.util.IndicatorData;
 import ro.nextreports.engine.template.ReportTemplate;
 import ro.nextreports.engine.queryexec.Query;
@@ -116,6 +117,9 @@ public class WizardUtil {
         } else if (ResultExporter.INDICATOR_TYPE == reportType) {
         	IndicatorData data = (IndicatorData)context.getAttribute(WizardConstants.INDICATOR_DATA);
         	action.setIndicator(data);
+        } else if (ResultExporter.DISPLAY_TYPE == reportType) {
+        	DisplayData data = (DisplayData)context.getAttribute(WizardConstants.DISPLAY_DATA);
+        	action.setDisplay(data);
         }
         action.setSave(true);
         action.setQueryName(report.getName());
