@@ -39,6 +39,7 @@ import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.chart.ChartUtil;
 import ro.nextreports.designer.chart.ChartWebServer;
 import ro.nextreports.designer.datasource.DataSource;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.ParameterManager;
 import ro.nextreports.designer.util.FileUtil;
 import ro.nextreports.designer.util.I18NSupport;
@@ -55,6 +56,8 @@ import ro.nextreports.engine.chart.ChartRunner;
 import ro.nextreports.engine.chart.ChartType;
 import ro.nextreports.engine.exporter.exception.NoDataFoundException;
 import ro.nextreports.engine.exporter.util.ParametersBean;
+import ro.nextreports.engine.i18n.I18nLanguage;
+import ro.nextreports.engine.i18n.I18nUtil;
 
 /**
  * User: mihai.panaitescu
@@ -101,7 +104,7 @@ public class PreviewChartAction extends AbstractAction {
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString(descKey));
         this.chartRunnerType = chartRunnerType;
         this.chartGraphicType = chartGraphicType;
-        loaded = true;
+        loaded = true;                
     }
 
     // called from Tree (chart not loaded in designer)
@@ -118,8 +121,10 @@ public class PreviewChartAction extends AbstractAction {
         this.chart = chart;
         if (!loaded) {
             oldParameters = ParameterManager.getInstance().getParameters();
-            ParameterManager.getInstance().setParameters(chart.getReport().getParameters());
+            ParameterManager.getInstance().setParameters(chart.getReport().getParameters());            
         }
+        I18nManager.getInstance().setKeys(chart.getI18nkeys());
+        I18nManager.getInstance().setLanguages(chart.getLanguages());
     }        
 
     public boolean isSupported() {
@@ -153,6 +158,10 @@ public class PreviewChartAction extends AbstractAction {
                 runner.setChart(chart);                
                 runner.setQueryTimeout(Globals.getQueryTimeout());
                 runner.setParameterValues(pBean.getParamValues());
+                I18nLanguage language = I18nUtil.getDefaultLanguage(chart);
+                if (language != null) {                	
+                	runner.setLanguage(language.getName());
+                }	
                 if (ChartRunner.IMAGE_FORMAT.equals(runner.getFormat())) {
                 	runner.setImagePath(Globals.USER_DATA_DIR + "/reports");
                 }

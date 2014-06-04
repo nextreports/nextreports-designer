@@ -41,6 +41,7 @@ import ro.nextreports.designer.datasource.DataSource;
 import ro.nextreports.designer.datasource.DataSourceManager;
 import ro.nextreports.designer.datasource.DefaultDataSourceManager;
 import ro.nextreports.designer.datasource.exception.NotFoundException;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.ParameterManager;
 import ro.nextreports.designer.template.report.TemplateManager;
 import ro.nextreports.designer.ui.wizard.WizardContext;
@@ -89,9 +90,10 @@ public class WizardUtil {
         }
     }
 
-    public static void resetParameters()  {
+    public static void resetParametersAndLanguages()  {
 //        System.out.println(">>> clear parameters");
         ParameterManager.getInstance().clearParameters();
+        I18nManager.getInstance().clear();
     }
 
     @SuppressWarnings("unchecked")

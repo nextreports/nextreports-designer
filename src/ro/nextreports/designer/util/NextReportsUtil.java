@@ -18,9 +18,12 @@ package ro.nextreports.designer.util;
 
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.util.ParameterUtil;
+import ro.nextreports.engine.util.ReportUtil;
+import ro.nextreports.engine.util.StringUtil;
 import ro.nextreports.engine.queryexec.Query;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.exporter.util.ParametersBean;
+import ro.nextreports.engine.i18n.I18nString;
 import ro.nextreports.engine.chart.Chart;
 
 import javax.swing.*;
@@ -45,11 +48,16 @@ import ro.nextreports.designer.querybuilder.QueryBuilderPanel;
 import ro.nextreports.designer.querybuilder.RuntimeParametersDialog;
 import ro.nextreports.designer.querybuilder.RuntimeParametersPanel;
 
+import java.text.Collator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -416,5 +424,33 @@ public class NextReportsUtil {
 			JOptionPane.showMessageDialog(Globals.getMainFrame(), I18NSupport.getString("inner.edit"));
 		}
 		return isInner;
+	}
+	
+	/**
+	 * Get i18n keys for current loaded report
+	 * 
+	 * @return a set of i18n keys
+	 */
+	public static List<String> getReportKeys() {
+		Set<String> keys = new TreeSet<String>();		
+		if (Globals.isReportLoaded()) {
+			keys.addAll(ReportUtil.getKeys(LayoutHelper.getReportLayout()));
+		}	
+		
+		List<QueryParameter> params = ParameterManager.getInstance().getParameters();
+		for (QueryParameter p : params) {
+			if (p.getRuntimeName().contains(I18nString.MARKUP)) {
+				keys.add(StringUtil.getKey(p.getRuntimeName()));
+			}
+		}		
+		List<String> result = new ArrayList(keys);
+		Collections.sort(result, new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {				
+				return Collator.getInstance().compare(o1, o2);
+			}
+		});
+		return result;				
 	}
 }

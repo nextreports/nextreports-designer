@@ -84,7 +84,7 @@ public class QueryWizardPanel extends WizardPanel {
         banner.setTitle(I18NSupport.getString("wizard.panel.step",3,5) + I18NSupport.getString("wizard.panel.query.title"));
         banner.setSubtitle(I18NSupport.getString("wizard.panel.query.subtitle", 
                 ParameterConstants.START_PARAM, ParameterConstants.END_PARAM ));
-        WizardUtil.resetParameters();
+        WizardUtil.resetParametersAndLanguages();
         init();        
     }
 

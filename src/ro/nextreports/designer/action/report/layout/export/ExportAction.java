@@ -22,6 +22,8 @@ import ro.nextreports.engine.exporter.util.ParametersBean;
 import ro.nextreports.engine.exporter.event.ExporterEvent;
 import ro.nextreports.engine.exporter.event.ExporterEventListener;
 import ro.nextreports.engine.exporter.exception.NoDataFoundException;
+import ro.nextreports.engine.i18n.I18nLanguage;
+import ro.nextreports.engine.i18n.I18nUtil;
 import ro.nextreports.engine.util.QueryUtil;
 import ro.nextreports.engine.util.DialectUtil;
 import ro.nextreports.engine.util.ReportUtil;
@@ -36,9 +38,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import ro.nextreports.designer.BandUtil;
+import ro.nextreports.designer.FormLoader;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.LayoutHelper;
 import ro.nextreports.designer.datasource.DataSource;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.ExportPropertiesDialog;
 import ro.nextreports.designer.querybuilder.ExportPropertiesPanel;
 import ro.nextreports.designer.querybuilder.ParameterManager;
@@ -99,13 +103,13 @@ public abstract class ExportAction extends AbstractAction {
     public ExportAction(Report report, boolean layoutSelection) {
         super();
         this.oldParameters = null;
-        this.report = report;
+        this.report = report;        
         if (report != null) {
             // a report is opened, we run a report from tree,
             // after running we must set the parameters of the opened report!
-            oldParameters = ParameterManager.getInstance().getParameters();
+            oldParameters = ParameterManager.getInstance().getParameters();            
         }
-        this.layoutSelection = layoutSelection;
+        this.layoutSelection = layoutSelection;        
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -315,7 +319,13 @@ public abstract class ExportAction extends AbstractAction {
         Connection con =  Globals.createTempConnection(Globals.getReportLayoutPanel().getRunDataSource());        
         ReportLayout convertedLayout = ReportUtil.getDynamicReportLayout(con, layout, pBean);
         
-        ResultExporter exporter = getResultExporter(new ExporterBean(con, Globals.getQueryTimeout(), qr, fos, convertedLayout, pBean, getReportName(), false, isProcedure));
+        
+        ExporterBean eb = new ExporterBean(con, Globals.getQueryTimeout(), qr, fos, convertedLayout, pBean, getReportName(), false, isProcedure);
+        I18nLanguage language = I18nUtil.getDefaultLanguage(layout);
+        if (language != null) {
+        	eb.setLanguage(language.getName());
+        }
+        ResultExporter exporter = getResultExporter(eb);
         exporter.setDocumentTitle(getReportName());
         exporter.addExporterEventListener(new ExporterEventListener() {
             public void notify(final ExporterEvent event) {
@@ -398,6 +408,6 @@ public abstract class ExportAction extends AbstractAction {
             return name;
         }
         return name.substring(0, index);
-    }
-
+    }        
+    
 }

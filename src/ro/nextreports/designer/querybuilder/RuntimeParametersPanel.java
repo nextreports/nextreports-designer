@@ -19,6 +19,7 @@ package ro.nextreports.designer.querybuilder;
 import ro.nextreports.engine.querybuilder.IdNameRenderer;
 import ro.nextreports.engine.util.comparator.IdNameComparator;
 import ro.nextreports.engine.util.ParameterUtil;
+import ro.nextreports.engine.util.StringUtil;
 
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -26,10 +27,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import ro.nextreports.designer.Globals;
+import ro.nextreports.designer.LayoutHelper;
 import ro.nextreports.designer.datasource.DataSource;
 import ro.nextreports.designer.datasource.exception.ConnectionException;
 import ro.nextreports.designer.dbviewer.common.InvalidSqlException;
 import ro.nextreports.designer.dbviewer.common.NextSqlException;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.JDateTimePicker;
 import ro.nextreports.designer.util.ListAddPanel;
@@ -410,6 +413,8 @@ public class RuntimeParametersPanel extends JPanel {
         String s = param.getRuntimeName();
         if ((s == null) || s.trim().equals("")) {
             s = param.getName();
+        } else {                    	
+            s = StringUtil.getI18nString(s, I18nManager.getInstance().getCurrentLanguage());                    
         }
         if (param.isMandatory()) {
             s = "* " + s;

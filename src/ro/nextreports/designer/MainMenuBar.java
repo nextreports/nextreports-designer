@@ -63,6 +63,7 @@ import ro.nextreports.designer.action.tools.RestoreAction;
 import ro.nextreports.designer.action.tools.RestoreDockingAction;
 import ro.nextreports.designer.action.tools.SettingsAction;
 import ro.nextreports.designer.datasource.DefaultDataSourceManager;
+import ro.nextreports.designer.i18n.action.ManageI18NAction;
 import ro.nextreports.designer.template.report.action.ApplyTemplateAction;
 import ro.nextreports.designer.template.report.action.CreateTemplateAction;
 import ro.nextreports.designer.template.report.action.ExtractTemplateAction;
@@ -104,6 +105,7 @@ public class MainMenuBar extends JMenuBar {
     private ApplyTemplateAction applyTemplateAction = new ApplyTemplateAction(true);
     private ExtractTemplateAction extractTemplateAction = new ExtractTemplateAction();
     private OpenLayoutPerspectiveAction openLayoutPersAction = new OpenLayoutPerspectiveAction();
+    private ManageI18NAction manageI18nAction = new ManageI18NAction();
     private NewChartAction newChartAction = new NewChartAction(false);
     private OpenChartAction openChartAction = new OpenChartAction(false);
     private NewChartFromQueryAction newChartFromQueryAction = new NewChartFromQueryAction(null, false);
@@ -157,6 +159,7 @@ public class MainMenuBar extends JMenuBar {
 
     public void enableLayoutPerspective(boolean enable) {
         openLayoutPersAction.setEnabled(enable);
+        manageI18nAction.setEnabled(enable);
     }
 
     private JMenu createFileMenu() {
@@ -275,6 +278,7 @@ public class MainMenuBar extends JMenuBar {
         mnu.addSeparator();
         mnu.add(new RestoreDockingAction());
         mnu.addSeparator();
+        mnu.add(manageI18nAction);
         mnu.add(createLanguageMenu());
         return mnu;
     }

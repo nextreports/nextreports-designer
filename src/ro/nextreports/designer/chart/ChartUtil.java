@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import ro.nextreports.designer.Globals;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.persistence.FileReportPersistence;
 import ro.nextreports.designer.querybuilder.DBObject;
 import ro.nextreports.designer.querybuilder.ParameterManager;
@@ -235,10 +236,14 @@ public class ChartUtil {
         if (chart == null) {
             chart = Globals.getChartDesignerPanel().getChart();
             chart.setVersion(ReleaseInfoAdapter.getVersionNumber());
-            chart.setName(getChartFileName(file));
+            chart.setName(getChartFileName(file));            
             Report query = ro.nextreports.designer.Globals.getMainFrame().getQueryBuilderPanel().createReport(file.getName());
             chart.setReport(query);
         }
+        System.out.println("----- set Keys = " + I18nManager.getInstance().getKeys());
+        System.out.println("----- set Languages = " + I18nManager.getInstance().getLanguages());
+        chart.setI18nkeys(I18nManager.getInstance().getKeys());
+        chart.setLanguages(I18nManager.getInstance().getLanguages());
         xstream.toXML(chart, fos);
         fos.close();
     }

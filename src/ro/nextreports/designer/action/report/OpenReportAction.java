@@ -27,6 +27,7 @@ import ro.nextreports.designer.FormSaver;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.ReportLayoutPanel;
 import ro.nextreports.designer.ReportLayoutUtil;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.BrowserDialog;
 import ro.nextreports.designer.querybuilder.BrowserPanel;
 import ro.nextreports.designer.querybuilder.DBObject;
@@ -43,6 +44,7 @@ import ro.nextreports.designer.util.UIActivator;
 
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.ReleaseInfoAdapter;
+import ro.nextreports.engine.i18n.I18nUtil;
 import ro.nextreports.engine.util.ReportUtil;
 
 /**
@@ -183,6 +185,8 @@ public class OpenReportAction extends AbstractAction {
                         });
                         return;
                     }
+                    
+                    I18nManager.getInstance().setCurrentLanguage(I18nUtil.getDefaultLanguage(report.getLayout()));    
 
                     // set current group index
                     ReportLayoutUtil.setCurrentGroupIndex(report.getLayout());

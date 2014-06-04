@@ -21,6 +21,7 @@ import ro.nextreports.engine.Report;
 import ro.nextreports.engine.util.NameType;
 import ro.nextreports.engine.util.NextChartUtil;
 import ro.nextreports.engine.chart.Chart;
+import ro.nextreports.engine.i18n.I18nUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.ReportLayoutUtil;
 import ro.nextreports.designer.action.query.OpenQueryPerspectiveAction;
 import ro.nextreports.designer.chart.ChartUtil;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.BrowserDialog;
 import ro.nextreports.designer.querybuilder.BrowserPanel;
 import ro.nextreports.designer.querybuilder.DBObject;
@@ -186,6 +188,10 @@ public class OpenChartAction extends AbstractAction {
                         });
                         return;
                     }
+                    
+                    I18nManager.getInstance().setKeys(chart.getI18nkeys());
+                    I18nManager.getInstance().setLanguages(chart.getLanguages());
+                    I18nManager.getInstance().setCurrentLanguage(I18nUtil.getDefaultLanguage(chart));    
 
                     final Report report = chart.getReport();
                     try {

@@ -52,6 +52,7 @@ import ro.nextreports.designer.chart.ChartPropertyPanel;
 import ro.nextreports.designer.datasource.DataSource;
 import ro.nextreports.designer.dbviewer.common.DBProcedure;
 import ro.nextreports.designer.dbviewer.common.DBProcedureColumn;
+import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.datatransfer.DBProcTransferable;
 import ro.nextreports.designer.querybuilder.datatransfer.DBTableTransferable;
 import ro.nextreports.designer.ui.GlobalHotkeyManager;
@@ -933,7 +934,7 @@ public class QueryBuilderPanel extends JXPanel {
                 }
                 params.put(paramName, param);
             }
-            //reportLayout.setColumnNames(ReportLayoutUtil.getSelectedColumnsForReport(reportLayout));
+            //reportLayout.setColumnNames(ReportLayoutUtil.getSelectedColumnsForReport(reportLayout));            
             LayoutHelper.setReportLayout(reportLayout);
             Globals.getReportLayoutPanel().updateUseSize();
             Globals.getReportLayoutPanel().removeEditor();
@@ -1009,6 +1010,7 @@ public class QueryBuilderPanel extends JXPanel {
         Globals.setCurrentChartName(null);
         Globals.setCurrentChartAbsolutePath(null);
         ParameterManager.getInstance().clearParameters();
+        I18nManager.getInstance().clear();
         parametersPanel.set(new ArrayList<QueryParameter>());
         selectDesignerTab();
     }
@@ -1037,7 +1039,7 @@ public class QueryBuilderPanel extends JXPanel {
 //			}
 //		}
 
-        report.setParameters(parameters);
+        report.setParameters(parameters);                
         return report;
     }
 
