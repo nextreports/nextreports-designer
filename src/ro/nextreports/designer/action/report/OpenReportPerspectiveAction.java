@@ -24,6 +24,7 @@ import javax.swing.Icon;
 
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.WorkspaceManager;
+import ro.nextreports.designer.querybuilder.QueryBuilderPanel;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ImageUtil;
 
@@ -47,7 +48,9 @@ public class OpenReportPerspectiveAction extends AbstractAction {
     		return;
     	}
                     	
-        //NextReportsUtil.reloadReportIfNecessary();
+        // refresh the query
+    	QueryBuilderPanel builderPanel = Globals.getMainFrame().getQueryBuilderPanel();            
+        builderPanel.refreshSql();
 
         WorkspaceManager.getInstance().setCurrentWorkspace(WorkspaceManager.REPORT_WORKSPACE);
     }

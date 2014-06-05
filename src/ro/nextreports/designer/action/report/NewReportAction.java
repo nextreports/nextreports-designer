@@ -26,6 +26,7 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
+import ro.nextreports.designer.Cache;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.GroupIndexGenerator;
 import ro.nextreports.designer.LayoutHelper;
@@ -50,7 +51,9 @@ import ro.nextreports.engine.exporter.util.DisplayData;
 import ro.nextreports.engine.exporter.util.IndicatorData;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.template.ReportTemplate;
+import ro.nextreports.engine.util.NameType;
 import ro.nextreports.engine.util.QueryUtil;
+import ro.nextreports.engine.util.ReportUtil;
 import ro.nextreports.engine.util.StringUtil;
 
 /**
@@ -176,7 +179,15 @@ public class NewReportAction extends AbstractAction {
 				params.put(paramName, param);
 			}
             if  (columnNames == null) {
-                columnNames = qu.getColumnNames(sql, params);
+            	String md5Key = Cache.getColumnsKey(sql);                
+                List<NameType> result = Cache.getColumns(md5Key);
+                if (result != null) {
+                	columnNames = ReportUtil.getColumnNames(result);                	
+                } else {
+                	 List<NameType> columns = qu.getColumns(sql, params);
+                	 Cache.setColumns(md5Key, columns);
+                	 columnNames = ReportUtil.getColumnNames(columns);    
+                }
             }
         } catch (Exception ex) {
 			Show.error(ex);

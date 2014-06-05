@@ -28,12 +28,14 @@ import java.sql.Connection;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.util.QueryUtil;
 import ro.nextreports.engine.util.NameType;
+import ro.nextreports.engine.util.ReportUtil;
 import ro.nextreports.engine.Report;
 import ro.nextreports.engine.ReportGroup;
 import ro.nextreports.engine.ReportLayout;
 import ro.nextreports.engine.exporter.util.variable.Variable;
 import ro.nextreports.engine.exporter.util.variable.VariableFactory;
 import ro.nextreports.engine.exporter.ResultExporter;
+
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
@@ -54,10 +56,10 @@ import ro.nextreports.designer.util.Show;
  * Time: 2:42:33 PM
  */
 public class ReportLayoutUtil {
-
+		 	
     public static List<NameType> getAllColumnsForReport(Report report) throws Exception {
         return getAllColumnsForReport(report, DefaultDataSourceManager.getInstance().getConnectedDataSource());
-    }
+    }        
 
     public static List<NameType> getAllColumnsForReport(Report report, DataSource ds) throws Exception {
 
@@ -84,9 +86,9 @@ public class ReportLayoutUtil {
 
         String sql;
         if (report == null) {
-            QueryBuilderPanel builderPanel = Globals.getMainFrame().getQueryBuilderPanel();
+            QueryBuilderPanel builderPanel = Globals.getMainFrame().getQueryBuilderPanel();            
             builderPanel.refreshSql();
-            sql = builderPanel.getUserSql();
+            sql = builderPanel.getUserSql();            
         } else {
             if (report.getSql() != null) {
                 sql = report.getSql();
@@ -123,7 +125,12 @@ public class ReportLayoutUtil {
     }
 
     public static List<NameType> getAllColumnsForSql(Report report, String sql, DataSource dataSource) throws Exception {
-        List<NameType> columns = new ArrayList<NameType>();
+        List<NameType> columns = new ArrayList<NameType>();    
+        String md5Key = Cache.getColumnsKey(sql);        
+        List<NameType> result = Cache.getColumns(md5Key);
+        if (result != null) {        	
+        	return result;
+        }
         Connection con = null;
         try {
             con = Globals.createTempConnection(dataSource);
@@ -146,17 +153,23 @@ public class ReportLayoutUtil {
                 }
             }
             columns = qu.getColumns(sql, params);
+            Cache.setColumns(md5Key, columns);
         } finally {
             if (con != null) {
                 con.close();
             }
-        }
+        }       
         return columns;
     }
 
     public static List<String> getAllColumnTypesForReport(String sql) throws Exception {
         List<String> columnTypes = new ArrayList<String>();
         Connection con = null;
+        String md5Key = Cache.getColumnsKey(sql);        
+        List<NameType> result = Cache.getColumns(md5Key);
+        if (result != null) {        	
+        	return ReportUtil.getColumnNames(result);
+        }
         try {
             con = Globals.createTempConnection(
                     DefaultDataSourceManager.getInstance().getConnectedDataSource());
@@ -172,7 +185,9 @@ public class ReportLayoutUtil {
                 }
                 params.put(paramName, param);
             }
-            columnTypes = qu.getColumnTypes(sql, params);
+            List <NameType>  columns = qu.getColumns(sql, params);
+            columnTypes = ReportUtil.getColumnNames(columns);
+            Cache.setColumns(md5Key, columns);
         } finally {
             if (con != null) {
                 con.close();
@@ -184,6 +199,11 @@ public class ReportLayoutUtil {
 
     public static List<NameType> getAllColumnsForReport(String sql) throws Exception {
         List<NameType> columnTypes = new ArrayList<NameType>();
+        String md5Key = Cache.getColumnsKey(sql);
+        List<NameType> result = Cache.getColumns(md5Key);
+        if (result != null) {        	
+        	return result;
+        }
         Connection con = null;
         try {
             con = Globals.createTempConnection(
@@ -201,12 +221,12 @@ public class ReportLayoutUtil {
                 params.put(paramName, param);
             }
             columnTypes = qu.getColumns(sql, params);
+            Cache.setColumns(md5Key, columnTypes);
         } finally {
             if (con != null) {
                 con.close();
             }
-        }
-
+        }       
         return columnTypes;
     }
 
@@ -221,7 +241,12 @@ public class ReportLayoutUtil {
     }
 
     public static String getColumnTypeForReportColumn(String sql, String column) throws Exception {
-        Connection con = null;
+        Connection con = null;  
+        String md5Key = Cache.getColumnsKey(sql);        
+        List<NameType> result = Cache.getColumns(md5Key);
+        if (result != null) {        	
+        	return getColumnTypeByName(column, result);
+        }
         try {
             con = Globals.createTempConnection(
                     DefaultDataSourceManager.getInstance().getConnectedDataSource());
@@ -237,12 +262,23 @@ public class ReportLayoutUtil {
                 }
                 params.put(paramName, param);
             }
-            return qu.getColumnType(sql, params, column);
+            List<NameType> columns = qu.getColumns(sql, params);
+            Cache.setColumns(md5Key, columns);
+            return getColumnTypeByName(column, columns);
         } finally {
             if (con != null) {
                 con.close();
             }
         }        
+    }
+    
+    private static String getColumnTypeByName(String columnName, List<NameType> list) {
+    	for (NameType nt : list) {
+			if (nt.getName().equalsIgnoreCase(columnName)) {
+				return nt.getType();
+			}
+		}
+    	return null;
     }
 
     public static void setCurrentGroupIndex(ReportLayout layout) {
