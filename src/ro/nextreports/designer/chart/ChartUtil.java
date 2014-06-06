@@ -24,6 +24,7 @@ import ro.nextreports.engine.ReleaseInfoAdapter;
 import ro.nextreports.engine.exporter.util.function.FunctionFactory;
 import ro.nextreports.engine.util.ParameterUtil;
 import ro.nextreports.engine.util.ReportUtil;
+import ro.nextreports.engine.util.StringUtil;
 import ro.nextreports.engine.queryexec.QueryParameter;
 import ro.nextreports.engine.queryexec.Query;
 import com.thoughtworks.xstream.XStream;
@@ -345,6 +346,39 @@ public class ChartUtil {
 			}
 		}
 		return result;
+    }
+    
+    public static List<String> getKeys(Chart chart) {
+    	List<String> result = new ArrayList<String>();
+    	String key = StringUtil.getKey(chart.getTitle().getTitle());
+    	if (key != null) {
+    		result.add(key);
+    	}
+    	
+    	key = StringUtil.getKey(chart.getXLegend().getTitle());
+    	if (key != null) {
+    		result.add(key);
+    	}
+    	
+    	key = StringUtil.getKey(chart.getYLegend().getTitle());
+    	if (key != null) {
+    		result.add(key);
+    	}
+    	
+    	for (String s : chart.getYColumnsLegends()) {
+	    	key = StringUtil.getKey(s);
+	    	if (key != null) {
+	    		result.add(key);
+	    	}
+    	}
+    	
+    	for (String keyS : StringUtil.getKeys(chart.getTooltipMessage())) {
+    		if (keyS != null) {
+    			result.add(keyS);
+    		}
+    	}
+    	
+    	return result;
     }
     
 }

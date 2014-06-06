@@ -435,7 +435,13 @@ public class NextReportsUtil {
 		Set<String> keys = new TreeSet<String>();		
 		if (Globals.isReportLoaded()) {
 			keys.addAll(ReportUtil.getKeys(LayoutHelper.getReportLayout()));
-		}	
+		} else if (Globals.isChartLoaded()) {
+			 String loadedFilePath = Globals.getCurrentChartAbsolutePath();		        
+		     if (loadedFilePath != null) {
+		         Chart chartLoaded = ChartUtil.loadChart(loadedFilePath);
+		         keys.addAll(ChartUtil.getKeys(chartLoaded));
+		     }       
+		}
 		
 		List<QueryParameter> params = ParameterManager.getInstance().getParameters();
 		for (QueryParameter p : params) {
