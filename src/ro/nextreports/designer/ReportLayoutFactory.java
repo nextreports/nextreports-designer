@@ -225,7 +225,7 @@ public class ReportLayoutFactory {
 	        upElem.setPadding(new Padding(1,1,1,1)); 
 	        row.add(upElem);
 	        
-	        String percentExp = "if ( ($C_" + column + " == 0) ||  ($C_" + prevColumn + " == 0) ) { 0; }" + 
+	        String percentExp = "if ( ($C_" + column + " == 0) ||  ($C_" + prevColumn + " == 0) || ($C_" + column + " == null) ||  ($C_" + prevColumn + " == null) ) { 0; }" + 
 	                            " else if ( $C_" + column + " >= $C_" + prevColumn + " ) { " + 
 	        		            "( $C_" + column + " - $C_" + prevColumn + " ) *100 / $C_" + column + ".doubleValue(); } " + 
 	                            "else { ( $C_" + prevColumn + " - $C_" + column + " ) *100 / $C_" + prevColumn + ".doubleValue(); }";
