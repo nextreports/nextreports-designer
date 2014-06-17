@@ -122,12 +122,12 @@ public class ReportLayoutFactory {
         return reportLayout;
     }
     
-    public static ReportLayout createAlarm(String column, FormattingConditions formattingConditions, List<String> messages) {
+    public static ReportLayout createAlarm(String column, FormattingConditions formattingConditions, List<String> messages, boolean shadow) {
     	ReportLayout reportLayout = new ReportLayout();
     	reportLayout.setReportType(ResultExporter.ALARM_TYPE);
         
         Band detailBand = reportLayout.getDetailBand();
-        List<BandElement> row = new ArrayList<BandElement>(2);
+        List<BandElement> row = new ArrayList<BandElement>(3);
         
         BandElement ce = new ColumnBandElement(column);
         ce.setPadding(new Padding(1,1,1,1));
@@ -137,6 +137,8 @@ public class ReportLayoutFactory {
         BandElement ee = new ExpressionBandElement("Expr", getAlarmExpressionText(column, formattingConditions, messages));
         ee.setPadding(new Padding(1,1,1,1));        
         row.add(ee);
+        
+        row.add(new BandElement(String.valueOf(shadow)));
                 
         List<List<BandElement>> detailElements = new ArrayList<List<BandElement>>();        
         detailElements.add(row);               
@@ -151,16 +153,18 @@ public class ReportLayoutFactory {
 
 		Band headerBand = reportLayout.getHeaderBand();
 		List<List<BandElement>> headerElements = new ArrayList<List<BandElement>>();
-		List<BandElement> firstHeaderRow = new ArrayList<BandElement>(3);
-		List<BandElement> secondHeaderRow = new ArrayList<BandElement>(3);
+		List<BandElement> firstHeaderRow = new ArrayList<BandElement>(4);
+		List<BandElement> secondHeaderRow = new ArrayList<BandElement>(4);
 
 		firstHeaderRow.add(new BandElement(data.getTitle()));
 		firstHeaderRow.add(new BandElement(data.getDescription()));
 		firstHeaderRow.add(new BandElement(data.getUnit()));
+		firstHeaderRow.add(new BandElement(String.valueOf(data.isShadow())));
 		
 		secondHeaderRow.add(new BandElement(String.valueOf(data.getMin())));
 		secondHeaderRow.add(new BandElement(String.valueOf(data.getMax())));
 		secondHeaderRow.add(new BandElement(String.valueOf(data.isShowMinMax())));
+		secondHeaderRow.add(new BandElement(""));
 		
 		headerElements.add(firstHeaderRow);
 		headerElements.add(secondHeaderRow);

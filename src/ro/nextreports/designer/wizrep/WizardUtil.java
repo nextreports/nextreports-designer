@@ -115,7 +115,8 @@ public class WizardUtil {
         if (ResultExporter.ALARM_TYPE == reportType) {        	
         	FormattingConditions alarmConditions = (FormattingConditions)context.getAttribute(WizardConstants.ALARM_CONDITIONS);		 
    		 	List<String> alarmMessages = (List<String>)context.getAttribute(WizardConstants.ALARM_MESSAGES);
-        	action.setAlarm(alarmConditions, alarmMessages);        	 
+   		 	Boolean shadow = (Boolean)context.getAttribute(WizardConstants.ALARM_SHADOW);
+        	action.setAlarm(alarmConditions, alarmMessages, shadow);        	 
         } else if (ResultExporter.INDICATOR_TYPE == reportType) {
         	IndicatorData data = (IndicatorData)context.getAttribute(WizardConstants.INDICATOR_DATA);
         	action.setIndicator(data);

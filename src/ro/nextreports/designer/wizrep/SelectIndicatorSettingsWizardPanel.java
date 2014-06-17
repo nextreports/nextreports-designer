@@ -42,6 +42,7 @@ public class SelectIndicatorSettingsWizardPanel extends WizardPanel {
 	
 	private JTextField titleField;
 	private JTextField descField;
+	private JCheckBox shadow;
 	private JTextField unitField;
 	private JTextField minField;
 	private JTextField maxField;
@@ -149,6 +150,7 @@ public class SelectIndicatorSettingsWizardPanel extends WizardPanel {
 		maxField.setMinimumSize(txtDim);
 		
 		showMinMax = new JCheckBox(I18NSupport.getString("wizard.panel.indicator.data.show"));
+		shadow = new JCheckBox(I18NSupport.getString("wizard.panel.display.shadow"));
 		
 		JLabel colorLabel = new JLabel(I18NSupport.getString("wizard.panel.indicator.data.color"));
 		colorField = new JTextField();
@@ -199,11 +201,13 @@ public class SelectIndicatorSettingsWizardPanel extends WizardPanel {
 				GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		add(showMinMax, new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		add(colorLabel, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
+		add(shadow, new GridBagConstraints(0, 6, 2, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));		
+		add(colorLabel, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		add(colorField, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
+		add(colorField, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-		add(colorButton, new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
+		add(colorButton, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 	}
 	
@@ -215,6 +219,8 @@ public class SelectIndicatorSettingsWizardPanel extends WizardPanel {
 		data.setMin(Integer.parseInt(minField.getText()));
 		data.setMax(Integer.parseInt(maxField.getText()));
 		data.setColor(new Color(Integer.parseInt(colorField.getText())));
+		data.setShowMinMax(showMinMax.isSelected());
+		data.setShadow(shadow.isSelected());
 		return data;
 	}
 

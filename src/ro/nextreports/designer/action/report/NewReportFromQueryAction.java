@@ -104,8 +104,8 @@ public class NewReportFromQueryAction extends AbstractAction {
         putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("new.report.from.query.desc"));
     }
     
-    public void setAlarm(FormattingConditions alarmConditions, List<String> alarmMessages) {
-    	reportAction.setAlarm(alarmConditions, alarmMessages);
+    public void setAlarm(FormattingConditions alarmConditions, List<String> alarmMessages, boolean alarmShadow) {
+    	reportAction.setAlarm(alarmConditions, alarmMessages, alarmShadow);
     }
     
     public void setIndicator(IndicatorData indicatorData) {

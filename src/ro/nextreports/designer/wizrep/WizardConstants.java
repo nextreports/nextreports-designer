@@ -37,6 +37,7 @@ public class WizardConstants {
     public static final String CHART_Y_COLUMNS = "CHART_Y_COLUMN";
     public static final String ALARM_CONDITIONS = "ALARM_CONDITIONS";
     public static final String ALARM_MESSAGES = "ALARM_MESSAGES";
+    public static final String ALARM_SHADOW = "ALARM_SHADOW";
     public static final String INDICATOR_DATA = "INDICATOR_DATA";
     public static final String DISPLAY_DATA = "DISPLAY_DATA";
     

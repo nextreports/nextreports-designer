@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -47,6 +48,7 @@ public class SelectAlarmSettingsWizardPanel extends WizardPanel {
 	private FormattingConditionsPanel panel;
 	private DefaultListModel model;
 	private JList list;
+	private JCheckBox shadow;
 	private Dimension dim = new Dimension(100, 200);
 	
 	public SelectAlarmSettingsWizardPanel() {
@@ -96,6 +98,7 @@ public class SelectAlarmSettingsWizardPanel extends WizardPanel {
 		}
 		context.setAttribute(WizardConstants.ALARM_CONDITIONS, panel.getFinalRenderConditions());		 
 		context.setAttribute(WizardConstants.ALARM_MESSAGES, getMessages());
+		context.setAttribute(WizardConstants.ALARM_SHADOW, shadow.isSelected());
 		 		
 		WizardUtil.openReport(context, null);        
         return true;
@@ -107,6 +110,8 @@ public class SelectAlarmSettingsWizardPanel extends WizardPanel {
 	
 	private void init() {
 		setLayout(new GridBagLayout());        
+		
+		shadow = new JCheckBox(I18NSupport.getString("wizard.panel.display.shadow"));
 		
 		panel = new FormattingConditionsPanel(null, I18NSupport.getString("wizard.panel.alarm.conditions.name"));
 
@@ -186,7 +191,9 @@ public class SelectAlarmSettingsWizardPanel extends WizardPanel {
                 GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
         add(scrollPane, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
                 GridBagConstraints.BOTH, new Insets(0, 5, 5, 5), 0, 0));
-        add(imageLabel, new GridBagConstraints(1, 0, 1, 3, 0.0, 0.0,
+        add(shadow, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+        add(imageLabel, new GridBagConstraints(1, 0, 1, 4, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(5, 0, 5, 5), 0, 0));
 	}

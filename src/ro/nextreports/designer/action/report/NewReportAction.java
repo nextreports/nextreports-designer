@@ -71,6 +71,7 @@ public class NewReportAction extends AbstractAction {
     
     private FormattingConditions alarmConditions;
     private List<String> alarmMessages;
+    private boolean alarmShadow;
     private IndicatorData indicatorData;
     private DisplayData displayData;
 
@@ -105,9 +106,10 @@ public class NewReportAction extends AbstractAction {
 		putValue(Action.LONG_DESCRIPTION, I18NSupport.getString("new.report.desc"));
 	}
     
-    public void setAlarm(FormattingConditions alarmConditions, List<String> alarmMessages) {
+    public void setAlarm(FormattingConditions alarmConditions, List<String> alarmMessages, boolean alarmShadow) {
     	this.alarmConditions = alarmConditions;
     	this.alarmMessages = alarmMessages;
+    	this.alarmShadow = alarmShadow;
     }        
 
 	public void setIndicatorData(IndicatorData indicatorData) {
@@ -222,7 +224,7 @@ public class NewReportAction extends AbstractAction {
         if (reportType == ResultExporter.TABLE_TYPE) {
         	reportLayout = ReportLayoutFactory.createTable(columnNames);        
         } else if (reportType == ResultExporter.ALARM_TYPE) {
-            reportLayout = ReportLayoutFactory.createAlarm(columnNames.get(0), alarmConditions, alarmMessages);
+            reportLayout = ReportLayoutFactory.createAlarm(columnNames.get(0), alarmConditions, alarmMessages, alarmShadow);
         } else if (reportType == ResultExporter.INDICATOR_TYPE) {
             reportLayout = ReportLayoutFactory.createIndicator(columnNames.get(0), indicatorData);
         } else if (reportType == ResultExporter.DISPLAY_TYPE) {
