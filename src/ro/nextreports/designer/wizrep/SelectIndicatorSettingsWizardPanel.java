@@ -181,7 +181,7 @@ public class SelectIndicatorSettingsWizardPanel extends WizardPanel {
 				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		add(titleField, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-		add(imageLabel, new GridBagConstraints(3, 0, 1, 8, 1.0, 1.0,  GridBagConstraints.CENTER, 
+		add(imageLabel, new GridBagConstraints(3, 0, 1, 9, 1.0, 1.0,  GridBagConstraints.CENTER, 
 				GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
 		add(descLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,  GridBagConstraints.WEST, 
 				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
