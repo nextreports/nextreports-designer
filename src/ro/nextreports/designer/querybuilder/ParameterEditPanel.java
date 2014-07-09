@@ -80,7 +80,9 @@ public class ParameterEditPanel extends JPanel {
 
     public ParameterEditPanel(QueryParameter parameter) {
         this.parameter = parameter;
-        this.schema = parameter.getSchema();
+        if (parameter != null) {
+        	this.schema = parameter.getSchema();
+        }
         initUI();
     }
 
