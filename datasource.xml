@@ -1,4 +1,4 @@
-<datasources version="6.2">
+<datasources version="7.2">
   <datasource>
     <name>Demo</name>
     <type>Derby Embedded</type>
