@@ -63,7 +63,7 @@ public class ReportCellEditor extends DefaultGridCellEditor {
     class ReportDelegate extends EditorDelegate {
 
     	ReportDelegate() {
-    		browser = new BrowserPanel(BrowserPanel.REPORT_BROWSER);
+    		browser = new BrowserPanel(BrowserPanel.REPORT_BROWSER, false);
             dialog = new BrowserDialog(browser);
             dialog.pack();
             dialog.setResizable(false);

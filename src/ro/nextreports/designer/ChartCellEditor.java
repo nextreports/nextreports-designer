@@ -57,7 +57,7 @@ public class ChartCellEditor extends DefaultGridCellEditor {
     class ChartDelegate extends EditorDelegate {
 
     	ChartDelegate() {
-    		browser = new BrowserPanel(BrowserPanel.CHART_BROWSER);
+    		browser = new BrowserPanel(BrowserPanel.CHART_BROWSER, false);
             dialog = new BrowserDialog(browser);
             dialog.pack();
             dialog.setResizable(false);

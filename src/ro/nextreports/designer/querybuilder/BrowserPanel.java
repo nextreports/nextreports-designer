@@ -36,12 +36,16 @@ public class BrowserPanel extends JPanel {
     private Dimension scrDim = new Dimension(300, 200);
 
     public BrowserPanel(byte type) {
+        this(type, true);
+    }
+    
+    public BrowserPanel(byte type, boolean registerDoubleClick) {
         this.type=type;
         setLayout(new BorderLayout());
         if (type == REPORT_BROWSER) {
-            dbBrowserTree = new DBBrowserTree(DBObject.REPORTS_GROUP);
+            dbBrowserTree = new DBBrowserTree(DBObject.REPORTS_GROUP, registerDoubleClick);
         } else {
-           dbBrowserTree = new DBBrowserTree(DBObject.CHARTS_GROUP);
+           dbBrowserTree = new DBBrowserTree(DBObject.CHARTS_GROUP, registerDoubleClick);
         }
         JScrollPane scroll = new JScrollPane(dbBrowserTree);
         scroll.setPreferredSize(scrDim);
