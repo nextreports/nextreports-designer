@@ -1,10 +1,4 @@
-<drivers version="6.2">
-  <driver>    
-    <type>NextReports Server</type>
-    <className>ro.nextreports.server.api.client.jdbc.Driver</className>
-    <urlTemplate>jdbc:nextreports:@&lt;server&gt;;&lt;datasource&gt;</urlTemplate>    
-    <defaultPort>8081</defaultPort> 
-  </driver>
+<drivers version="7.2">  
   <driver>    
     <type>Oracle</type>
     <className>oracle.jdbc.driver.OracleDriver</className>
@@ -75,4 +69,10 @@
 	<urlTemplate>jdbc:vertica://&lt;server&gt;:&lt;port&gt;/&lt;database&gt;</urlTemplate>
 	<defaultPort>5433</defaultPort>	
   </driver> 
+  <driver>    
+    <type>NextReports Server</type>
+    <className>ro.nextreports.server.api.client.jdbc.Driver</className>
+    <urlTemplate>jdbc:nextreports:@&lt;server&gt;;&lt;datasource&gt;</urlTemplate>    
+    <defaultPort>8081</defaultPort> 
+  </driver>
 </drivers>

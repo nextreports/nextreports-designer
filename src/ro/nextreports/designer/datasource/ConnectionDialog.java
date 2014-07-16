@@ -87,7 +87,7 @@ public class ConnectionDialog extends JDialog implements ActionListener, ItemLis
     private Dimension buttonDim = new Dimension(20, 20);
 
     private final String STATUS = I18NSupport.getString("connection.dialog.status");
-    private final String DEFAULT_DRIVER_TYPE = "NextReports Server";
+    private final String DEFAULT_DRIVER_TYPE = "Oracle";
     private Color backColor;
 
     private List<DriverTemplate> templates;
