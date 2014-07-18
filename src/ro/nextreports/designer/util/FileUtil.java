@@ -550,8 +550,21 @@ public class FileUtil {
                 	// try to open with java Desktop                	
                 	try {
 						java.awt.Desktop.getDesktop().open(new File(name));
-					} catch (Throwable t1) {							
-	                    Show.error(I18NSupport.getString("file.open.error", name)+ "\n" + t1.getMessage());
+					} catch (Throwable t1) {
+						// java Desktop is buggy on some JRE's
+						// we can try on Windows to use the following
+						boolean ok = false;
+						if (System.getProperty("os.name").startsWith("Windows")) {
+							try {
+								Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + name);
+								ok = true;
+							} catch (Throwable t2) {
+								ok = false;								
+							}
+						}
+						if (!ok) {
+							Show.error(I18NSupport.getString("file.open.error", name)+ "\n" + t1.getMessage());
+						}
 					}                	
                 }
             }
