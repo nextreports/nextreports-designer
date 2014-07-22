@@ -3,7 +3,7 @@ Current build status: [![Build Status](https://buildhive.cloudbees.com/job/nextr
 -->
 Current build status: [![Build Status](https://travis-ci.org/nextreports/nextreports-designer.png?branch=master)](https://travis-ci.org/nextreports/nextreports-designer)
 
-For more information about NextReports Server see the product page [link](http://www.next-reports.com/index.php/products/nextreports-designer.html).  
+For more information about NextReports Designer see the product page [link](http://www.next-reports.com/index.php/products/nextreports-designer.html).  
 
 How to build
 -------------------
