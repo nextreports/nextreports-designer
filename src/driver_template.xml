@@ -69,6 +69,12 @@
 	<urlTemplate>jdbc:vertica://&lt;server&gt;:&lt;port&gt;/&lt;database&gt;</urlTemplate>
 	<defaultPort>5433</defaultPort>	
   </driver> 
+  <driver>
+	<type>Pervasive</type>
+	<className>com.pervasive.jdbc.v2.Driver</className>
+	<urlTemplate>jdbc:pervasive://&lt;host&gt;:&lt;port&gt;/&lt;database&gt;</urlTemplate>
+	<defaultPort>1583</defaultPort>	
+  </driver> 
   <driver>    
     <type>NextReports Server</type>
     <className>ro.nextreports.server.api.client.jdbc.Driver</className>
