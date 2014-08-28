@@ -38,7 +38,7 @@ public class ExportToRtfAction extends ExportAction {
 		super(report, false); // orientation is taken from layout
         exportType = ReportRunner.RTF_FORMAT;
         putValue(NAME, I18NSupport.getString("export.rtf.short.desc"));
-		putValue(SMALL_ICON, ImageUtil.getImageIcon("word"));
+		putValue(SMALL_ICON, ImageUtil.getImageIcon("rtf"));
 		putValue(MNEMONIC_KEY, new Integer('R'));
 		putValue(SHORT_DESCRIPTION, I18NSupport.getString("export.rtf.short.desc"));
 		putValue(LONG_DESCRIPTION, I18NSupport.getString("export.rtf.long.desc"));

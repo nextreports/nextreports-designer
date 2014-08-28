@@ -113,6 +113,7 @@ import ro.nextreports.designer.action.report.OpenReportAction;
 import ro.nextreports.designer.action.report.PublishReportAction;
 import ro.nextreports.designer.action.report.RenameReportAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToCsvAction;
+import ro.nextreports.designer.action.report.layout.export.ExportToDocxAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToExcelAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToHtmlAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToPdfAction;
@@ -418,6 +419,7 @@ public class DBBrowserTree extends JXTree {
             runMenu.add(new JMenuItem(new ExportToHtmlAction(report)));
             runMenu.add(new JMenuItem(new ExportToExcelAction(report)));
             runMenu.add(new JMenuItem(new ExportToPdfAction(report)));
+            runMenu.add(new JMenuItem(new ExportToDocxAction(report)));
             runMenu.add(new JMenuItem(new ExportToRtfAction(report)));
             runMenu.add(new JMenuItem(new ExportToCsvAction(report)));
             runMenu.add(new JMenuItem(new ExportToTsvAction(report)));

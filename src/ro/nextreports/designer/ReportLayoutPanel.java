@@ -34,6 +34,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import ro.nextreports.designer.action.report.layout.cell.FormatPainterAction;
 import ro.nextreports.designer.action.report.layout.cell.FormatPickerAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToCsvAction;
+import ro.nextreports.designer.action.report.layout.export.ExportToDocxAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToExcelAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToHtmlAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToPdfAction;
@@ -250,6 +251,7 @@ public class ReportLayoutPanel extends JPanel implements ChangeListener {
         DropDownButton dropDownButton = new DropDownButton();
         dropDownButton.getPopupMenu().add(new ExportToExcelAction(null));
         dropDownButton.getPopupMenu().add(new ExportToPdfAction(null));
+        dropDownButton.getPopupMenu().add(new ExportToDocxAction(null));
         dropDownButton.getPopupMenu().add(new ExportToRtfAction(null));
         dropDownButton.getPopupMenu().add(new ExportToCsvAction(null));
         dropDownButton.getPopupMenu().add(new ExportToTsvAction(null));
