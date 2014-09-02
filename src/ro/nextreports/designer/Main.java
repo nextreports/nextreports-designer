@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,54 +36,67 @@ import ro.nextreports.designer.util.Show;
 public class Main {
 
     public static void main(String[] args) {
-    	try {
-			deployUserData();
-		} catch (IOException e) {			
-			e.printStackTrace();			
-			return;
-		}
-    	
     	//System.setProperty("nextreports.user.data", ".");
-    	System.setProperty("nextreports.user.data", System.getProperty("user.home") + "/.nextreports-" + ReleaseInfo.getVersion());
+        boolean deploy = System.getProperty("nextreports.user.data") == null;
+        if (deploy) {
+            System.setProperty("nextreports.user.data", System.getProperty("user.home") + "/.nextreports-" + ReleaseInfo.getVersion());
+        }
     	System.setProperty("log4j.configuration", "file:" + System.getProperty("nextreports.user.data") + "/config/log4j.properties");
         System.setProperty("nextreports.log", System.getProperty("nextreports.user.data") + "/logs/nextreports.log");
-        System.setProperty("derby.stream.error.file", System.getProperty("nextreports.user.data") + "/logs/derby.log");        
-        System.setProperty("spy.log", System.getProperty("nextreports.user.data") + "/logs/jdbc-spy.log");                
-    	
-    	String user = null;
+        System.setProperty("derby.stream.error.file", System.getProperty("nextreports.user.data") + "/logs/derby.log");
+        System.setProperty("spy.log", System.getProperty("nextreports.user.data") + "/logs/jdbc-spy.log");
+
+        if (deploy) {
+            try {
+                deployUserData();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        // replace user home in Derby demo database path inside datasource.xml
+        try {
+            replaceUserHome(System.getProperty("nextreports.user.data") + "/datasource.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        String user = null;
     	String serverUrl = null;
     	String path = null;
         try {
         	if (args == null) {
         		System.out.println("NextReports passed arguments: null");
         	} else {
-        		System.out.println("NextReports passed arguments: " + Arrays.asList(args) );        		
+        		System.out.println("NextReports passed arguments: " + Arrays.asList(args) );
         		if (args.length == 1) {
         			String protocol = "nextreports://";
-        			String pSign = "?";        			        			        			
+        			String pSign = "?";
         			String param = args[0];
         			int signIndex = param.indexOf(pSign);
         			if (param.startsWith(protocol) && (signIndex != -1)) {
         				serverUrl = param.substring(protocol.length(), signIndex);
-        				String params = param.substring(signIndex + pSign.length());        				
+        				String params = param.substring(signIndex + pSign.length());
         				user=getParameterValue("user=", params);
         				path=getParameterValue("ref=", params);
         				Globals.setServerUrl(serverUrl);
-        				Globals.setServerUser(user);        				
+        				Globals.setServerUser(user);
         				path = path.replaceAll("%20", " ");
         				Globals.setServerPath(path);
         			}
         		}
-        	}	
-        	
-            // add to classpath the folder where the report images will be copied        	
+        	}
+
+            // add to classpath the folder where the report images will be copied
             new File(ExportAction.REPORTS_DIR).mkdirs();
             ClassPathUtil.addClasses(ExportAction.REPORTS_DIR);
-            
+
         } catch (Exception e) {
         	e.printStackTrace();
         	System.exit(1);
-        }               
+        }
 
         // create the next reports
         final NextReports nextReports = NextReports.getInstance();
@@ -97,7 +110,7 @@ public class Main {
             }
 
         });
-        
+
         // print some release info in log
         nextReports.printReleaseInfo();
 
@@ -107,9 +120,9 @@ public class Main {
 
          if (!nextReports.checkWrite()) {
             Show.error(I18NSupport.getString("write.error.full", Globals.USER_DATA_DIR));
-        }         
-    }     
-    
+        }
+    }
+
     // parameters  "key1=val1&key2=val2"
     private static String getParameterValue(String parameterKey, String parameters) {
 		String pAnd = "&";
@@ -117,7 +130,7 @@ public class Main {
 		if (index == -1) {
 			// not found
 			return "";
-		} else {			
+		} else {
 			String s = parameters.substring(index + parameterKey.length());
 			int andIndex = s.indexOf(pAnd);
 			if (andIndex == -1) {
@@ -129,54 +142,51 @@ public class Main {
 			}
 		}
 	}
-    
+
     // /f means to delete without confirmation
     private static final void deleteRegistry(String location){
-        try {           
+        try {
             Process process = Runtime.getRuntime().exec("reg delete \"" + location + "\" /f");
-            process.waitFor();            
+            process.waitFor();
         } catch (Exception e) {}
     }
-            
-    private static void deployUserData() throws IOException {    	
-    	
+
+    private static void deployUserData() throws IOException {
     	// try to delete old nextreports url protocol (versions 5.1 and 5.2) from HKCU
     	// to allow new HKLM new protocol to be found
     	deleteRegistry("HKCU\\SOFTWARE\\CLASSES\\nextreports");
-    	
+
     	String archiveName = "nextreports-designer-data-" + ReleaseInfo.getVersion();
-    	String data_root = System.getProperty("user.home") + "/." + "nextreports-" + ReleaseInfo.getVersion();
+    	String data_root = System.getProperty("nextreports.user.data");
 		File dataRoot = new File(data_root);
 		if (dataRoot.exists() && dataRoot.isDirectory()) {
 			return;
-		}				
-		
+		}
+
 		// create and populate the webroot folder
 		dataRoot.mkdirs();
-		
-		
+
         InputStream input = Main.class.getResourceAsStream("/" + archiveName + ".zip");
         if (input == null) {
             // cannot restore the workspace
-        	System.err.println("Resource '/" + archiveName + "' not found." );                 
+        	System.err.println("Resource '/" + archiveName + "' not found." );
             throw new IOException("Resource '/" + archiveName + "' not found." );
-        }        
-        
+        }
+
         // deployment
         System.out.println("Deployment mode - copy from jar (/" + archiveName + ".zip" + ")");
         ZipInputStream zipInputStream = new ZipInputStream(input);
         FileUtil.unzip(zipInputStream, data_root);
-        
+
         // replace user home in Derby demo database path inside datasource.xml
-        replaceUserHome(dataRoot + "/datasource.xml");
-        
+//        replaceUserHome(dataRoot + "/datasource.xml");
 	}
-    
+
     private static void replaceUserHome(String dataSourceFilePath) throws IOException {
     	String s = FileUtil.readFileAsString(dataSourceFilePath);
-    	s = s.replaceAll(Pattern.quote("${user.home}"), Matcher.quoteReplacement(System.getProperty("user.home") + "/.nextreports-" + ReleaseInfo.getVersion()));
+    	s = s.replaceAll(Pattern.quote("${user.home}"), Matcher.quoteReplacement(System.getProperty("nextreports.user.data")));
     	new File(dataSourceFilePath).delete();
-    	FileUtil.createFile(dataSourceFilePath, s.getBytes());    	
+    	FileUtil.createFile(dataSourceFilePath, s.getBytes());
     }
 
 }
