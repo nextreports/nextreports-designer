@@ -3,28 +3,28 @@ Current build status: [![Build Status](https://buildhive.cloudbees.com/job/nextr
 -->
 Current build status: [![Build Status](https://travis-ci.org/nextreports/nextreports-designer.png?branch=master)](https://travis-ci.org/nextreports/nextreports-designer)
 
-For more information about NextReports Designer see the product page [link](http://www.next-reports.com/index.php/products/nextreports-designer.html).  
+For more information about NextReports Designer see the product page [link](http://www.next-reports.com/index.php/products/nextreports-designer.html).
 
 How to build
 -------------------
-Requirements: 
-- [Git](http://git-scm.com/) 
-- JDK 1.6 (test with `java -version`)
+Requirements:
+- [Git](http://git-scm.com/)
+- JDK 7 (test with `java -version`)
 - [Apache Ant](http://ant.apache.org/) (test with `ant -version`)
 
 Steps:
 - create a local clone of this repository (with `git clone https://github.com/nextreports/nextreports-designer.git`)
-- go to project's folder (with `cd nextreports-designer`) 
+- go to project's folder (with `cd nextreports-designer`)
 - build the artifacts (with `ant clean release`)
 
 After above steps a folder _artifacts_ is created and all goodies are in that folder.
 
 How to run
 -------------------
-It's very simple to run the nextreports-designer.   
-First, you must build the project using above steps.   
+It's very simple to run the nextreports-designer.
+First, you must build the project using above steps.
 After building process go to _dist_ folder and execute the script:
 - run.bat (for windows)
 - run.sh (for linux/unix)
- 
+
 

@@ -9,7 +9,7 @@ Most useful targets:
   - jar     -> creates the application's jar file
   - clean   -> removes all the generated files and directories
   - dist    -> creates the distribution
-  - release -> creates the artifacts  
+  - release -> creates the artifacts
 
 Authors:
   Decebal Suiu <decebal.suiu@asf.ro>
@@ -24,16 +24,16 @@ Copyright:
     <property file="build.properties"/>
 
     <property name="app.mainclass" value="ro.nextreports.designer.Main"/>
-	
+
 	<property name="ivy.lib.dir" value="${app.lib}"/>
-	        
+
     <import file="ivy-build.xml"/>
-    
+
     <!-- Classpath -->
     <path id="classpath">
         <fileset dir="${app.lib}" includes="*.jar"/>
         <fileset dir="${ant.tasks.dir}" includes="*.jar"/>
-    </path>                
+    </path>
 
     <!-- ================================================================== -->
     <!-- I V Y . I N I T                                                    -->
@@ -47,24 +47,24 @@ Copyright:
         <!-- The ivy tasks are dependent by ivy.lib.path declared above -->
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
     </target>
-                
+
     <!-- ================================================================== -->
     <!-- I V Y . R E S O L V E                                              -->
     <!-- ================================================================== -->
 
     <!-- resolve dependent libraries -->
-    <target name="ivy.resolve" depends="ivy.init">      
+    <target name="ivy.resolve" depends="ivy.init">
         <ivy:configure file="ivysettings.xml" />
         <ivy:resolve file="ivy.xml"/>
         <!--
         <ivy:retrieve pattern="${ivy.lib.dir}/[artifact].[ext]" conf="runtime"/>
         -->
         <ivy:retrieve sync="true" changing="true" overwriteMode="newer"/>
-        
+
         <mkdir dir="ivy-report"/>
         <ivy:report todir="ivy-report"/>
     </target>
-	
+
 	<!-- ================================================================== -->
     <!-- V E R S I O N                                                      -->
     <!-- ================================================================== -->
@@ -86,7 +86,7 @@ Copyright:
 
         <!-- Create release info -->
         <jreleaseinfo
-            classname="ReleaseInfo"        	
+            classname="ReleaseInfo"
             packagename="ro.nextreports.designer"
             targetdir="${app.src.dir}"
             project="NextReports"
@@ -97,24 +97,26 @@ Copyright:
 				<parameter name="copyright" value="${app.copyright}"/>
         </jreleaseinfo>
     </target>
-		
+
     <!-- ================================================================== -->
     <!-- C O M P I L E                                                      -->
     <!-- ================================================================== -->
 
     <target name="compile" depends="ivy.resolve,version">
         <!-- Create the ${app.classes} directory -->
-        <mkdir dir="${app.classes}"/>        
+        <mkdir dir="${app.classes}"/>
 
         <!-- Compile the java code from ${app.src} into ${app.classes} -->
         <javac
+            source="${javac.version}"
+            target="${javac.version}"
             srcdir="${app.src}"
             destdir="${app.classes}"
             debug="${javac.debug}"
             verbose="${javac.verbose}"
             deprecation="${javac.deprecation}"
             classpathref="classpath"
-        />       
+        />
     </target>
 
     <!-- ================================================================== -->
@@ -126,7 +128,7 @@ Copyright:
 
     	<!-- Update version number in driver_template.xml -->
     	<replace file="${app.src}/driver_template.xml" token="@app.version@" value="${app.version}"/>
-    	
+
         <!-- Create jar file -->
         <jar jarfile="${app.target}/${app.jar}" compress="true">
             <fileset dir="${app.classes}" includes="ro/nextreports/designer/**/*.class"/>
@@ -142,7 +144,7 @@ Copyright:
                 <attribute name="Main-Class" value="${app.mainclass}"/>
                 <attribute name="Implementation-Version" value="${app.version}"/>
             </manifest>
-        </jar>    	
+        </jar>
     </target>
 
     <!-- ================================================================== -->
@@ -193,18 +195,18 @@ Copyright:
         <!-- Create the ${app.dist.log} directory -->
     	<!--<mkdir dir="${app.dist.log}"/>-->
 
-        <!-- Copy drivers -->    	
+        <!-- Copy drivers -->
         <mkdir dir="${app.dist}/jdbc-drivers"/>
         <copy todir="${app.dist}/jdbc-drivers">
             <fileset dir="${app.home}/jdbc-drivers"/>
-        </copy>        
-    	
+        </copy>
+
         <!-- Copy templates -->
     	<!--<mkdir dir="${app.dist}/templates"/>
         <copy todir="${app.dist}/templates">
             <fileset dir="${app.home}/templates"/>
         </copy>-->
-    	
+
     	<!-- Copy demo -->
     	<!--<copy todir="${app.dist}">
              <fileset dir="${app.home}">
@@ -213,9 +215,9 @@ Copyright:
                 <include name="demo/**"/>
              	<include name="schemas.xml"/>
              </fileset>
-         </copy>-->    
+         </copy>-->
     </target>
-	
+
 
     <!-- ================================================================== -->
     <!-- D I S T . Z I P                                                    -->
@@ -238,7 +240,7 @@ Copyright:
         <!-- Delete the temporary dir -->
         <delete dir="${app.target}/${app.version}"/>
     </target>
-	
+
 	<!-- ================================================================== -->
 	<!-- U S E R . D A T A . Z I P                                          -->
 	<!-- ================================================================== -->
@@ -248,30 +250,30 @@ Copyright:
 
 		<!-- Create a temporary dir -->
 	    <mkdir dir="${user.data.zip.dir}"/>
-		
+
 		<!-- Create log directory -->
 		<mkdir dir="${user.data.zip.dir}/logs"/>
-		
+
 		<!-- Create config directory -->
 		<mkdir dir="${user.data.zip.dir}/config"/>
 		<!-- Copy config in temporary dir -->
-		<copy todir="${user.data.zip.dir}/config">			    				    	
+		<copy todir="${user.data.zip.dir}/config">
 			<fileset dir="${app.config}">
 			  	<include name="*.properties"/>
 				<include name="*.dtd"/>
 				<include name="*.xml"/>
 			</fileset>
-		</copy>	
-		
+		</copy>
+
 		<!-- Create templates directory -->
 		<mkdir dir="${user.data.zip.dir}/templates"/>
 		<!-- Copy templates -->
 		<copy todir="${user.data.zip.dir}/templates">
 			<fileset dir="${app.home}/templates"/>
-		</copy>	
+		</copy>
 
 	    <!-- Copy demo in temporary dir -->
-	    <copy todir="${user.data.zip.dir}">	    		    	    		    		    	
+	    <copy todir="${user.data.zip.dir}">
 	    	<!-- Copy demo -->
 	    	<fileset dir="${app.home}">
 	    		<include name="datasource.xml"/>
@@ -279,17 +281,17 @@ Copyright:
 	    		<include name="demo/**"/>
 	    		<include name="schemas.xml"/>
 	    	</fileset>
-	    </copy>								    			    			    			    
+	    </copy>
 
 	    <!-- Create the zip with user data dist -->
 	    <zip destfile="${app.target}/${app.name}-data-${app.version}.zip" basedir="${app.target}/${app.version}"/>
-		
-		<copy file="${app.target}/${app.name}-data-${app.version}.zip" todir="${app.src}"/>		
-		
+
+		<copy file="${app.target}/${app.name}-data-${app.version}.zip" todir="${app.src}"/>
+
 		<!-- Delete the temporary dir -->
-		<delete dir="${app.target}/${app.version}"/>		    
+		<delete dir="${app.target}/${app.version}"/>
 	</target>
-	
+
     <!-- ================================================================== -->
     <!-- L E X E R . S Q L                                                  -->
     <!-- ================================================================== -->
@@ -301,10 +303,10 @@ Copyright:
             classname="JFlex.anttask.JFlexTask"
             classpath="ant-tasks/jflex-1.4.2.jar"
         />
-        
+
         <jflex file="lexers/sql.flex" destdir="${app.src}"/>
     </target>
-	
+
     <!-- ================================================================== -->
     <!-- R E L E A S E                                                      -->
     <!-- ================================================================== -->
@@ -327,9 +329,9 @@ Copyright:
         <delete dir="${app.artifacts}"/>
         <delete dir="${ivy.lib.dir}"/>
     </target>
-	
+
 	<target name="ivy.cleancache">
 		<ivy:cleancache/>
 	</target>
-	
+
 </project>
