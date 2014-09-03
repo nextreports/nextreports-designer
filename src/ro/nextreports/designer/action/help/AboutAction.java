@@ -166,7 +166,7 @@ public class AboutAction extends AbstractAction {
     	editorPane.setEditorKit(kit);
         editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         editorPane.setFont(new Font("Arial", Font.PLAIN, 12));
-        editorPane.setPreferredSize(new Dimension(310, 170));
+        editorPane.setPreferredSize(new Dimension(350, 180));
         editorPane.setEditable(false);
         editorPane.setContentType("text/html");
         editorPane.setBackground(new Color(234, 241, 248));        
