@@ -31,6 +31,7 @@ public class ImageFilter extends FileFilter implements FilenameFilter {
     private String JPG = ".jpg";
     private String PNG = ".png";
     private String GIF = ".gif";
+    private String TIF  = ".tif";
     private String TIFF  = ".tiff";
 
     public boolean accept(File file) {
@@ -41,7 +42,7 @@ public class ImageFilter extends FileFilter implements FilenameFilter {
         // perform a case insensitive check.
         String s = file.getName().toLowerCase();
         return (s.endsWith(BMP) || s.endsWith(JPG) || s.endsWith(PNG) ||
-            s.endsWith(GIF) || s.endsWith(TIFF) );
+            s.endsWith(GIF) || s.endsWith(TIFF) || s.endsWith(TIF) );
                     
     }
 
