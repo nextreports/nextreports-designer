@@ -85,12 +85,13 @@ public class SaveReportAction extends SaveAsQueryAction {
             	saveToServer = true;                           
             } 
         }
-
-        String name = FormSaver.getInstance().save((String) this.getValue(Action.NAME), false);        
+        
+        String name = FormSaver.getInstance().save((String) this.getValue(Action.NAME), false);          
         if (name != null) {        	        	
             String path = Globals.getCurrentReportAbsolutePath();
             // forced is used when connection is really down, so we cannot update UI
-            if (!forced) {
+            // saving a subreport while in editing report mode, does not require to update UI
+            if (!forced && !Globals.isInner()) {
             	builderPanel.addReport(name, path);
             }
             Globals.setCurrentReportName(name);

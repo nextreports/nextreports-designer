@@ -87,7 +87,10 @@ public class SaveAsReportAction extends AbstractAction {
 
         name = FormSaver.getInstance().save((String)this.getValue(Action.NAME), true);
         if (name != null) {
-            builderPanel.addReport(name, Globals.getCurrentReportAbsolutePath());
+            // saving a subreport while in editing report mode, does not require to update UI
+        	if (!Globals.isInner()) {
+        		builderPanel.addReport(name, Globals.getCurrentReportAbsolutePath());
+        	}
             Globals.setCurrentReportName(name);
             //Globals.setCurrentReportAbsolutePath(Globals.getCurrentFile().getAbsolutePath());
             Globals.setCurrentQueryName(name);
