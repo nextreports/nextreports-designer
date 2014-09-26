@@ -129,8 +129,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String Y_LEGEND_COLOR = "Y_LEGEND_COLOR";
     private String X_LEGEND_ALIGNMENT = "X_LEGEND_ALIGNMENT";
     private String Y_LEGEND_ALIGNMENT = "Y_LEGEND_ALIGNMENT";    
-    private String Y_DUAL_LEGEND_TEXT = "Y_DUAL_LEGEND_TEXT";
-    private String DUAL_LEGEND_PARAM_NAME = I18NSupport.getString("property.chart.dual.legend");    
+    private String Y_DUAL_LEGEND_TEXT = "Y_DUAL_LEGEND_TEXT";       
     private String Y_DUAL_LEGEND_FONT = "Y_DUAL_LEGEND_FONT";    
     private String Y_DUAL_LEGEND_COLOR = "Y_DUAL_LEGEND_COLOR";            
     private String X_PATTERN = "X_PATTERN";
@@ -973,7 +972,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         showProp.setDisplayName(SHOW_Y_DUAL_AXIS_NAME);
         showProp.setType(Boolean.class);
         showProp.setValue(chart.getShowDualAxis());
-        showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));        
+        showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));    
+        showProp.addSubProperty(getYDualLegendProperty());
         return showProp;
     }
     
@@ -1043,7 +1043,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private Property getYDualLegendProperty() {
         DefaultProperty textProp = new DefaultProperty();
         textProp.setName(Y_DUAL_LEGEND_TEXT);
-        textProp.setDisplayName(DUAL_LEGEND_PARAM_NAME);
+        textProp.setDisplayName(LEGEND_PARAM_NAME);
         textProp.setType(String.class);
         textProp.setValue(chart.getyDualLegend().getTitle());
         textProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
@@ -1179,8 +1179,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             props.add(getYTooltipPatternProperty());
             props.add(getYShowValuesProperty());
             props.add(getYAxisColorProperty());
-            props.add(getShowDualAxisProperty());
-            props.add(getYDualLegendProperty());
+            props.add(getShowDualAxisProperty());            
         }
 
         return props;
