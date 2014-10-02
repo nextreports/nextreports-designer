@@ -81,6 +81,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
     private String TEMPLATE_PARAM_NAME = I18NSupport.getString("property.template.name");
     private String TEMPLATE_SHEET_NAME = "Sheet";
     private String TEMPLATE_SHEET_PARAM_NAME = I18NSupport.getString("property.template.sheet");
+    private String SHEET_NAME = "SheetName";
+    private String SHEET_PARAM_NAME = I18NSupport.getString("property.sheet.name");
     private String CUSTOM_PAGE_FORMAT_DEF_NAME = "CustomPageFormat";
     private String CUSTOM_PAGE_FORMAT_DEF_PARAM_NAME = I18NSupport.getString("property.page.custom");
     private String PAGE_PADDING_NAME = "PagePadding";
@@ -208,6 +210,10 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             Integer propValue = (Integer) prop.getValue();            
             LayoutHelper.getReportLayout().setTemplateSheet(propValue);           
             return;    
+        } else if (SHEET_NAME.equals(propName)) {
+            String propValue = (String) prop.getValue();            
+            LayoutHelper.getReportLayout().setSheetNames(propValue);           
+            return;        
         }  else if (CUSTOM_PAGE_FORMAT_DEF_NAME.equals(propName)) {
         	PaperSize propValue = (PaperSize) prop.getValue();            
             LayoutHelper.getReportLayout().setPaperSize(propValue);
@@ -565,6 +571,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         props.add(getBackgroundImageProperty(reportLayout));
         props.add(getTemplateProperty(reportLayout));
         props.add(getTemplateSheetProperty(reportLayout));
+        props.add(getSheetNameProperty(reportLayout));
         return props;
     }
     
@@ -728,6 +735,15 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
          sheetProp.setType(Integer.class);
          sheetProp.setValue(reportLayout.getTemplateSheet());
          return sheetProp;
+     }
+     
+     private Property getSheetNameProperty(ReportLayout reportLayout) {
+         DefaultProperty sheetNameProp = new DefaultProperty();
+         sheetNameProp.setName(SHEET_NAME);
+         sheetNameProp.setDisplayName(SHEET_PARAM_NAME);
+         sheetNameProp.setType(String.class);
+         sheetNameProp.setValue(reportLayout.getSheetNames());
+         return sheetNameProp;
      }
 
     //// end report properties

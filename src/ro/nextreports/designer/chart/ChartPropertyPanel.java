@@ -128,7 +128,12 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String X_LEGEND_COLOR = "X_LEGEND_COLOR";
     private String Y_LEGEND_COLOR = "Y_LEGEND_COLOR";
     private String X_LEGEND_ALIGNMENT = "X_LEGEND_ALIGNMENT";
-    private String Y_LEGEND_ALIGNMENT = "Y_LEGEND_ALIGNMENT";
+    private String Y_LEGEND_ALIGNMENT = "Y_LEGEND_ALIGNMENT";    
+    private String Y_DUAL_LEGEND_TEXT = "Y_DUAL_LEGEND_TEXT";       
+    private String Y_DUAL_LEGEND_FONT = "Y_DUAL_LEGEND_FONT";    
+    private String Y_DUAL_LEGEND_COLOR = "Y_DUAL_LEGEND_COLOR";            
+    private String Y2COUNT_PARAM_NAME = I18NSupport.getString("property.chart.y2Count");
+    private String Y2COUNT_LABEL = "Y2COUNT";
     private String X_PATTERN = "X_PATTERN";
     private String X_PATTERN_PARAM_NAME = I18NSupport.getString("property.pattern");
     private String GRID_COLOR_PARAM_NAME = I18NSupport.getString("property.chart.grid.color");
@@ -142,6 +147,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String SHOW_LABEL_NAME = I18NSupport.getString("property.chart.column.show");
     private String SHOW_Y_VALUES_LABEL = "Y_SHOW_VALUES";
     private String SHOW_Y_VALUES_NAME = I18NSupport.getString("property.chart.values.show");
+    private String SHOW_Y_DUAL_AXIS_LABEL = "Y_SHOW_DUAL_AXIS";
+    private String SHOW_Y_DUAL_AXIS_NAME = I18NSupport.getString("property.chart.dualAxis.show");
     private String Y_TOOLTIP_PATTERN = "Y_TOOLTIP_PATTERN";
     private String Y_TOOLTIP_PATTERN_PARAM_NAME = I18NSupport.getString("property.pattern");
 
@@ -378,6 +385,15 @@ public class ChartPropertyPanel extends PropertySheetPanel {
                 String propValue = (String) prop.getValue();
                 byte alignment = getAlignment(propValue);
                 chart.getYLegend().setAlignment(alignment);
+            } else if (Y_DUAL_LEGEND_TEXT.equals(propName)) {
+                String legend = (String) prop.getValue();
+                chart.getyDualLegend().setTitle(legend);
+            } else if (Y_DUAL_LEGEND_FONT.equals(propName)) {
+                Font font = (Font) prop.getValue();
+                chart.getyDualLegend().setFont(font);
+            } else if (Y_DUAL_LEGEND_COLOR.equals(propName)) {
+                Color color = (Color) prop.getValue();
+                chart.getyDualLegend().setColor(color);    
             } else if (Y_GRID_COLOR.equals(propName)) {
                 Color propValue = (Color) prop.getValue();
                 chart.setYGridColor(propValue);
@@ -393,6 +409,12 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             } else if (SHOW_Y_VALUES_LABEL.equals(propName)) {
                 Boolean propValue = (Boolean) prop.getValue();
                 chart.setShowYValuesOnChart(propValue);
+            } else if (SHOW_Y_DUAL_AXIS_LABEL.equals(propName)) {
+                Boolean propValue = (Boolean) prop.getValue();
+                chart.setShowDualAxis(propValue);    
+            } else if (Y2COUNT_LABEL.equals(propName)) {
+                Integer propValue = (Integer) prop.getValue();
+                chart.setY2SeriesCount(propValue);        
             } else if (Y_TOOLTIP_PATTERN.equals(propName)) {
                 String propValue = (String) prop.getValue();
                 chart.setYTooltipPattern(propValue);
@@ -949,6 +971,28 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         return showProp;
     }
     
+    private Property getShowDualAxisProperty() {
+        DefaultProperty showProp = new DefaultProperty();
+        showProp.setName(SHOW_Y_DUAL_AXIS_LABEL);
+        showProp.setDisplayName(SHOW_Y_DUAL_AXIS_NAME);
+        showProp.setType(Boolean.class);
+        showProp.setValue(chart.getShowDualAxis());
+        showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));    
+        showProp.addSubProperty(getYDualLegendProperty());
+        showProp.addSubProperty(getY2SeriesCountProperty());
+        return showProp;
+    }
+    
+    private Property getY2SeriesCountProperty() {
+        DefaultProperty showProp = new DefaultProperty();
+        showProp.setName(Y2COUNT_LABEL);
+        showProp.setDisplayName(Y2COUNT_PARAM_NAME);
+        showProp.setType(Integer.class);
+        showProp.setValue(chart.getY2SeriesCount());
+        showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));            
+        return showProp;
+    }
+    
     private Property getYTooltipPatternProperty() {
         DefaultProperty patternProp = new DefaultProperty();
         patternProp.setName(Y_TOOLTIP_PATTERN);
@@ -1010,6 +1054,50 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         alignmentProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
         editorRegistry.registerEditor(alignmentProp, alignmentEditor);
         return alignmentProp;
+    }
+    
+    private Property getYDualLegendProperty() {
+        DefaultProperty textProp = new DefaultProperty();
+        textProp.setName(Y_DUAL_LEGEND_TEXT);
+        textProp.setDisplayName(LEGEND_PARAM_NAME);
+        textProp.setType(String.class);
+        String title = "";
+        if (chart.getyDualLegend() != null) {
+        	title = chart.getyDualLegend().getTitle();
+        }
+        textProp.setValue(title);
+        textProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
+        textProp.addSubProperty(getYDualLegendFontProperty());
+        textProp.addSubProperty(getYDualLegendColorProperty());       
+        return textProp;
+    }
+
+    private Property getYDualLegendFontProperty() {
+        DefaultProperty fontProp = new DefaultProperty();
+        fontProp.setName(Y_DUAL_LEGEND_FONT);
+        fontProp.setDisplayName(FONT_PARAM_NAME);
+        fontProp.setType(Font.class);
+        if (chart.getyDualLegend() != null) {
+        	fontProp.setValue(chart.getyDualLegend().getFont());
+        }
+        fontProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
+        return fontProp;
+    }
+
+    private Property getYDualLegendColorProperty() {
+        DefaultProperty foregroundProp = new DefaultProperty();
+        foregroundProp.setName(Y_DUAL_LEGEND_COLOR);
+        foregroundProp.setDisplayName(FOREGROUND_PARAM_NAME);
+        foregroundProp.setType(Color.class);
+        if (chart.getyDualLegend() != null) {
+        	foregroundProp.setValue(chart.getyDualLegend().getColor());
+        }
+        foregroundProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
+        
+        ExtendedColorPropertyEditor colorEditor = new ExtendedColorPropertyEditor();
+        editorRegistry.registerEditor(foregroundProp, colorEditor);
+        
+        return foregroundProp;
     }
 
     private Property getYGridColorProperty() {
@@ -1115,6 +1203,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             props.add(getYTooltipPatternProperty());
             props.add(getYShowValuesProperty());
             props.add(getYAxisColorProperty());
+            props.add(getShowDualAxisProperty());            
         }
 
         return props;
