@@ -17,6 +17,7 @@
 package ro.nextreports.designer.action.chart;
 
 import ro.nextreports.engine.chart.Chart;
+import ro.nextreports.engine.template.ChartTemplate;
 import ro.nextreports.engine.util.QueryUtil;
 import ro.nextreports.engine.util.StringUtil;
 import ro.nextreports.engine.util.NameType;
@@ -27,9 +28,11 @@ import javax.swing.*;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.LayoutHelper;
 import ro.nextreports.designer.ReportLayoutUtil;
+import ro.nextreports.designer.property.ExtendedColorChooser;
 import ro.nextreports.designer.querybuilder.ParameterManager;
 import ro.nextreports.designer.querybuilder.QueryBuilderPanel;
 import ro.nextreports.designer.querybuilder.SQLViewPanel;
+import ro.nextreports.designer.template.chart.TemplateManager;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.MessageUtil;
@@ -38,6 +41,7 @@ import ro.nextreports.designer.util.ShortcutsUtil;
 import ro.nextreports.designer.util.Show;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -48,6 +52,8 @@ import java.util.HashMap;
  * Time: 13:53:00
  */
 public class NewChartAction extends AbstractAction {
+	
+	private static String DEFAULT_CHART_TEMPLATE = "Relaxing.nctempl"; 
 
     private boolean done = false;
     private List<String> columnNames;
@@ -161,6 +167,13 @@ public class NewChartAction extends AbstractAction {
             Show.error(ex);
             return;
         }
+                
+        File defTemplate = new File(Globals.USER_DATA_DIR + "/templates/" + DEFAULT_CHART_TEMPLATE);        
+        if (defTemplate.exists()) {        	
+        	ChartTemplate template = TemplateManager.loadTemplate(defTemplate);
+            TemplateManager.applyGeneralTemplate(chart, template);
+            ExtendedColorChooser.loadColorsFromChartTemplate(template);
+        }        
         builderPanel.loadChart(chart);
 
         Globals.getMainMenuBar().newChartActionUpdate();
