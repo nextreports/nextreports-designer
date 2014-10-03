@@ -59,7 +59,9 @@ public class I18nManager {
 	public void clear() {
 		currentLanguage = null;
 		keys.clear();
-		languages.clear();
+		if (languages != null) {
+			languages.clear();
+		}
 	}
 
 }
