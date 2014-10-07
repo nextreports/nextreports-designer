@@ -48,6 +48,8 @@ import ro.nextreports.designer.querybuilder.QueryBuilderPanel;
 import ro.nextreports.designer.querybuilder.RuntimeParametersDialog;
 import ro.nextreports.designer.querybuilder.RuntimeParametersPanel;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
@@ -378,8 +380,17 @@ public class NextReportsUtil {
                 }
 
                 runtimeDialog.setVisible(true);
+                Connection con = runtimeDialog.getTemporaryConnection();
+                if (con != null) {
+                	try {
+						con.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
                 if (runtimeDialog.okPressed()) {
-                    paramValues = runtimeDialog.getParametersValues();
+                    paramValues = runtimeDialog.getParametersValues();                   
                 } else {
                     return null;
                 }

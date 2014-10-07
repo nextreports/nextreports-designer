@@ -86,22 +86,25 @@ public class RuntimeParametersPanel extends JPanel {
     private Connection con;
 
     private boolean error = false;
+    private boolean isTempConnection = false;
 
-    public RuntimeParametersPanel(Map<String, QueryParameter> params) {
-        this(params, null);
-    }
+//    public RuntimeParametersPanel(Map<String, QueryParameter> params) {
+//        this(params, null);
+//    }
 
     public RuntimeParametersPanel(Map<String, QueryParameter> params, DataSource runDS) {
-        super();
-        con = Globals.getConnection();
+        super();        
         if (runDS != null) {
             try {
                 con = Globals.createTempConnection(runDS);
+                isTempConnection = true;
             } catch (ConnectionException e) {
                 e.printStackTrace();
                 Show.error(e);
                 return;
             }
+        } else {
+        	con = Globals.getConnection();
         }
                
         paramList = new ArrayList<QueryParameter>(params.values());        
@@ -994,5 +997,14 @@ public class RuntimeParametersPanel extends JPanel {
 				e.printStackTrace();
 			}
     	}
+    }
+    
+    // only if temporary connection we need to close it
+    public Connection getTemporaryConnection() {
+    	if (isTempConnection) {
+    		return con;
+    	}
+    	return null;
+    	
     }
 }

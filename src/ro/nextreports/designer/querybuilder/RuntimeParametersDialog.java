@@ -17,6 +17,7 @@
 package ro.nextreports.designer.querybuilder;
 
 
+import java.sql.Connection;
 import java.util.Map;
 
 import ro.nextreports.designer.ui.BaseDialog;
@@ -62,5 +63,9 @@ public class RuntimeParametersDialog extends BaseDialog {
 
     public boolean okPressed() {
         return okPressed;
+    }
+    
+    public Connection getTemporaryConnection() {
+    	return panel.getTemporaryConnection();
     }
 }
