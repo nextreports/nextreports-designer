@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Locale;
@@ -43,7 +44,6 @@ import ro.nextreports.designer.ui.eventbus.BusListener;
 import ro.nextreports.designer.ui.eventbus.DefaultEventBus;
 import ro.nextreports.designer.ui.eventbus.EventBus;
 import ro.nextreports.designer.util.FileUtil;
-
 import ro.nextreports.engine.exporter.PdfExporter;
 import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
 import ro.nextreports.engine.querybuilder.sql.dialect.Dialect;
@@ -53,7 +53,6 @@ import ro.nextreports.server.api.client.ChartMetaData;
 import ro.nextreports.server.api.client.DataSourceMetaData;
 import ro.nextreports.server.api.client.ReportMetaData;
 import ro.nextreports.server.api.client.WebServiceClient;
-
 import craftsman.spy.SpyDriver;
 
 /**
@@ -142,6 +141,7 @@ public class Globals {
 	}
 
 	public static void setConnection(Connection con) {
+		closeConnection();
 		connection = con;
         Globals.getMainMenuBar().actionUpdate(con !=  null);
         Globals.getMainToolBar().actionUpdate(con !=  null);
@@ -149,6 +149,7 @@ public class Globals {
 
 	public static Connection createConnection(DataSource dataSource)
 			throws ConnectionException {
+		closeConnection();
 		connection = createTempConnection(dataSource);
         if (Globals.getMainMenuBar() != null) {
             Globals.getMainMenuBar().actionUpdate(connection !=  null);
@@ -158,6 +159,16 @@ public class Globals {
         }
         
         return connection;
+	}
+	
+	private static void closeConnection() {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
+		}
 	}
 
     public static Connection createTempConnection(final DataSource dataSource)
