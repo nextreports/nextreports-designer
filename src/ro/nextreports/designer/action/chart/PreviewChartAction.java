@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -47,7 +49,6 @@ import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.NextReportsUtil;
 import ro.nextreports.designer.util.Show;
 import ro.nextreports.designer.util.UIActivator;
-
 import ro.nextreports.engine.EngineProperties;
 import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
 import ro.nextreports.engine.queryexec.QueryParameter;
@@ -165,10 +166,12 @@ public class PreviewChartAction extends AbstractAction {
                 if (ChartRunner.IMAGE_FORMAT.equals(runner.getFormat())) {
                 	runner.setImagePath(Globals.USER_DATA_DIR + "/reports");
                 }
+                Connection con = null;
                 try {         
                 	DataSource runDS = Globals.getChartLayoutPanel().getRunDataSource();
                 	boolean csv = runDS.getDriver().equals(CSVDialect.DRIVER_CLASS); 
-                	runner.setConnection(Globals.createTempConnection(runDS), csv);
+                	con = Globals.createTempConnection(runDS);
+                	runner.setConnection(con, csv);
                     if (ChartRunner.IMAGE_FORMAT.equals(runner.getFormat())) {
                     	runner.run();
                     	JDialog dialog = new JDialog(Globals.getMainFrame(), "");
@@ -209,6 +212,14 @@ public class PreviewChartAction extends AbstractAction {
                     e.printStackTrace();
                     Show.error(e);
                 } finally {
+                	if (con != null) {
+                		try {
+							con.close();
+						} catch (SQLException e) {						
+							e.printStackTrace();
+							LOG.error(e.getMessage(), e);
+						}
+                	}
                     stop = false;
                     if (activator != null) {
                         activator.stop();
