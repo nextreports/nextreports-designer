@@ -68,6 +68,11 @@ public class LanguageAction extends AbstractAction {
     public static final String COUNTRY_FRENCH = "FR";
     public static final String PROPERTY_NAME_FRENCH = LANGUAGE_PROPERTY + "." + LANGUAGE_FRENCH + "_" + COUNTRY_FRENCH;
     public static final String IMAGE_FRENCH = "flag-" + LANGUAGE_FRENCH + "_" + COUNTRY_FRENCH;
+    
+    public static final String LANGUAGE_ITALIAN = "it";
+    public static final String COUNTRY_ITALIAN = "IT";
+    public static final String PROPERTY_NAME_ITALIAN = LANGUAGE_PROPERTY + "." + LANGUAGE_ITALIAN + "_" + COUNTRY_ITALIAN;
+    public static final String IMAGE_ITALIAN = "flag-" + LANGUAGE_ITALIAN + "_" + COUNTRY_ITALIAN;
 
     public static final List<Language> languages = new ArrayList<Language>();		
     
@@ -75,6 +80,7 @@ public class LanguageAction extends AbstractAction {
     	languages.add(new Language(LANGUAGE_ENGLISH, COUNTRY_ENGLISH, PROPERTY_NAME_ENGLISH, IMAGE_ENGLISH));
 		languages.add(new Language(LANGUAGE_FRENCH, COUNTRY_FRENCH, PROPERTY_NAME_FRENCH, IMAGE_FRENCH));
 		languages.add(new Language(LANGUAGE_ROMANIAN, COUNTRY_ROMANIAN, PROPERTY_NAME_ROMANIAN, IMAGE_ROMANIAN));
+		languages.add(new Language(LANGUAGE_ITALIAN, COUNTRY_ITALIAN, PROPERTY_NAME_ITALIAN, IMAGE_ITALIAN));
 		
 		for (String name : I18NSupport.getUserI18NFiles()) {						
 			String baseName = name.substring(0, name.indexOf(".properties"));
