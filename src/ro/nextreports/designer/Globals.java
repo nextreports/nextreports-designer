@@ -313,41 +313,35 @@ public class Globals {
 	}	
 
 	public static void setPdfEncoding() {
-		Config config = getConfig();
-		String s = config.getString(PdfExporter.PDF_ENCODING_PROPERTY, null);
-		if ("".equals(s)) {
-			s = null;
-		}
-		if (s != null) {
-			System.setProperty(PdfExporter.PDF_ENCODING_PROPERTY, s);
-		} else {
-            System.clearProperty(PdfExporter.PDF_ENCODING_PROPERTY);
-        }
+		setProperty(PdfExporter.PDF_ENCODING_PROPERTY);
 	}
 
 	public static void setPdfFont() {
-		Config config = getConfig();
-		String s = config.getString(PdfExporter.PDF_FONT_PROPERTY, null);
-		if ("".equals(s)) {
-			s = null;
-		}
-		if (s != null) {
-			System.setProperty(PdfExporter.PDF_FONT_PROPERTY, s);
-		} else {
-            System.clearProperty(PdfExporter.PDF_FONT_PROPERTY);
-        }
+		setProperty(PdfExporter.PDF_FONT_PROPERTY);
+	}
+	
+	public static void setPdfDirection() {
+		setProperty(PdfExporter.PDF_DIRECTION);
+	}
+	
+	public static void setPdfArabicOptions() {
+		setProperty(PdfExporter.PDF_ARABIC_OPTIONS);
 	}
 
     public static void setOracleClientPath() {
+        setProperty(OracleDialect.ORACLE_CLIENT_PROPERTY);
+    }
+    
+    private static void setProperty(String propertyName) {
         Config config = getConfig();
-        String s = config.getString(OracleDialect.ORACLE_CLIENT_PROPERTY, null);
+        String s = config.getString(propertyName, null);
         if ("".equals(s)) {
             s = null;
         }
         if (s != null) {
-            System.setProperty(OracleDialect.ORACLE_CLIENT_PROPERTY, s);
+            System.setProperty(propertyName, s);
         } else {
-            System.clearProperty(OracleDialect.ORACLE_CLIENT_PROPERTY);
+            System.clearProperty(propertyName);
         }
     }
 

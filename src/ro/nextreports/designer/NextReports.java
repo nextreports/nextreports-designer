@@ -216,6 +216,9 @@ public class NextReports  {
         // set pdf font and encoding
         Globals.setPdfEncoding();
         Globals.setPdfFont();
+        // set pdf direction and arabic
+        Globals.setPdfDirection();
+        Globals.setPdfArabicOptions();
 
         // set oracle client path
         Globals.setOracleClientPath();
@@ -477,6 +480,8 @@ public class NextReports  {
         LOG.info("singlesource.autoconnect" + " = " + Globals.singleSourceAutoConnect());
         LOG.info(PdfExporter.PDF_ENCODING_PROPERTY + " = " + System.getProperty(PdfExporter.PDF_ENCODING_PROPERTY));
         LOG.info(PdfExporter.PDF_FONT_PROPERTY + " = " + System.getProperty(PdfExporter.PDF_FONT_PROPERTY));
+        LOG.info(PdfExporter.PDF_DIRECTION + " = " + System.getProperty(PdfExporter.PDF_DIRECTION));
+        LOG.info(PdfExporter.PDF_ARABIC_OPTIONS + " = " + System.getProperty(PdfExporter.PDF_ARABIC_OPTIONS));
         LOG.info("font.directories" + " = " + Arrays.asList(Globals.getFontDirectories()));
         LOG.info(OracleDialect.ORACLE_CLIENT_PROPERTY + " = " + System.getProperty(OracleDialect.ORACLE_CLIENT_PROPERTY));
         LOG.info("query.timeout" + " = " + Globals.getQueryTimeout());
