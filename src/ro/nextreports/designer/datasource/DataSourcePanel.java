@@ -64,7 +64,7 @@ public class DataSourcePanel extends JPanel {
 
     public List<DataSource> getSelectedDataSources() {
         List<DataSource> result = new ArrayList<DataSource>();
-        Object[] selected = list.getSelectedValues();
+        List selected = list.getSelectedValuesList();
         for (Object sel : selected) {
             result.add((DataSource)sel);
         }

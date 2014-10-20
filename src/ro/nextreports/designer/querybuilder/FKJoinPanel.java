@@ -98,7 +98,7 @@ public class FKJoinPanel extends JPanel {
 
     public ArrayList<DBColumn> getSelectedColumns() {
         ArrayList<DBColumn> columns = new ArrayList<DBColumn>();
-        Object[] objects = list.getSelectedValues();
+        List objects = list.getSelectedValuesList();
         for (Object obj : objects) {
             columns.add((DBColumn)obj);
         }

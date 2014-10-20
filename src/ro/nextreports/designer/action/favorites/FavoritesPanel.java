@@ -74,7 +74,7 @@ public class FavoritesPanel extends JPanel {
 
     public List<FavoriteEntry> getSelectedFavorites() {
         List<FavoriteEntry> result = new ArrayList<FavoriteEntry>();
-        Object[] selected = list.getSelectedValues();
+        List selected = list.getSelectedValuesList();
         for (Object sel : selected) {
             result.add((FavoriteEntry)sel);
         }
