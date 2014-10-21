@@ -235,7 +235,7 @@ public class DBTablesDesktopPane extends JDesktopPane {
 
     public void setBackgroundImage() {
         String language = Locale.getDefault().getLanguage().toLowerCase();
-        ImageIcon icon = ImageUtil.getImageIcon("info_"+language);
+        ImageIcon icon = ImageUtil.getImageIcon("info_"+language, false);
         if (icon == null) {
             icon = ImageUtil.getImageIcon("info");
         }

@@ -77,18 +77,30 @@ public class ImageUtil {
     }
     
     public static ImageIcon getImageIcon(String image) {
-    	URL url = getImageURL(image);
+    	return getImageIcon(image, true);
+    }
+    
+    public static ImageIcon getImageIcon(String image, boolean logError) {
+    	URL url = getImageURL(image, logError);
         if (url == null) {
-            LOG.error("Cannot load image " + image);
+        	if (logError) {
+        		LOG.error("Cannot load image " + image);
+        	}
             return null;
         }
         
         return new ImageIcon(url);
     }
-
+    
     public static URL getImageURL(String image) {
+    	return getImageURL(image, true);
+    }
+
+    public static URL getImageURL(String image, boolean logError) {
     	if (!imageNames.containsKey(image)) {
-    		LOG.error("Cannot find a image file for image '" + image + "'");
+    		if (logError) {
+    			LOG.error("Cannot find a image file for image '" + image + "'");
+    		}
     		return null;
     	}
 
