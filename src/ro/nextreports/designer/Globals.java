@@ -106,6 +106,10 @@ public class Globals {
     // for now used only for chart to see the query was modified
     // it is updated with new query if modified !
     public static String initialQuery = "";
+    
+    private static String tableNamePattern = null;
+    private static String viewNamePattern = null;
+    private static String procedureNamePattern = null;
 
     public static void setMainFrame(MainFrame mainFrame) {
 		Globals.mainFrame = mainFrame;
@@ -145,6 +149,9 @@ public class Globals {
 		connection = con;
         Globals.getMainMenuBar().actionUpdate(con !=  null);
         Globals.getMainToolBar().actionUpdate(con !=  null);
+        Globals.setTableNamePattern(null);
+        Globals.setViewNamePattern(null);
+        Globals.setProcedureNamePattern(null);
     }
 
 	public static Connection createConnection(DataSource dataSource)
@@ -762,5 +769,29 @@ public class Globals {
 	public static boolean isInner() {
 		return innerStack.size() > 1;
 	}
+
+	public static String getTableNamePattern() {
+		return tableNamePattern;
+	}
+
+	public static void setTableNamePattern(String tableNamePattern) {
+		Globals.tableNamePattern = tableNamePattern;
+	}
+
+	public static String getViewNamePattern() {
+		return viewNamePattern;
+	}
+
+	public static void setViewNamePattern(String viewNamePattern) {
+		Globals.viewNamePattern = viewNamePattern;
+	}
+
+	public static String getProcedureNamePattern() {
+		return procedureNamePattern;
+	}
+
+	public static void setProcedureNamePattern(String procedureNamePattern) {
+		Globals.procedureNamePattern = procedureNamePattern;
+	}				
         
 }

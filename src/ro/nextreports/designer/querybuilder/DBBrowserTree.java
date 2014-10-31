@@ -74,6 +74,7 @@ import ro.nextreports.designer.FormSaver;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.action.DownloadBulkChartAction;
 import ro.nextreports.designer.action.DownloadBulkReportAction;
+import ro.nextreports.designer.action.NamePatternAction;
 import ro.nextreports.designer.action.PublishBulkChartAction;
 import ro.nextreports.designer.action.PublishBulkReportAction;
 import ro.nextreports.designer.action.chart.DeleteChartAction;
@@ -283,6 +284,10 @@ public class DBBrowserTree extends JXTree {
                                 selectionProcedure(selectedNode, e);
                             } else if (selectedNode.getDBObject().getType() == DBObject.PROCEDURES_GROUP) {
                                 selectionProcedureGroup(selectedNode, e);
+                            } else if (selectedNode.getDBObject().getType() == DBObject.TABLES_GROUP) {
+                                selectionTablesGroup(selectedNode, e);
+                            } else if (selectedNode.getDBObject().getType() == DBObject.VIEWS_GROUP) {
+                                selectionViewsGroup(selectedNode, e);    
                             } else if (selectedNode.getDBObject().isFolder()) {
                                 selectionFolder(selectedNode, e);
                             }
@@ -615,6 +620,31 @@ public class DBBrowserTree extends JXTree {
         ValidateProceduresAction validateAction = new ValidateProceduresAction();
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem menuItem = new JMenuItem(validateAction);
+        popupMenu.add(menuItem);
+        NamePatternAction patternAction = new NamePatternAction(NamePatternAction.PROCEDURE_NAME_PATTERN);
+        JMenuItem menuItem2 = new JMenuItem(patternAction);
+        popupMenu.add(menuItem2);
+        popupMenu.show((Component) e.getSource(), e.getX(), e.getY());        
+    }
+    
+    private void selectionTablesGroup(DBBrowserNode selectedNode, MouseEvent e) {
+        if (e.getClickCount() == 2) {
+            return;
+        }        
+        JPopupMenu popupMenu = new JPopupMenu();        
+        NamePatternAction patternAction = new NamePatternAction(NamePatternAction.TABLE_NAME_PATTERN);
+        JMenuItem menuItem = new JMenuItem(patternAction);
+        popupMenu.add(menuItem);
+        popupMenu.show((Component) e.getSource(), e.getX(), e.getY());        
+    }
+    
+    private void selectionViewsGroup(DBBrowserNode selectedNode, MouseEvent e) {
+        if (e.getClickCount() == 2) {
+            return;
+        }        
+        JPopupMenu popupMenu = new JPopupMenu();        
+        NamePatternAction patternAction = new NamePatternAction(NamePatternAction.VIEW_NAME_PATTERN);
+        JMenuItem menuItem = new JMenuItem(patternAction);
         popupMenu.add(menuItem);
         popupMenu.show((Component) e.getSource(), e.getX(), e.getY());        
     }

@@ -158,8 +158,9 @@ public class DefaultDBViewer implements DBViewer {
                 } else {
                     tableTypes = new String[]{"VIEW"};
                 }
-
-                ResultSet allTables = dbmd.getTables(null, schemaName, null, tableTypes);
+                
+                String pattern = tableMask ? Globals.getTableNamePattern() : Globals.getViewNamePattern();
+                ResultSet allTables = dbmd.getTables(null, schemaName, pattern, tableTypes);
                 try {
                     while (allTables.next()) {
                         String table_name = allTables.getString("TABLE_NAME");
@@ -210,7 +211,11 @@ public class DefaultDBViewer implements DBViewer {
 
             boolean procedureMask = ((mask & DBInfo.PROCEDURES) == DBInfo.PROCEDURES);
             if (procedureMask) {
-                ResultSet rs = dbmd.getProcedures(null, schemaName, "%");
+            	String pattern = Globals.getProcedureNamePattern();
+            	if (pattern == null) {
+            		pattern = "%";
+            	}
+                ResultSet rs = dbmd.getProcedures(null, schemaName, pattern);
                 try {
                     while (rs.next()) {
                         String spName = rs.getString("PROCEDURE_NAME");
