@@ -84,14 +84,20 @@ public class DefaultDBViewer implements DBViewer {
             * name, we use the schema name as "%"
             */
 
-            ResultSet schemas = con.getMetaData().getSchemas();
+            
             boolean foundSchema = false;
-            while (schemas.next()) {
-                String sch = schemas.getString("TABLE_SCHEM");
-                if (schemaName.equals(sch)) {
-                    foundSchema = true;
-                    break;
-                }
+            try {
+	            ResultSet schemas = con.getMetaData().getSchemas();
+	            while (schemas.next()) {
+	                String sch = schemas.getString("TABLE_SCHEM");
+	                if (schemaName.equals(sch)) {
+	                    foundSchema = true;
+	                    break;
+	                }
+	            }
+            } catch (SQLException ex) {
+            	LOG.error(ex.getMessage(), ex);
+            	ex.printStackTrace();
             }
 
             if (!foundSchema) {
@@ -610,8 +616,11 @@ public class DefaultDBViewer implements DBViewer {
             }
             return schemas;
         } catch (Exception e) {
+        	LOG.error(e.getMessage(), e);
         	e.printStackTrace();
-            throw new NextSqlException("Could not retrieve schema names.", e);
+            //throw new NextSqlException("Could not retrieve schema names.", e);
+        	schemas.add("%");
+        	return schemas;
         } finally {
             closeResultSet(rs);
         }

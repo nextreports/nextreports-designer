@@ -81,6 +81,12 @@
     <urlTemplate>jdbc:teradata://&lt;server&gt;/&lt;database=databasename&gt;</urlTemplate>
     <defaultPort>0</defaultPort>
   </driver>  
+  <driver>
+    <type>MS Access</type>
+    <className>net.ucanaccess.jdbc.UcanaccessDriver</className>
+    <urlTemplate>jdbc:ucanaccess://&lt;dbfile-path&gt;;showschema=true</urlTemplate>
+    <defaultPort>0</defaultPort>
+  </driver>  
   <driver>    
     <type>NextReports Server</type>
     <className>ro.nextreports.server.api.client.jdbc.Driver</className>

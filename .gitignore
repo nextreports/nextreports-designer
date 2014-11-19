@@ -12,3 +12,6 @@ stuff/
 /bin
 /dist
 /lib
+
+.idea/
+.settings/
