@@ -36,6 +36,7 @@ import ro.nextreports.designer.action.report.layout.cell.FormatPickerAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToCsvAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToDocxAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToExcelAction;
+import ro.nextreports.designer.action.report.layout.export.ExportToExcelXAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToHtmlAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToPdfAction;
 import ro.nextreports.designer.action.report.layout.export.ExportToRtfAction;
@@ -250,6 +251,7 @@ public class ReportLayoutPanel extends JPanel implements ChangeListener {
 
         DropDownButton dropDownButton = new DropDownButton();
         dropDownButton.getPopupMenu().add(new ExportToExcelAction(null));
+        dropDownButton.getPopupMenu().add(new ExportToExcelXAction(null));
         dropDownButton.getPopupMenu().add(new ExportToPdfAction(null));
         dropDownButton.getPopupMenu().add(new ExportToDocxAction(null));
         dropDownButton.getPopupMenu().add(new ExportToRtfAction(null));

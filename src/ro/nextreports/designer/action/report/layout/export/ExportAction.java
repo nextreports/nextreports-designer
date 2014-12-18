@@ -317,8 +317,7 @@ public abstract class ExportAction extends AbstractAction {
         }       
         
         Connection con =  Globals.createTempConnection(Globals.getReportLayoutPanel().getRunDataSource());        
-        ReportLayout convertedLayout = ReportUtil.getDynamicReportLayout(con, layout, pBean);
-        
+        ReportLayout convertedLayout = ReportUtil.getDynamicReportLayout(con, layout, pBean);                        
         
         ExporterBean eb = new ExporterBean(con, Globals.getQueryTimeout(), qr, fos, convertedLayout, pBean, getReportName(), false, isProcedure);
         I18nLanguage language = I18nUtil.getDefaultLanguage(layout);
@@ -364,6 +363,9 @@ public abstract class ExportAction extends AbstractAction {
     
     protected abstract String getFileExtension();
     protected abstract ResultExporter getResultExporter(ExporterBean bean);
+    protected boolean hasMacro() {
+    	return false;
+    }
     
     protected void afterExport(String filePath, String reportName)  {    	
     }

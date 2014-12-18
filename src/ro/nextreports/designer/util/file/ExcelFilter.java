@@ -1,20 +1,19 @@
 package ro.nextreports.designer.util.file;
 
-public class ExcelFilter extends ExtensionFilter {
+public class ExcelFilter extends ExtensionsFilter {
 
 	////////////////////
 	// constants
 
     /**
-     * The extension that this filter will search for.
-     */
-    private static final String EXCEL_EXTENSION = ".XLS";
+     * The extensions that this filter will search for.
+     */       
+    public static final String[] EXCEL_EXTENSIONS = new String[] {".XLS", ".XLSX", ".XLSM"};
 
 	////////////////////
 	// constructors
-
     public ExcelFilter() {
-        super(EXCEL_EXTENSION);
+        super(EXCEL_EXTENSIONS);
     }
 
 }
