@@ -168,7 +168,7 @@ public class ReportLayoutUtil {
         String md5Key = Cache.getColumnsKey(sql);        
         List<NameType> result = Cache.getColumns(md5Key);
         if (result != null) {        	
-        	return ReportUtil.getColumnNames(result);
+        	return ReportUtil.getColumnTypes(result);
         }
         try {
             con = Globals.createTempConnection(
@@ -186,7 +186,7 @@ public class ReportLayoutUtil {
                 params.put(paramName, param);
             }
             List <NameType>  columns = qu.getColumns(sql, params);
-            columnTypes = ReportUtil.getColumnNames(columns);
+            columnTypes = ReportUtil.getColumnTypes(columns);
             Cache.setColumns(md5Key, columns);
         } finally {
             if (con != null) {
