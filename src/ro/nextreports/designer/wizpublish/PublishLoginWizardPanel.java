@@ -145,8 +145,22 @@ public class PublishLoginWizardPanel extends WizardPanel {
             if (auth != null) {
                 int index = auth.indexOf(DELIM);
                 if (index != -1) {
-                    userTextField.setText(auth.substring(0, index));
-                    passField.setText(auth.substring(index + DELIM.length()));
+                	String savedUser = auth.substring(0, index);
+                	if (Globals.getServerUser() != null) {
+                		// edit in designer
+                		if (Globals.getServerUser().equals(savedUser)) {
+                			userTextField.setText(savedUser);
+                    		passField.setText(auth.substring(index + DELIM.length()));
+                		} else {
+                			// other user is saved : we do not have the password
+                			userTextField.setText(Globals.getServerUser());
+                		}
+                		
+                	} else {
+                		// simple publish
+                		userTextField.setText(savedUser);
+                		passField.setText(auth.substring(index + DELIM.length()));
+                	}
                 }
             }
         }
