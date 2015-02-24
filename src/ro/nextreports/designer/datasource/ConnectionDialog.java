@@ -526,7 +526,7 @@ public class ConnectionDialog extends JDialog implements ActionListener, ItemLis
                 return;
             }
 
-            ds.setName(mName.getText());
+            ds.setName(mName.getText().trim());
             ds.setDriver(mDriver.getText());
             ds.setType((String) types.getSelectedItem());
             ds.setUrl(mURL.getText());
