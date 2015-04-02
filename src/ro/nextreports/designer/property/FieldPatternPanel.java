@@ -779,7 +779,7 @@ public class FieldPatternPanel extends JPanel {
                 updateSample();
             }
             sheetsPanel.updateUI();
-            if (category != 6) {
+            if (category != 7) {
                 previousCategory = category;
             }
         }
@@ -972,7 +972,10 @@ public class FieldPatternPanel extends JPanel {
 			setDecimals = true;
 		} else {
 			patternLabel.setText(pattern);
-			previousCategory = getCategory(pattern);			
+			int pc = getCategory(pattern);
+			if (pc != 7) {
+				previousCategory = pc;
+			}
 			categoryList.setSelectedIndex(previousCategory);
 		}
 		int category = getCategory(pattern);
