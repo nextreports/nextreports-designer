@@ -82,8 +82,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class ConnectionDialog extends JDialog implements ActionListener, ItemListener {
 
-    private Dimension dim = new Dimension(510, 440);
-    private Dimension dim2 = new Dimension(510, 225);
+    private Dimension dim = new Dimension(510, 500);
+    private Dimension dim2 = new Dimension(510, 285);
     private Dimension buttonDim = new Dimension(20, 20);
 
     private final String STATUS = I18NSupport.getString("connection.dialog.status");
