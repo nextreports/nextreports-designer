@@ -147,6 +147,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String SHOW_LABEL_NAME = I18NSupport.getString("property.chart.column.show");
     private String SHOW_Y_VALUES_LABEL = "Y_SHOW_VALUES";
     private String SHOW_Y_VALUES_NAME = I18NSupport.getString("property.chart.values.show");
+    private String STARTING_FROM_ZERO_LABEL = "STARTING_FROM_ZERO";
+    private String STARTING_FROM_ZERO_NAME = I18NSupport.getString("property.chart.values.startingFromZero");
     private String SHOW_Y_DUAL_AXIS_LABEL = "Y_SHOW_DUAL_AXIS";
     private String SHOW_Y_DUAL_AXIS_NAME = I18NSupport.getString("property.chart.dualAxis.show");
     private String Y_TOOLTIP_PATTERN = "Y_TOOLTIP_PATTERN";
@@ -409,6 +411,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             } else if (SHOW_Y_VALUES_LABEL.equals(propName)) {
                 Boolean propValue = (Boolean) prop.getValue();
                 chart.setShowYValuesOnChart(propValue);
+            } else if (STARTING_FROM_ZERO_LABEL.equals(propName)) {
+                Boolean propValue = (Boolean) prop.getValue();
+                chart.setStartingFromZero(propValue);    
             } else if (SHOW_Y_DUAL_AXIS_LABEL.equals(propName)) {
                 Boolean propValue = (Boolean) prop.getValue();
                 chart.setShowDualAxis(propValue);    
@@ -971,6 +976,16 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         return showProp;
     }
     
+    private Property getYStartingFromZeroProperty() {
+        DefaultProperty showProp = new DefaultProperty();
+        showProp.setName(STARTING_FROM_ZERO_LABEL);
+        showProp.setDisplayName(STARTING_FROM_ZERO_NAME);
+        showProp.setType(Boolean.class);
+        showProp.setValue(chart.getStartingFromZero());
+        showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));        
+        return showProp;
+    }
+    
     private Property getShowDualAxisProperty() {
         DefaultProperty showProp = new DefaultProperty();
         showProp.setName(SHOW_Y_DUAL_AXIS_LABEL);
@@ -1203,7 +1218,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             props.add(getYTooltipPatternProperty());
             props.add(getYShowValuesProperty());
             props.add(getYAxisColorProperty());
-            props.add(getShowDualAxisProperty());            
+            props.add(getShowDualAxisProperty());   
+            props.add(getYStartingFromZeroProperty());
         }
 
         return props;
