@@ -21,9 +21,11 @@ import ro.nextreports.engine.condition.ConditionalOperator;
 import ro.nextreports.engine.condition.BandElementConditionProperty;
 import ro.nextreports.engine.condition.ConditionalExpression;
 import ro.nextreports.engine.band.Border;
+
 import com.l2fprod.common.swing.JFontChooser;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -33,6 +35,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXDatePicker;
 
 import ro.nextreports.designer.util.I18NSupport;
@@ -43,6 +47,8 @@ import ro.nextreports.designer.util.I18NSupport;
  * Time: 13:31:23
  */
 public class BandElementConditionEditPanel extends JPanel {
+	
+	private static Log LOG = LogFactory.getLog(BandElementConditionEditPanel.class);
 
     private Dimension btnDim = new Dimension(20, 20);
     private Dimension txtDim = new Dimension(200, 20);
@@ -324,13 +330,15 @@ public class BandElementConditionEditPanel extends JPanel {
                        "java.lang.Long".equals(className) ||
                        "java.lang.Float".equals(className) ||
                        "java.lang.Double".equals(className) ||
-                       "java.math.BigDecimal".equals(className) )  {
+                       "java.math.BigDecimal".equals(className) ||
+                       "java.math.BigInteger".equals(className))  {
                 value = Double.parseDouble(text);
             } else if ("java.lang.Boolean".equals(className)) {
                 value = Boolean.parseBoolean(text);
             } else if ("java.util.Date".equals(className)) {
                 value = ConditionalExpression.DATE_FORMAT.parse(text);
             } else {
+            	LOG.error("Invalid class name : " + className);
                 throw new IllegalArgumentException("Invalid class : " + className);
             }
         } catch (NumberFormatException nfe) {
