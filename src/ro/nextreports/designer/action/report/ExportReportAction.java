@@ -76,6 +76,11 @@ public class ExportReportAction extends AbstractAction {
             if (f != null) {
                 try {
                     File destFile = new File(f.getAbsolutePath() + File.separator + name);
+                    System.out.println("**** " + absolutePath + "  :  " + destFile.getAbsolutePath());
+                    if (absolutePath.equals(destFile.getAbsolutePath())) {
+                    	Show.warning(I18NSupport.getString("export.report.itself"));
+                    	return;
+                    }
                     boolean copy = false;
                     if (destFile.exists()) {
                         int option = JOptionPane.showConfirmDialog(Globals.getMainFrame(), I18NSupport.getString("export.report.exists", name), "", JOptionPane.YES_NO_OPTION);
