@@ -75,8 +75,7 @@ public class ExportReportAction extends AbstractAction {
             File f = fc.getSelectedFile();
             if (f != null) {
                 try {
-                    File destFile = new File(f.getAbsolutePath() + File.separator + name);
-                    System.out.println("**** " + absolutePath + "  :  " + destFile.getAbsolutePath());
+                    File destFile = new File(f.getAbsolutePath() + File.separator + name);                    
                     if (absolutePath.equals(destFile.getAbsolutePath())) {
                     	Show.warning(I18NSupport.getString("export.report.itself"));
                     	return;

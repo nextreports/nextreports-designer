@@ -75,6 +75,10 @@ public class ExportQueryAction extends AbstractAction {
             if (f != null) {
                 try {
                     File destFile = new File(f.getAbsolutePath() + File.separator + name);
+                    if (absolutePath.equals(destFile.getAbsolutePath())) {
+                    	Show.warning(I18NSupport.getString("export.report.itself"));
+                    	return;
+                    }
                     boolean copy = false;
                     if (destFile.exists()) {
                         int option = JOptionPane.showConfirmDialog(Globals.getMainFrame(), I18NSupport.getString("export.query.exists", name), "", JOptionPane.YES_NO_OPTION);
