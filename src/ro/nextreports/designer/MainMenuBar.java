@@ -45,6 +45,7 @@ import ro.nextreports.designer.action.help.CheckForUpdateAction;
 import ro.nextreports.designer.action.help.HelpManualAction;
 import ro.nextreports.designer.action.help.HelpMovieAction;
 import ro.nextreports.designer.action.help.HelpStartupAction;
+import ro.nextreports.designer.action.help.SurveyAction;
 import ro.nextreports.designer.action.query.ImportQueryAction;
 import ro.nextreports.designer.action.query.NewQueryAction;
 import ro.nextreports.designer.action.query.OpenQueryAction;
@@ -70,8 +71,8 @@ import ro.nextreports.designer.template.report.action.ExtractTemplateAction;
 import ro.nextreports.designer.template.report.action.ModifyTemplateAction;
 import ro.nextreports.designer.util.I18NSupport;
 import ro.nextreports.designer.util.ShortcutsUtil;
-
 import ro.nextreports.engine.exporter.ResultExporter;
+
 import com.jgoodies.looks.HeaderStyle;
 import com.jgoodies.looks.Options;
 import com.thoughtworks.xstream.XStream;
@@ -249,6 +250,7 @@ public class MainMenuBar extends JMenuBar {
         mnu.add(new HelpManualAction());
         mnu.add(new HelpStartupAction());
         mnu.addSeparator();
+        mnu.add(new SurveyAction());
         mnu.add(new AboutAction());
         
         return mnu;
