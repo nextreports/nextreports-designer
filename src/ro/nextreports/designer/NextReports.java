@@ -407,7 +407,7 @@ public class NextReports  {
         	
         	int[] array = DateUtil.getElapsedTime(startDate, currentDate);
         	// ten days passed
-        	if ((array != null) && (array[0] >= 10)) {
+        	if ((array != null) && (array[0] >= 30)) {
         		SurveyAction surveyAction = new SurveyAction();
     	        VistaButton buttonSurvey = new VistaButton(surveyAction, I18NSupport.getString("start.panel.survey"));	        
     	
