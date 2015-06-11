@@ -70,12 +70,12 @@ import ro.nextreports.designer.util.LicenseUtil;
 import ro.nextreports.designer.util.ReporterPreferencesManager;
 import ro.nextreports.designer.util.Show;
 import ro.nextreports.designer.util.SplashScreen;
-
 import ro.nextreports.engine.EngineProperties;
 import ro.nextreports.engine.exporter.PdfExporter;
 import ro.nextreports.engine.querybuilder.sql.dialect.OracleDialect;
 import ro.nextreports.engine.util.DateUtil;
 import ro.nextreports.engine.util.FontUtil;
+
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
@@ -384,6 +384,7 @@ public class NextReports  {
     }
     
     public static void showSurveyDialog() {
+    	int[] surveyDays = new int[]{30, 180}; // show survey at 30, 180 days
     	DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
     	
         String initDate = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.INIT_DATE + "_" + ReleaseInfo.getVersion());
@@ -391,10 +392,22 @@ public class NextReports  {
         	ReporterPreferencesManager.getInstance().storeParameter(ReporterPreferencesManager.INIT_DATE + "_" + ReleaseInfo.getVersion(), df.format(new Date()));
         } else {        	 
         	
-        	String surveyTaken = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.SURVEY_TAKEN + "_" + ReleaseInfo.getVersion());
-        	if ("true".equals(surveyTaken)) {
-        		return;
-        	}
+        	String surveyDayS = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.SURVEY_DAY + "_" + ReleaseInfo.getVersion());     	
+        	int surveyTestDay = 0;
+        	if (surveyDayS == null) {
+        		surveyTestDay = surveyDays[0];
+        	} else {
+        		surveyTestDay = Integer.parseInt(surveyDayS);
+            	for (int i=0, size=surveyDays.length; i<size; i++) {
+            		if (surveyTestDay == surveyDays[i]) {
+            			if (i == size-1) {
+            				return;
+            			} else {
+            				surveyTestDay = surveyDays[i+1];
+            			}
+            		}
+            	}
+            }
         	
         	Date currentDate = new Date();
         	Date startDate = currentDate;
@@ -406,14 +419,15 @@ public class NextReports  {
 			}
         	
         	int[] array = DateUtil.getElapsedTime(startDate, currentDate);
-        	// ten days passed
-        	if ((array != null) && (array[0] >= 30)) {
+        	// if survey days passed
+        	if ((array != null) && (array[0] >= surveyTestDay)) {
         		SurveyAction surveyAction = new SurveyAction();
     	        VistaButton buttonSurvey = new VistaButton(surveyAction, I18NSupport.getString("start.panel.survey"));	        
     	
     	        List<VistaButton> list = new ArrayList<VistaButton>();
     	        list.add(buttonSurvey);
     	      
+    	        final int saveDay = surveyTestDay;
     	        VistaDialogContent content = new VistaDialogContent(list, I18NSupport.getString("start.panel.survey.title"),
     	                I18NSupport.getString("start.panel.survey.subtitle"));
     	        VistaDialog dialog = new VistaDialog(content, Globals.getMainFrame(), true) {
@@ -422,7 +436,7 @@ public class NextReports  {
     	
     				@Override
     	            protected void beforeDispose() {	                
-    	                ReporterPreferencesManager.getInstance().storeParameter(ReporterPreferencesManager.SURVEY_TAKEN + "_" + ReleaseInfo.getVersion(), "true");
+    	                ReporterPreferencesManager.getInstance().storeParameter(ReporterPreferencesManager.SURVEY_DAY + "_" + ReleaseInfo.getVersion(), String.valueOf(saveDay));
     	            }
     	            
     	        };	        
