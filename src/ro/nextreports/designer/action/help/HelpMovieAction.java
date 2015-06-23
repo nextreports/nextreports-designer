@@ -44,6 +44,6 @@ public class HelpMovieAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-       FileUtil.openUrl("http://www.next-reports.com/index.php/documentation/nextreports-designer-documentation/movies.html", HelpMovieAction.class);       
+       FileUtil.openUrl("http://www.next-reports.com/products/nextreports-designer/127-next-reports-designer-video-tutorials.html", HelpMovieAction.class);       
     }
 }

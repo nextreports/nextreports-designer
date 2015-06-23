@@ -44,6 +44,6 @@ public class HelpManualAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {        
-            FileUtil.openUrl("http://www.next-reports.com/index.php/documentation.html", HelpManualAction.class);        
+            FileUtil.openUrl("http://www.next-reports.com/products/nextreports-designer/108-nextreports-designer-documentation.html", HelpManualAction.class);        
     }
 }
