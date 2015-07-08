@@ -21,6 +21,7 @@ import com.l2fprod.common.propertysheet.PropertyEditorRegistry;
 import com.l2fprod.common.propertysheet.Property;
 import com.l2fprod.common.propertysheet.DefaultProperty;
 import com.l2fprod.common.beans.editor.ComboBoxPropertyEditor;
+
 import ro.nextreports.engine.chart.ChartTitle;
 import ro.nextreports.engine.chart.Chart;
 import ro.nextreports.engine.chart.ChartType;
@@ -39,6 +40,7 @@ import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.Show;
 
 import javax.swing.*;
+
 import java.beans.PropertyChangeEvent;
 import java.awt.*;
 import java.util.List;
@@ -73,6 +75,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String STYLE_PARAM_NAME = I18NSupport.getString("property.chart.style");
     private String CHART_TRANSPARENCY = "CHART_TRANSPARENCY";
     private String TRANSPARENCY_PARAM_NAME = I18NSupport.getString("property.chart.transparency");
+    private String STYLE_GRID_X = "STYLR_GRID_X";
+    private String STYLE_GRID_Y = "STYLR_GRID_Y";
+    private String STYLE_GRID_PARAM_NAME = I18NSupport.getString("property.style.grid");        
     private String TOOLTIP_MESSAGE = "TOOLTIP_MESSAGE";
     private String TOOLTIP_MESSAGE_PARAM_NAME = I18NSupport.getString("property.chart.message");
     private String CHART_FOREGROUND = "CHART_FOREGROUND";
@@ -189,6 +194,13 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String LOW_TRANSPARENCY = I18NSupport.getString("new.chart.transparency.low");
     private String AVG_TRANSPARENCY = I18NSupport.getString("new.chart.transparency.average");
     private String HIGH_TRANSPARENCY = I18NSupport.getString("new.chart.transparency.high");
+    
+    private String LINE_STYLE_LINE = I18NSupport.getString("property.lineStyle.line");
+    private String LINE_STYLE_DOT = I18NSupport.getString("property.lineStyle.dot");
+    private String LINE_STYLE_DASH = I18NSupport.getString("property.lineStyle.dash");
+    
+    private String X_GRID_STYLE = "X_GRID_STYLE";
+    private String Y_GRID_STYLE = "Y_GRID_STYLE";
 
     private Property xAxisColumnProperty;
     private Property yAxisColumnProperty;
@@ -277,6 +289,12 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             } else if (CHART_TRANSPARENCY.equals(propName)) {
                 String transparency = (String) prop.getValue();
                 chart.setTransparency(getTransparency(transparency));
+            } else if (STYLE_GRID_X.equals(propName)) {
+                String style = (String) prop.getValue();
+                chart.setStyleGridX(getGridStyle(style));   
+            } else if (STYLE_GRID_Y.equals(propName)) {
+                String style = (String) prop.getValue();
+                chart.setStyleGridY(getGridStyle(style));        
             } else if (TOOLTIP_MESSAGE.equals(propName)) {
                 String message = (String) prop.getValue();
                 chart.setTooltipMessage(message);    
@@ -694,6 +712,34 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         return transparencyProp;
     }
     
+    private Property getStyleGridXProperty() {
+        DefaultProperty styleProp = new DefaultProperty();
+        styleProp.setName(STYLE_GRID_X);
+        styleProp.setDisplayName(STYLE_GRID_PARAM_NAME);
+        styleProp.setType(String.class);
+        ComboBoxPropertyEditor styleEditor = new ComboBoxPropertyEditor();
+        String[] availableValues = new String[]{LINE_STYLE_LINE, LINE_STYLE_DOT, LINE_STYLE_DASH};
+        styleEditor.setAvailableValues(availableValues);
+        setGridStyle(chart.getStyleGridX(), styleProp);
+        styleProp.setCategory(I18NSupport.getString("property.category.chart.xcolumn"));
+        editorRegistry.registerEditor(styleProp, styleEditor);
+        return styleProp;
+    }
+    
+    private Property getStyleGridYProperty() {
+        DefaultProperty styleProp = new DefaultProperty();
+        styleProp.setName(STYLE_GRID_Y);
+        styleProp.setDisplayName(STYLE_GRID_PARAM_NAME);
+        styleProp.setType(String.class);
+        ComboBoxPropertyEditor styleEditor = new ComboBoxPropertyEditor();
+        String[] availableValues = new String[]{LINE_STYLE_LINE, LINE_STYLE_DOT, LINE_STYLE_DASH};
+        styleEditor.setAvailableValues(availableValues);
+        setGridStyle(chart.getStyleGridY(), styleProp);
+        styleProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
+        editorRegistry.registerEditor(styleProp, styleEditor);
+        return styleProp;
+    }
+    
     private Property getMainFontProperty() {
         DefaultProperty fontProp = new DefaultProperty();
         fontProp.setName(MAIN_FONT);
@@ -949,6 +995,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         showProp.setValue(chart.getXShowGrid());
         showProp.setCategory(I18NSupport.getString("property.category.chart.xcolumn"));
         showProp.addSubProperty(getXGridColorProperty());
+        showProp.addSubProperty(getStyleGridXProperty());
         return showProp;
     }
 
@@ -1137,6 +1184,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         showProp.setValue(chart.getYShowGrid());
         showProp.setCategory(I18NSupport.getString("property.category.chart.ycolumn"));
         showProp.addSubProperty(getYGridColorProperty());
+        showProp.addSubProperty(getStyleGridYProperty());
         return showProp;
     }
 
@@ -1440,6 +1488,33 @@ public class ChartPropertyPanel extends PropertySheetPanel {
                 break;
         }
         transparencyProp.setValue(transparencyS);
+    }
+    
+    private byte getGridStyle(String style) {
+        if (LINE_STYLE_DOT.equals(style)) {
+            return Chart.LINE_STYLE_DOT;
+        } else if (LINE_STYLE_DASH.equals(style)) {
+            return Chart.LINE_STYLE_DASH;        
+        } else {
+            return Chart.LINE_STYLE_LINE;
+        }
+    }
+
+    private void setGridStyle(byte style, Property styleProp) {
+        String styleS;
+        switch (style) {
+            case Chart.LINE_STYLE_DOT:
+                styleS = LINE_STYLE_DOT;
+                break;
+            case Chart.LINE_STYLE_DASH:
+                styleS = LINE_STYLE_DASH;
+                break;
+            case Chart.LINE_STYLE_LINE:
+            default:            
+                styleS = LINE_STYLE_LINE;
+                break;
+        }
+        styleProp.setValue(styleS);
     }
 
     private byte getAlignment(String alignment) {
