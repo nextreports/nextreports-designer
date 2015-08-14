@@ -307,6 +307,8 @@ public class ChartLayoutPanel extends JPanel {
             image = ImageUtil.getImageIcon("chart_pie_main");
         } else if (ChartType.BAR == type) {
             image = ImageUtil.getImageIcon("chart_bar_main");
+        } else if (ChartType.NEGATIVE_BAR == type) {
+            image = ImageUtil.getImageIcon("chart_negative_bar_main");    
         } else if (ChartType.BAR_COMBO == type) {
             image = ImageUtil.getImageIcon("chart_bar_combo_main");    
         } else if (ChartType.STACKED_BAR == type) {

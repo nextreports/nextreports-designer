@@ -164,6 +164,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private String RIGHT = I18NSupport.getString("property.allignment.right");
 
     private String BAR = I18NSupport.getString("new.chart.bar");
+    private String NEGATIVE_BAR = I18NSupport.getString("new.chart.negativebar");
     private String BAR_COMBO = I18NSupport.getString("new.chart.bar.combo");
     private String HORIZONTAL_BAR = I18NSupport.getString("new.chart.horizontalbar");
     private String STACKED_BAR = I18NSupport.getString("new.chart.stackedbar");
@@ -644,9 +645,10 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         typeProp.setDisplayName(TYPE_PARAM_NAME);
         typeProp.setType(String.class);
         ComboBoxPropertyEditor typeEditor = new ComboBoxPropertyEditor();
-        typeEditor.setAvailableValues(new String[]{BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA, BUBBLE});
+        typeEditor.setAvailableValues(new String[]{BAR, NEGATIVE_BAR, BAR_COMBO, HORIZONTAL_BAR, STACKED_BAR, STACKED_BAR_COMBO, HORIZONTAL_STACKED_BAR, PIE, LINE, AREA, BUBBLE});
         typeEditor.setAvailableIcons(new Icon[]{
                 ImageUtil.getImageIcon("chart_bar"),
+                ImageUtil.getImageIcon("chart_negative_bar"),
                 ImageUtil.getImageIcon("chart_bar_combo"),
                 ImageUtil.getImageIcon("chart_horizontal_bar"),
                 ImageUtil.getImageIcon("chart_stacked_bar"),
@@ -683,6 +685,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
         		|| BAR_COMBO.equals(type) || STACKED_BAR_COMBO.equals(type)) {
             availableValues = new String[]{STYLE_NORMAL, STYLE_BAR_GLASS, STYLE_BAR_CYLINDER,
                     STYLE_BAR_PARALLELIPIPED, STYLE_BAR_DOME};
+        } else if (NEGATIVE_BAR.equals(type)) {
+        	availableValues = new String[]{STYLE_NORMAL, STYLE_BAR_GLASS};
         } else if (LINE.equals(type)) {
             availableValues = new String[]{STYLE_NORMAL, STYLE_LINE_DOT_SOLID, STYLE_LINE_DOT_HOLLOW,
                     STYLE_LINE_DOT_ANCHOR, STYLE_LINE_DOT_BOW, STYLE_LINE_DOT_STAR};
@@ -1280,6 +1284,8 @@ public class ChartPropertyPanel extends PropertySheetPanel {
     private ChartType getChartType(String type) {
         if (BAR.equals(type)) {
             return new ChartType(ChartType.BAR);
+        } else if (NEGATIVE_BAR.equals(type)) {
+            return new ChartType(ChartType.NEGATIVE_BAR);    
         } else if (BAR_COMBO.equals(type)) {
             return new ChartType(ChartType.BAR_COMBO);    
         } else if (HORIZONTAL_BAR.equals(type)) {
@@ -1309,6 +1315,9 @@ public class ChartPropertyPanel extends PropertySheetPanel {
             case ChartType.BAR:
                 typeS = BAR;
                 break;
+            case ChartType.NEGATIVE_BAR:
+                typeS = NEGATIVE_BAR;
+                break;    
             case ChartType.BAR_COMBO:
                 typeS = BAR_COMBO;
                 break;    
