@@ -33,7 +33,7 @@ public class CustomSizeChooser {
         CustomSizePanel sizePanel = new CustomSizePanel();
 		sizePanel.setPaperSize(initialPaperSize);
         BaseDialog dialog = new BaseDialog(sizePanel, title, true);
-        dialog.setPreferredSize(new Dimension(200, 190));
+        dialog.setPreferredSize(new Dimension(250, 200));
         dialog.setResizable(false);
 		dialog.pack();
 		dialog.setLocationRelativeTo(parent);

@@ -50,23 +50,23 @@ public class CustomSizePanel extends JPanel {
 		unitCombo.addItem(PaperSize.UNIT_CM);
 		unitCombo.addItem(PaperSize.UNIT_IN);		
 		
-		widthText = new JTextField(5);
-		heightText = new JTextField(5);												
+		widthText = new JTextField(10);
+		heightText = new JTextField(10);												
 		
 		add(new JLabel(I18NSupport.getString("paper.size.unit")), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, 
 				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		add(unitCombo, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, 
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+				GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
 		
 		add(new JLabel(I18NSupport.getString("paper.size.width")), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, 
 				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		add(widthText, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, 
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+				GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
 		
 		add(new JLabel(I18NSupport.getString("paper.size.height")), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, 
 				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		add(heightText, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, 
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+				GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
 										
 	}
 	
