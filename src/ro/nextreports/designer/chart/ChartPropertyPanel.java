@@ -659,7 +659,7 @@ public class ChartPropertyPanel extends PropertySheetPanel {
                 ImageUtil.getImageIcon("chart_area"),
                 ImageUtil.getImageIcon("chart_bubble")}); 
         JComboBox cb = (JComboBox)typeEditor.getCustomEditor();
-        cb.setMaximumRowCount(10);
+        cb.setMaximumRowCount(11);
         ChartType chartType = chart.getType();
         byte type = ChartType.NONE;
         if (chartType != null) {
