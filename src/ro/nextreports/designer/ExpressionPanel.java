@@ -203,6 +203,7 @@ public class ExpressionPanel extends JXPanel {
         scrEditor.setBorder(new TitledBorder(I18NSupport.getString("expression.editor")));
 
         nameText = new JTextField();
+        nameText.requestFocusInWindow();
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
         namePanel.add(new JLabel(I18NSupport.getString("expression.name")));
