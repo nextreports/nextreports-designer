@@ -387,6 +387,8 @@ public class ReportLayoutUtil {
             } else if ((variable.getName().equals(Variable.ROW_VARIABLE)) ||
                        (variable.getName().equals(Variable.GROUP_ROW_VARIABLE)) ) {
                 obj = new Integer(1);
+            } else if (variable.getName().equals(Variable.EMPTY_DATA_VARIABLE)) {
+            	obj = Boolean.FALSE;
             }
             checkContext.set("$V_" + variable.getName(), obj);
         }

@@ -286,7 +286,9 @@ public class ExpressionPanel extends JXPanel {
                     type = STRING_TYPE;
                 } else if (variable.getName().equals(Variable.USER_VARIABLE)) {
                     type = STRING_TYPE;
-                }
+                } else if (variable.getName().equals(Variable.EMPTY_DATA_VARIABLE)) {
+                    type = BOOLEAN_TYPE;
+                } 
                 comp.setText("<html>$V_" + variable.getName() + " <font color=\"#cccccc\">(" + type + ")</font></html>");
             }
             return comp;

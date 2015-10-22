@@ -93,6 +93,8 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
     private String REPORT_TYPE_PARAM_NAME = I18NSupport.getString("property.report.type");    
     private String HEADER_NAME = "HeaderPerPage";
     private String HEADER_PARAM_NAME = I18NSupport.getString("property.header.on.every.page");
+    private String EMPTY_DATA_NAME = "EmptyData";
+    private String EMPTY_DATA_PARAM_NAME = I18NSupport.getString("property.emptyData.show");
     private String BG_IMAGE_NAME = "BgImage";
     private String BG_IMAGE_PARAM_NAME = I18NSupport.getString("property.background.image");
     private String TEXT_PARAM_NAME = I18NSupport.getString("property.text");
@@ -196,6 +198,10 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
             Boolean propValue = (Boolean) prop.getValue();
             LayoutHelper.getReportLayout().setHeaderOnEveryPage(propValue);
             return;
+        } else if (EMPTY_DATA_NAME.equals(propName)) {
+            Boolean propValue = (Boolean) prop.getValue();
+            LayoutHelper.getReportLayout().setShowEmptyData(propValue);
+            return;    
         } else if (PAGE_FORMAT_NAME.equals(propName)) {
             String propValue = (String) prop.getValue();            
             LayoutHelper.getReportLayout().setPageFormat(propValue);
@@ -568,6 +574,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         props.add(getOrientationProperty(reportLayout));
         props.add(getPagePaddingProperty(reportLayout));
         props.add(getHeaderProperty(reportLayout));
+        props.add(getEmptyDataProperty(reportLayout));
         props.add(getBackgroundImageProperty(reportLayout));
         props.add(getTemplateProperty(reportLayout));
         props.add(getTemplateSheetProperty(reportLayout));
@@ -705,6 +712,15 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         headerPop.setValue(reportLayout.isHeaderOnEveryPage());
         return headerPop;
     }
+     
+     private Property getEmptyDataProperty(ReportLayout reportLayout) {
+         DefaultProperty emptyDataProp = new DefaultProperty();
+         emptyDataProp.setName(EMPTY_DATA_NAME);
+         emptyDataProp.setDisplayName(EMPTY_DATA_PARAM_NAME);
+         emptyDataProp.setType(Boolean.class);
+         emptyDataProp.setValue(reportLayout.isShowEmptyData());
+         return emptyDataProp;
+     }
      
      private Property getBackgroundImageProperty(ReportLayout reportLayout) {
          DefaultProperty imageProp = new DefaultProperty();
