@@ -109,6 +109,7 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
     private String PADDING_PARAM_NAME = I18NSupport.getString("property.padding");
     private String BORDER_PARAM_NAME = I18NSupport.getString("property.border");
     private String WRAPTEXT_PARAM_NAME = I18NSupport.getString("property.wrapText");
+    private String LINE_SPACING_PARAM_NAME = I18NSupport.getString("property.lineSpacing");
     private String TEXT_ROTATION_PARAM_NAME = I18NSupport.getString("property.textRotation");
     private String REPEATED_PARAM_NAME = I18NSupport.getString("property.repeatedValue");
     private String HIDE_WHEN_EXPRESSION_PARAM_NAME = I18NSupport.getString("property.hide.when.expression");
@@ -343,6 +344,12 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
                 } else if(WRAPTEXT_PARAM_NAME.equals(propName)) {
                     Boolean propValue = (Boolean)prop.getValue();
                     element.setWrapText(propValue);
+                } else if(LINE_SPACING_PARAM_NAME.equals(propName)) {
+                    Integer propValue = (Integer)prop.getValue();
+                    if (propValue.intValue() <= 0) {
+                    	propValue = 100;
+                    }
+                    element.setPercentLineSpacing(propValue);    
                 } else if(TEXT_ROTATION_PARAM_NAME.equals(propName)) {
                     Short propValue = (Short)prop.getValue();
                     element.setTextRotation(propValue);
@@ -485,6 +492,9 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
 
         // wrap text
         props.add(getWrapTextProperty());
+        
+        // line spacing
+        props.add(getLineSpaceProperty());
         
         // text rotation
         props.add(getTextRotationProperty());
@@ -819,6 +829,19 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         }
 
         return wrapProp;
+    }
+    
+    private Property getLineSpaceProperty() {
+        DefaultProperty lineSpaceProp = new DefaultProperty();
+        lineSpaceProp.setName(LINE_SPACING_PARAM_NAME);
+        lineSpaceProp.setDisplayName(LINE_SPACING_PARAM_NAME);
+        lineSpaceProp.setType(Integer.class);
+        lineSpaceProp.setValue(getUniquePercentLineSpacing());
+        if (Globals.getAccessibilityHtml()) {
+            lineSpaceProp.setCategory(I18NSupport.getString("property.category.main"));
+        }
+
+        return lineSpaceProp;
     }
     
     private Property getTextRotationProperty() {
@@ -1192,6 +1215,23 @@ public class PropertyPanel extends PropertySheetPanel implements SelectionModelL
         }
 
         return rotation;
+    }
+    
+    private Integer getUniquePercentLineSpacing() {
+        Integer space = null;
+        int n = reportGridCells.size();
+        for (int i = 0; i < n; i++) {
+            BandElement element = reportGridCells.get(i).getValue();
+            if (i == 0) {
+            	space = element.getPercentLineSpacing();
+                continue;
+            }
+            if (space != element.getPercentLineSpacing()) {
+                return null;
+            }
+        }
+
+        return space;
     }
 
     private Boolean getUniqueRepeated() {

@@ -237,6 +237,7 @@ public class BandUtil {
     	to.setVerticalAlign(from.getVerticalAlign());
     	to.setPadding(from.getPadding());    	
     	to.setWrapText(from.isWrapText());
+    	to.setPercentLineSpacing(from.getPercentLineSpacing());
     	to.setTextRotation(from.getTextRotation());
     }
 
