@@ -72,45 +72,44 @@ public class DefaultDBViewer implements DBViewer {
 
         String schemaName;
 
-        try {
-            schemaName = con.getMetaData().getUserName();
+		try {
+			schemaName = con.getMetaData().getUserName();
 
-            /*
-            * As of version 7 there was no equivalent to the concept of "schema"
-            * in SQL Server. For DatabaseMetaData functions that include
-            * SCHEMA_NAME drivers usually return the user name that owns the table.
-            *
-            * So for all databases in which schema name is different from the user
-            * name, we use the schema name as "%"
-            */
+			/*
+			 * As of version 7 there was no equivalent to the concept of
+			 * "schema" in SQL Server. For DatabaseMetaData functions that
+			 * include SCHEMA_NAME drivers usually return the user name that
+			 * owns the table.
+			 * 
+			 * So for all databases in which schema name is different from the
+			 * user name, we use the schema name as "%"
+			 */
 
-            
-            boolean foundSchema = false;
-            try {
-	            ResultSet schemas = con.getMetaData().getSchemas();
-	            while (schemas.next()) {
-	                String sch = schemas.getString("TABLE_SCHEM");
-	                if (schemaName.equals(sch)) {
-	                    foundSchema = true;
-	                    break;
-	                }
-	            }
-            } catch (SQLException ex) {
-            	LOG.error(ex.getMessage(), ex);
-            	ex.printStackTrace();
-            }
+			boolean foundSchema = false;
+			try {
+				ResultSet schemas = con.getMetaData().getSchemas();
+				while (schemas.next()) {
+					String sch = schemas.getString("TABLE_SCHEM");
+					if (schemaName.equals(sch)) {
+						foundSchema = true;
+						break;
+					}
+				}
+			} catch (SQLException ex) {
+				LOG.error(ex.getMessage(), ex);
+				ex.printStackTrace();
+			}
 
-            if (!foundSchema) {
-                schemaName = "%";
-            }
+			if (!foundSchema) {
+				schemaName = "%";
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			e.printStackTrace();
+			throw new NextSqlException("Could not retrieve connection.", e);
+		}
 
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            e.printStackTrace();
-            throw new NextSqlException("Could not retrieve connection.", e);
-        }
-
-        return getDBInfo(schemaName, mask, con);
+		return getDBInfo(schemaName, mask, con);
     }
 
 
