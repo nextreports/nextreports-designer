@@ -857,27 +857,35 @@ public class RuntimeParametersPanel extends JPanel {
                             if (selected) {
                                 Query query = new Query(qp.getSource());
                                 // no count and no check for other parameters completition
-                                QueryExecutor executor = new QueryExecutor(query, map, vals, con, false, false, false);
-                                executor.setTimeout(Globals.getQueryTimeout());
-                                executor.setMaxRows(0);
-                                QueryResult qr = executor.execute();
-                                //int count = qr.getRowCount();
-                                int columnCount = qr.getColumnCount();
-
-                                // two columns in manual select source!!!
-                                //for (int i = 0; i < count; i++) {
-                                while (qr.hasNext()) {
-                                    IdName in = new IdName();
-                                    in.setId((Serializable) qr.nextValue(0));
-                                    if (columnCount == 1) {
-                                        in.setName((Serializable) qr.nextValue(0));
-                                    } else {
-                                        in.setName((Serializable) qr.nextValue(1));
-                                    }
-                                    values.add(in);
-                                }
-                                Collections.sort(values, new IdNameComparator(qp.getOrderBy()));
-                                qr.close();
+                                QueryExecutor executor = null;
+                                try {
+		                                executor= new QueryExecutor(query, map, vals, con, false, false, false);
+		                                executor.setTimeout(Globals.getQueryTimeout());
+		                                executor.setMaxRows(0);
+		                                QueryResult qr = executor.execute();
+		                                //int count = qr.getRowCount();
+		                                int columnCount = qr.getColumnCount();
+		
+		                                // two columns in manual select source!!!
+		                                //for (int i = 0; i < count; i++) {
+		                                while (qr.hasNext()) {
+		                                    IdName in = new IdName();
+		                                    in.setId((Serializable) qr.nextValue(0));
+		                                    if (columnCount == 1) {
+		                                        in.setName((Serializable) qr.nextValue(0));
+		                                    } else {
+		                                        in.setName((Serializable) qr.nextValue(1));
+		                                    }
+		                                    values.add(in);
+		                                }
+		                                Collections.sort(values, new IdNameComparator(qp.getOrderBy()));
+	                            } catch (Exception ex) {	                                	
+	                                throw ex;
+	                            } finally {
+	                            	if (executor != null) {
+                                		executor.close();
+                                	}   
+	                            }
                             }
                             SwingUtilities.invokeAndWait(new Runnable() {
                                 public void run() {
