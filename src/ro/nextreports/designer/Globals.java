@@ -47,6 +47,7 @@ import ro.nextreports.designer.util.FileUtil;
 import ro.nextreports.engine.exporter.PdfExporter;
 import ro.nextreports.engine.querybuilder.sql.dialect.CSVDialect;
 import ro.nextreports.engine.querybuilder.sql.dialect.Dialect;
+import ro.nextreports.engine.querybuilder.sql.dialect.MSAccessDialect;
 import ro.nextreports.engine.querybuilder.sql.dialect.OracleDialect;
 import ro.nextreports.engine.util.DialectUtil;
 import ro.nextreports.server.api.client.ChartMetaData;
@@ -194,8 +195,11 @@ public class Globals {
 				Enumeration<Driver> drivers = DriverManager.getDrivers();
 				while (drivers.hasMoreElements()) {
 					DriverManager.deregisterDriver(drivers.nextElement());
+				}			
+				if (dataSource.getDriver().equals(MSAccessDialect.DRIVER_CLASS)) {
+					// must register hsqldb which is used by ucanaccess driver
+					DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
 				}
-//                Class.forName("craftsman.spy.SpyDriver");
 				DriverManager.registerDriver(new SpyDriver());
 			} else {
 				Class.forName(driver);
