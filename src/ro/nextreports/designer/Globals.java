@@ -198,7 +198,8 @@ public class Globals {
 				}			
 				if (dataSource.getDriver().equals(MSAccessDialect.DRIVER_CLASS)) {
 					// must register hsqldb which is used by ucanaccess driver
-					DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
+					Class hClass = Globals.class.getClassLoader().loadClass("org.hsqldb.jdbc.JDBCDriver");
+					DriverManager.registerDriver((java.sql.Driver)hClass.newInstance());
 				}
 				DriverManager.registerDriver(new SpyDriver());
 			} else {
