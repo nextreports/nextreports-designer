@@ -82,9 +82,7 @@ public class ApplyTemplateAction extends AbstractAction {
         File loadFile = null;
         File file;
         if (path == null) {
-            loadPath = ".";
-            file = new File(loadPath);
-            loadPath = file.getAbsolutePath() + File.separator + "templates";
+        	loadPath = System.getProperty("nextreports.user.data") + File.separator + "templates" +File.separator + "Analyse.ntempl";		           
             file = new File(loadPath);
         } else {
             file = new File(path);

@@ -68,9 +68,7 @@ public class CreateTemplateAction extends AbstractAction {
 		        String path = ReporterPreferencesManager.getInstance().loadParameter(ReporterPreferencesManager.TEMPLATE_PATH_KEY);               
 		        File prevFile;
 		        if (path == null) {
-		            String loadPath = ".";
-		            prevFile = new File(loadPath);
-		            loadPath = prevFile.getAbsolutePath() + File.separator + "templates";
+		            String loadPath = System.getProperty("nextreports.user.data") + File.separator + "templates" +File.separator + "Analyse.ntempl";		           
 		            prevFile = new File(loadPath);
 		        } else {
 		        	prevFile = new File(path);
