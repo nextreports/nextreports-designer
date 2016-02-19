@@ -18,6 +18,7 @@ package ro.nextreports.designer.config;
 
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ import org.jdesktop.swingx.JXTitledSeparator;
 // User: mihai.panaitescu
 // Date: 16-Jun-2009
 // Time: 11:40:04
+
 
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.util.FileUtil;
@@ -135,7 +137,10 @@ public class SettingsPanel extends JPanel {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File f = fc.getSelectedFile();
                     if (f != null) {
-                        String newFolder = FileUtil.getEscapedPath(f.getAbsolutePath(), File.separator);
+                    	String newFolder = f.getAbsolutePath();
+                    	if (System.getProperty("os.name").startsWith("Windows")) {
+                    		newFolder = FileUtil.getEscapedPath(f.getAbsolutePath(), File.separator);
+                    	}                        
                         String oldPath = fontText.getText();
                         String text;
                         if ("".equals(oldPath.trim())) {
