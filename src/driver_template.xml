@@ -93,4 +93,10 @@
     <urlTemplate>jdbc:nextreports:@&lt;server&gt;;&lt;datasource&gt;</urlTemplate>    
     <defaultPort>8081</defaultPort> 
   </driver>
+  <driver>    
+    <type>HSQLDB</type>
+    <className>org.hsqldb.jdbc.JDBCDriver</className>
+    <urlTemplate>jdbc:hsqldb:hsql://&lt;host&gt;:&lt;port&gt;/&lt;alias&gt;</urlTemplate> 
+    <defaultPort>9001</defaultPort>	
+  </driver>  
 </drivers>
