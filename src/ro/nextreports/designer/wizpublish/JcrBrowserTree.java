@@ -62,12 +62,17 @@ public class JcrBrowserTree extends JXTree {
     private WebServiceClient client;
 
     public JcrBrowserTree(final byte typeRoot, WebServiceClient client) {
+    	this(typeRoot, client, false);
+    }
+    public JcrBrowserTree(final byte typeRoot, WebServiceClient client, boolean allowMultipleSelection) {
         super();
         this.client = client;
         populateTree(typeRoot);
 
         setCellRenderer(new JcrBrowserTreeRenderer());
-        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        if (!allowMultipleSelection){
+        	 getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        }
 
         instance = this;
 

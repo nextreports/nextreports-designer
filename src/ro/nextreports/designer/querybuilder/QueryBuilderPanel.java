@@ -455,6 +455,14 @@ public class QueryBuilderPanel extends JXPanel {
         }
     }
 
+    public void addFolder(String name, String absPath, byte type, boolean onRoot) {
+        try {
+            dbBrowserTree.addFolder(name, absPath, type, onRoot);
+        } catch (Exception e) {
+            Show.error(e);
+        }
+    }
+    
     public void addChart(String name, String path) {
         try {
             dbBrowserTree.addChart(name, path);
