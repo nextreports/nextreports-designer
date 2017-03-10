@@ -16,33 +16,30 @@
  */
 package ro.nextreports.designer.action.report.layout.export;
 
-import ro.nextreports.engine.exporter.ExporterBean;
-import ro.nextreports.engine.exporter.ResultExporter;
-import ro.nextreports.engine.exporter.util.ParametersBean;
-import ro.nextreports.engine.exporter.event.ExporterEvent;
-import ro.nextreports.engine.exporter.event.ExporterEventListener;
-import ro.nextreports.engine.exporter.exception.NoDataFoundException;
-import ro.nextreports.engine.i18n.I18nLanguage;
-import ro.nextreports.engine.i18n.I18nUtil;
-import ro.nextreports.engine.util.QueryUtil;
-import ro.nextreports.engine.util.DialectUtil;
-import ro.nextreports.engine.util.ReportUtil;
+import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
 
-import ro.nextreports.engine.queryexec.QueryResult;
-import ro.nextreports.engine.queryexec.QueryParameter;
-import ro.nextreports.engine.Report;
-import ro.nextreports.engine.EngineProperties;
-import ro.nextreports.engine.ReportLayout;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import ro.nextreports.designer.BandUtil;
-import ro.nextreports.designer.FormLoader;
 import ro.nextreports.designer.Globals;
 import ro.nextreports.designer.LayoutHelper;
 import ro.nextreports.designer.datasource.DataSource;
-import ro.nextreports.designer.i18n.action.I18nManager;
 import ro.nextreports.designer.querybuilder.ExportPropertiesDialog;
 import ro.nextreports.designer.querybuilder.ExportPropertiesPanel;
 import ro.nextreports.designer.querybuilder.ParameterManager;
@@ -52,20 +49,22 @@ import ro.nextreports.designer.util.ImageUtil;
 import ro.nextreports.designer.util.MessageUtil;
 import ro.nextreports.designer.util.Show;
 import ro.nextreports.designer.util.UIActivator;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.Set;
-import java.util.List;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import ro.nextreports.engine.EngineProperties;
+import ro.nextreports.engine.Report;
+import ro.nextreports.engine.ReportLayout;
+import ro.nextreports.engine.exporter.ExporterBean;
+import ro.nextreports.engine.exporter.ResultExporter;
+import ro.nextreports.engine.exporter.event.ExporterEvent;
+import ro.nextreports.engine.exporter.event.ExporterEventListener;
+import ro.nextreports.engine.exporter.exception.NoDataFoundException;
+import ro.nextreports.engine.exporter.util.ParametersBean;
+import ro.nextreports.engine.i18n.I18nLanguage;
+import ro.nextreports.engine.i18n.I18nUtil;
+import ro.nextreports.engine.queryexec.QueryParameter;
+import ro.nextreports.engine.queryexec.QueryResult;
+import ro.nextreports.engine.util.DialectUtil;
+import ro.nextreports.engine.util.QueryUtil;
+import ro.nextreports.engine.util.ReportUtil;
 
 
 /**
