@@ -59,7 +59,7 @@ public class AboutAction extends AbstractAction {
     private String VERSION = I18NSupport.getString("version");
     private String VERSION_NO = ReleaseInfoAdapter.getVersion();
     private String COPYRIGHT = "\u00A9" + ReleaseInfo.getCopyright();
-    private String DEVELOPER = "Advantage Software Company";
+    private String DEVELOPER = "NextReports";
     private String BUILD = I18NSupport.getString("build");
     private String BUILD_DATE = sdf.format(ReleaseInfo.getBuildDate());
     private String SITE = I18NSupport.getString("site");
